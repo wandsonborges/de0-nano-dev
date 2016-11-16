@@ -9,27 +9,11 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element avalon_st_pattern_0
-   {
-      datum _sortIndex
-      {
-         value = "6";
-         type = "int";
-      }
-   }
    element clk_0
    {
       datum _sortIndex
       {
          value = "0";
-         type = "int";
-      }
-   }
-   element dma_write_master_0
-   {
-      datum _sortIndex
-      {
-         value = "5";
          type = "int";
       }
    }
@@ -70,59 +54,11 @@
          type = "String";
       }
    }
-   element master_0
-   {
-      datum _sortIndex
-      {
-         value = "8";
-         type = "int";
-      }
-   }
-   element modular_sgdma_dispatcher_0
+   element pattern_writer_0
    {
       datum _sortIndex
       {
          value = "4";
-         type = "int";
-      }
-   }
-   element modular_sgdma_dispatcher_0.CSR
-   {
-      datum baseAddress
-      {
-         value = "0";
-         type = "String";
-      }
-   }
-   element modular_sgdma_dispatcher_0.Descriptor_Slave
-   {
-      datum baseAddress
-      {
-         value = "32";
-         type = "String";
-      }
-   }
-   element patter_writer_0
-   {
-      datum _sortIndex
-      {
-         value = "7";
-         type = "int";
-      }
-   }
-   element patter_writer_1
-   {
-      datum _sortIndex
-      {
-         value = "9";
-         type = "int";
-      }
-   }
-   element patter_writer_2
-   {
-      datum _sortIndex
-      {
-         value = "10";
          type = "int";
       }
    }
@@ -182,40 +118,11 @@
    internal="sw.external_connection"
    type="conduit"
    dir="end" />
- <module
-   name="avalon_st_pattern_0"
-   kind="avalon_st_pattern"
-   version="1.0"
-   enabled="0">
-  <parameter name="PKT_SIZE" value="100" />
- </module>
  <module name="clk_0" kind="clock_source" version="16.0" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
- </module>
- <module
-   name="dma_write_master_0"
-   kind="dma_write_master"
-   version="16.0"
-   enabled="0">
-  <parameter name="BURST_ENABLE" value="1" />
-  <parameter name="DATA_WIDTH" value="64" />
-  <parameter name="ERROR_ENABLE" value="0" />
-  <parameter name="ERROR_WIDTH" value="8" />
-  <parameter name="FIFO_DEPTH" value="128" />
-  <parameter name="FIFO_SPEED_OPTIMIZATION" value="1" />
-  <parameter name="FIX_ADDRESS_WIDTH" value="32" />
-  <parameter name="GUI_BURST_WRAPPING_SUPPORT" value="0" />
-  <parameter name="GUI_MAX_BURST_COUNT" value="32" />
-  <parameter name="GUI_PROGRAMMABLE_BURST_ENABLE" value="0" />
-  <parameter name="GUI_STRIDE_WIDTH" value="1" />
-  <parameter name="LENGTH_WIDTH" value="32" />
-  <parameter name="PACKET_ENABLE" value="1" />
-  <parameter name="STRIDE_ENABLE" value="0" />
-  <parameter name="TRANSFER_TYPE" value="Aligned Accesses" />
-  <parameter name="USE_FIX_ADDRESS_WIDTH" value="0" />
  </module>
  <module name="hps_0" kind="altera_hps" version="16.0" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
@@ -763,68 +670,10 @@
   <parameter name="width" value="8" />
  </module>
  <module
-   name="master_0"
-   kind="altera_jtag_avalon_master"
-   version="16.0"
-   enabled="0">
-  <parameter name="AUTO_DEVICE" value="5CSEMA4U23C6" />
-  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
-  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
-  <parameter name="COMPONENT_CLOCK" value="0" />
-  <parameter name="FAST_VER" value="0" />
-  <parameter name="FIFO_DEPTHS" value="2" />
-  <parameter name="PLI_PORT" value="50000" />
-  <parameter name="USE_PLI" value="0" />
- </module>
- <module
-   name="modular_sgdma_dispatcher_0"
-   kind="modular_sgdma_dispatcher"
-   version="16.0"
-   enabled="0">
-  <parameter name="BURST_ENABLE" value="0" />
-  <parameter name="BURST_WRAPPING_SUPPORT" value="0" />
-  <parameter name="CSR_ADDRESS_WIDTH" value="3" />
-  <parameter name="DATA_FIFO_DEPTH" value="32" />
-  <parameter name="DATA_WIDTH" value="32" />
-  <parameter name="DESCRIPTOR_FIFO_DEPTH" value="8" />
-  <parameter name="ENHANCED_FEATURES" value="0" />
-  <parameter name="GUI_RESPONSE_PORT" value="2" />
-  <parameter name="MAX_BURST_COUNT" value="2" />
-  <parameter name="MAX_BYTE" value="1024" />
-  <parameter name="MAX_STRIDE" value="1" />
-  <parameter name="MODE" value="2" />
-  <parameter name="PREFETCHER_USE_CASE" value="0" />
-  <parameter name="PROGRAMMABLE_BURST_ENABLE" value="0" />
-  <parameter name="STRIDE_ENABLE" value="0" />
-  <parameter name="TRANSFER_TYPE" value="Aligned Accesses" />
- </module>
- <module name="patter_writer_0" kind="patter_writer" version="1.0" enabled="0">
-  <parameter name="ADDRESS_WIDTH" value="32" />
-  <parameter name="BURST_ENABLE" value="1" />
-  <parameter name="BURST_REALIGN_ENABLE" value="1" />
-  <parameter name="BURST_WIDTH" value="2" />
-  <parameter name="BYTE_ENABLE_WIDTH" value="4" />
-  <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
-  <parameter name="DATA_WIDTH" value="32" />
-  <parameter name="FIFO_DEPTH" value="128" />
-  <parameter name="FIFO_DEPTH_LOG2" value="7" />
-  <parameter name="LENGTH_WIDTH" value="32" />
-  <parameter name="MAX_BURST_COUNT" value="2" />
- </module>
- <module name="patter_writer_1" kind="patter_writer" version="1.0" enabled="0">
-  <parameter name="ADDRESS_WIDTH" value="32" />
-  <parameter name="BURST_ENABLE" value="1" />
-  <parameter name="BURST_REALIGN_ENABLE" value="1" />
-  <parameter name="BURST_WIDTH" value="2" />
-  <parameter name="BYTE_ENABLE_WIDTH" value="4" />
-  <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
-  <parameter name="DATA_WIDTH" value="32" />
-  <parameter name="FIFO_DEPTH" value="128" />
-  <parameter name="FIFO_DEPTH_LOG2" value="7" />
-  <parameter name="LENGTH_WIDTH" value="32" />
-  <parameter name="MAX_BURST_COUNT" value="2" />
- </module>
- <module name="patter_writer_2" kind="patter_writer" version="1.0" enabled="1">
+   name="pattern_writer_0"
+   kind="pattern_writer"
+   version="1.0"
+   enabled="1">
   <parameter name="ADDRESS_WIDTH" value="32" />
   <parameter name="BURST_ENABLE" value="1" />
   <parameter name="BURST_REALIGN_ENABLE" value="1" />
@@ -854,55 +703,10 @@
  <connection
    kind="avalon"
    version="16.0"
-   start="dma_write_master_0.Data_Write_Master"
-   end="hps_0.f2h_axi_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="patter_writer_0.avalon_master"
-   end="hps_0.f2h_axi_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="patter_writer_1.avalon_master"
+   start="pattern_writer_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="patter_writer_2.avalon_master"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="hps_0.h2f_lw_axi_master"
-   end="modular_sgdma_dispatcher_0.CSR">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="hps_0.h2f_lw_axi_master"
-   end="modular_sgdma_dispatcher_0.Descriptor_Slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -923,63 +727,13 @@
   <parameter name="baseAddress" value="0x0030" />
   <parameter name="defaultConnection" value="false" />
  </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="master_0.master"
-   end="hps_0.f2h_axi_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon_streaming"
-   version="16.0"
-   start="dma_write_master_0.Response_Source"
-   end="modular_sgdma_dispatcher_0.Write_Response_Sink" />
- <connection
-   kind="avalon_streaming"
-   version="16.0"
-   start="modular_sgdma_dispatcher_0.Write_Command_Source"
-   end="dma_write_master_0.Command_Sink" />
- <connection
-   kind="avalon_streaming"
-   version="16.0"
-   start="avalon_st_pattern_0.out0"
-   end="dma_write_master_0.Data_Sink" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="dma_write_master_0.Clock" />
  <connection kind="clock" version="16.0" start="clk_0.clk" end="sw.clk" />
  <connection kind="clock" version="16.0" start="clk_0.clk" end="led.clk" />
- <connection kind="clock" version="16.0" start="clk_0.clk" end="master_0.clk" />
  <connection
    kind="clock"
    version="16.0"
    start="clk_0.clk"
-   end="avalon_st_pattern_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="modular_sgdma_dispatcher_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="patter_writer_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="patter_writer_1.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="patter_writer_2.clock" />
+   end="pattern_writer_0.clock" />
  <connection
    kind="clock"
    version="16.0"
@@ -999,37 +753,7 @@
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="dma_write_master_0.Clock_reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="master_0.clk_reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="modular_sgdma_dispatcher_0.clock_reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="avalon_st_pattern_0.reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="patter_writer_0.reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="patter_writer_1.reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="patter_writer_2.reset" />
+   end="pattern_writer_0.reset" />
  <connection kind="reset" version="16.0" start="hps_0.h2f_reset" end="led.reset" />
  <connection kind="reset" version="16.0" start="hps_0.h2f_reset" end="sw.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />

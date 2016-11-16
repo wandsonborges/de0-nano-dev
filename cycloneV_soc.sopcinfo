@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="cycloneV_soc" kind="cycloneV_soc" version="1.0" fabric="QSYS">
  <!-- Format version 16.0 211 (Future versions may contain additional information.) -->
- <!-- 2016.11.16.17:24:23 -->
+ <!-- 2016.11.16.18:33:29 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1479324262</value>
+  <value>1479332008</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -344,9 +344,9 @@ parameters are a RESULT of the module parameters. -->
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
-    <moduleName>patter_writer_2</moduleName>
+    <moduleName>pattern_writer_0</moduleName>
     <slaveName>clock</slaveName>
-    <name>patter_writer_2.clock</name>
+    <name>pattern_writer_0.clock</name>
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
@@ -73665,10 +73665,10 @@ parameters are a RESULT of the module parameters. -->
   </interface>
  </module>
  <module
-   name="patter_writer_2"
-   kind="patter_writer"
+   name="pattern_writer_0"
+   kind="pattern_writer"
    version="1.0"
-   path="patter_writer_2">
+   path="pattern_writer_0">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
   <parameter name="ADDRESS_WIDTH">
@@ -83091,10 +83091,10 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>interrupt_sender</endConnectionPoint>
  </connection>
  <connection
-   name="patter_writer_2.avalon_master/hps_0_bridges.f2h_sdram0_data"
+   name="pattern_writer_0.avalon_master/hps_0_bridges.f2h_sdram0_data"
    kind="avalon"
    version="16.0"
-   start="patter_writer_2.avalon_master"
+   start="pattern_writer_0.avalon_master"
    end="hps_0_bridges.f2h_sdram0_data">
   <parameter name="arbitrationPriority">
    <type>int</type>
@@ -83136,7 +83136,7 @@ parameters are a RESULT of the module parameters. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <startModule>patter_writer_2</startModule>
+  <startModule>pattern_writer_0</startModule>
   <startConnectionPoint>avalon_master</startConnectionPoint>
   <endModule>hps_0_bridges</endModule>
   <endConnectionPoint>f2h_sdram0_data</endConnectionPoint>
@@ -83298,11 +83298,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clk</endConnectionPoint>
  </connection>
  <connection
-   name="clk_0.clk/patter_writer_2.clock"
+   name="clk_0.clk/pattern_writer_0.clock"
    kind="clock"
    version="16.0"
    start="clk_0.clk"
-   end="patter_writer_2.clock">
+   end="pattern_writer_0.clock">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -83321,7 +83321,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>clk_0</startModule>
   <startConnectionPoint>clk</startConnectionPoint>
-  <endModule>patter_writer_2</endModule>
+  <endModule>pattern_writer_0</endModule>
   <endConnectionPoint>clock</endConnectionPoint>
  </connection>
  <connection
@@ -83406,11 +83406,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>h2f_lw_axi_clock</endConnectionPoint>
  </connection>
  <connection
-   name="clk_0.clk_reset/patter_writer_2.reset"
+   name="clk_0.clk_reset/pattern_writer_0.reset"
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="patter_writer_2.reset">
+   end="pattern_writer_0.reset">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -83429,7 +83429,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>clk_0</startModule>
   <startConnectionPoint>clk_reset</startConnectionPoint>
-  <endModule>patter_writer_2</endModule>
+  <endModule>pattern_writer_0</endModule>
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
@@ -83880,10 +83880,10 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>patter_writer</name>
+  <name>pattern_writer</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>patter_writer</displayName>
+  <displayName>pattern writer</displayName>
   <version>1.0</version>
  </plugin>
  <plugin>

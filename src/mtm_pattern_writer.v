@@ -376,7 +376,7 @@ module mtm_pattern_writer (
 		  if (fifo_full == 0)
 			begin
 			   fifo_write <= 1'b1;
-			   fifo_writedata <= 64'haabbcc33eeffee44;
+			   fifo_writedata <= 64'haabbcc33eeff9944;
  //fifo_writedata + 1;
 			   
 			end
