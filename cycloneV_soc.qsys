@@ -78,6 +78,14 @@
          type = "int";
       }
    }
+   element rod_pattern_writer_0
+   {
+      datum _sortIndex
+      {
+         value = "7";
+         type = "int";
+      }
+   }
    element sw
    {
       datum _sortIndex
@@ -140,8 +148,8 @@
    version="1.0"
    enabled="1">
   <parameter name="ADDRESS_WIDTH" value="32" />
-  <parameter name="BURST_COUNT" value="2" />
-  <parameter name="BURST_WIDTH" value="2" />
+  <parameter name="BURST_COUNT" value="8" />
+  <parameter name="BURST_WIDTH" value="4" />
   <parameter name="BYTE_ENABLE_WIDTH" value="4" />
   <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
   <parameter name="DATA_WIDTH" value="32" />
@@ -746,6 +754,17 @@
   <parameter name="LENGTH_WIDTH" value="32" />
   <parameter name="MAX_BURST_COUNT" value="2" />
  </module>
+ <module
+   name="rod_pattern_writer_0"
+   kind="rod_pattern_writer"
+   version="1.0"
+   enabled="0">
+  <parameter name="ADDR_W" value="32" />
+  <parameter name="BURST" value="8" />
+  <parameter name="BURST_W" value="8" />
+  <parameter name="BYTE_EN_W" value="4" />
+  <parameter name="DATA_W" value="32" />
+ </module>
  <module name="sw" kind="altera_avalon_pio" version="16.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -764,6 +783,15 @@
    kind="avalon"
    version="16.0"
    start="pattern_writer_0.avalon_master"
+   end="hps_0.f2h_sdram0_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="rod_pattern_writer_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
@@ -821,6 +849,11 @@
    kind="clock"
    version="16.0"
    start="clk_0.clk"
+   end="rod_pattern_writer_0.clock" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clk_0.clk"
    end="burst_transfer_wf_0.clock" />
  <connection
    kind="clock"
@@ -854,6 +887,11 @@
    version="16.0"
    start="clk_0.clk_reset"
    end="onchip_memory2_0.reset1" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="clk_0.clk_reset"
+   end="rod_pattern_writer_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />

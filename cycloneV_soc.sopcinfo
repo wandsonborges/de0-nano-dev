@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="cycloneV_soc" kind="cycloneV_soc" version="1.0" fabric="QSYS">
  <!-- Format version 16.0 211 (Future versions may contain additional information.) -->
- <!-- 2016.11.17.14:52:32 -->
+ <!-- 2016.11.17.18:20:18 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1479405150</value>
+  <value>1479417617</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -144,7 +144,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="BURST_COUNT">
    <type>int</type>
-   <value>2</value>
+   <value>8</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -152,7 +152,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="BURST_WIDTH">
    <type>int</type>
-   <value>2</value>
+   <value>4</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -311,7 +311,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>ctrl_burstcount</name>
     <direction>Input</direction>
-    <width>2</width>
+    <width>4</width>
     <role>burstcount</role>
    </port>
    <port>
@@ -610,7 +610,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>master_burstcount</name>
     <direction>Output</direction>
-    <width>2</width>
+    <width>4</width>
     <role>burstcount</role>
    </port>
    <port>
