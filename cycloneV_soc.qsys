@@ -683,7 +683,7 @@
    version="16.0"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName">cycloneV_soc_onchip_memory2_0</parameter>
+  <parameter name="autoInitializationFileName">$${FILENAME}_onchip_memory2_0</parameter>
   <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
@@ -717,9 +717,9 @@
   <parameter name="BURST_ENABLE" value="1" />
   <parameter name="BURST_REALIGN_ENABLE" value="1" />
   <parameter name="BURST_WIDTH" value="2" />
-  <parameter name="BYTE_ENABLE_WIDTH" value="16" />
+  <parameter name="BYTE_ENABLE_WIDTH" value="4" />
   <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
-  <parameter name="DATA_WIDTH" value="128" />
+  <parameter name="DATA_WIDTH" value="32" />
   <parameter name="FIFO_DEPTH" value="128" />
   <parameter name="FIFO_DEPTH_LOG2" value="7" />
   <parameter name="LENGTH_WIDTH" value="32" />
@@ -757,18 +757,22 @@
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
- <connection kind="avalon" version="16.0" start="hps_0.h2f_axi_master" end="sw.s1">
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="hps_0.h2f_lw_axi_master"
+   end="led.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00010030" />
+  <parameter name="baseAddress" value="0x00010040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="16.0"
-   start="hps_0.h2f_axi_master"
-   end="led.s1">
+   start="hps_0.h2f_lw_axi_master"
+   end="sw.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00010040" />
+  <parameter name="baseAddress" value="0x00010030" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="16.0" start="clk_0.clk" end="sw.clk" />

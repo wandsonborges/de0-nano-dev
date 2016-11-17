@@ -367,7 +367,8 @@ module mtm_pattern_writer (
 		if (reset==1)
 		  begin
 			 fifo_write <= 1'b0;
-		     fifo_writedata <= 128'heeff00112233445566778899aabbccdd; //64'haaaaaaaaaaaaaaaa;
+		     fifo_writedata <= 3;
+ //128'heeff00112233445566778899aabbccdd; //64'haaaaaaaaaaaaaaaa;
  //0;
 			 
 		  end
@@ -376,7 +377,8 @@ module mtm_pattern_writer (
 		  if (fifo_full == 0)
 			begin
 			   fifo_write <= 1'b1;
-			   fifo_writedata <= 128'heeff00112233445566778899aabbccdd;
+			   fifo_writedata <= fifo_writedata + 1;
+ //128'heeff00112233445566778899aabbccdd;
  // 64'haabbcc33eeff9944;
  //fifo_writedata + 1;
 			   
