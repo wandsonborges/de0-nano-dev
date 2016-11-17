@@ -9,6 +9,14 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
+   element burst_transfer_wf_0
+   {
+      datum _sortIndex
+      {
+         value = "6";
+         type = "int";
+      }
+   }
    element clk_0
    {
       datum _sortIndex
@@ -126,6 +134,19 @@
    internal="sw.external_connection"
    type="conduit"
    dir="end" />
+ <module
+   name="burst_transfer_wf_0"
+   kind="burst_transfer_wf"
+   version="1.0"
+   enabled="1">
+  <parameter name="ADDRESS_WIDTH" value="32" />
+  <parameter name="BURST_COUNT" value="2" />
+  <parameter name="BURST_WIDTH" value="2" />
+  <parameter name="BYTE_ENABLE_WIDTH" value="4" />
+  <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
+  <parameter name="DATA_WIDTH" value="32" />
+  <parameter name="LENGTH_WIDTH" value="32" />
+ </module>
  <module name="clk_0" kind="clock_source" version="16.0" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
@@ -712,7 +733,7 @@
    name="pattern_writer_0"
    kind="pattern_writer"
    version="1.0"
-   enabled="1">
+   enabled="0">
   <parameter name="ADDRESS_WIDTH" value="32" />
   <parameter name="BURST_ENABLE" value="1" />
   <parameter name="BURST_REALIGN_ENABLE" value="1" />
@@ -743,6 +764,15 @@
    kind="avalon"
    version="16.0"
    start="pattern_writer_0.avalon_master"
+   end="hps_0.f2h_sdram0_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="burst_transfer_wf_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
@@ -791,6 +821,11 @@
    kind="clock"
    version="16.0"
    start="clk_0.clk"
+   end="burst_transfer_wf_0.clock" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clk_0.clk"
    end="hps_0.f2h_sdram0_clock" />
  <connection
    kind="clock"
@@ -809,6 +844,11 @@
    end="pattern_writer_0.reset" />
  <connection kind="reset" version="16.0" start="clk_0.clk_reset" end="sw.reset" />
  <connection kind="reset" version="16.0" start="clk_0.clk_reset" end="led.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="clk_0.clk_reset"
+   end="burst_transfer_wf_0.reset" />
  <connection
    kind="reset"
    version="16.0"
