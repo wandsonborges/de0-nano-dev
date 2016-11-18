@@ -1,22 +1,22 @@
-module burst_write_wf
+module burst_read_wf
   (
    clk,
    reset,
 
    master_address,
-   master_write,
-   master_writedata,
-   //master_beginbursttransfer,
+   master_read,
+   master_readdata,
    master_burstcount,
    master_byteenable,
    master_waitrequest,
+   master_readdatavalid,
 
    ctrl_start,
    ctrl_baseaddress,
    ctrl_burstcount,
    ctrl_busy,
-   ctrl_write,
-   ctrl_writedata
+   ctrl_readdatavalid,
+   ctrl_readdata
    );
 
 
@@ -29,26 +29,35 @@ module burst_write_wf
   parameter BURST_WIDTH = 2;             // derived parameter
 
 
+   localparam ST_START = 3'b001, ST_WAITREQUEST = 3'b010, ST_BURST = 3'b100;
+   
    input clk;
    input reset;					// 
 
    
    output reg [ADDRESS_WIDTH-1:0] master_address;
-   output reg master_write;
-   output reg [DATA_WIDTH-1:0] master_writedata;
+   output reg master_read;
    //output reg 				   master_beginbursttransfer;
    output reg [BURST_WIDTH-1:0] master_burstcount;
    output wire [BYTE_ENABLE_WIDTH-1:0] master_byteenable;
    input 	   master_waitrequest;
+   input 	   master_readdatavalid;
+   input [DATA_WIDTH-1:0] master_readdata;
+	   
 
    input 	   ctrl_start;
    input [ADDRESS_WIDTH-1:0] 	   ctrl_baseaddress;
    input [BURST_WIDTH-1:0] 		   ctrl_burstcount;
    output reg  ctrl_busy;
+   output wire ctrl_readdatavalid;
+   output wire [DATA_WIDTH-1:0] ctrl_readdata;
+   
 
 
 
    reg [BURST_WIDTH-1:0] burstCount;
+   reg [2:0] 			 state;
+   
 
    wire 				 local_ctrl_start;
    
@@ -62,7 +71,9 @@ module burst_write_wf
    // 		  begin
    // 			 local_ctrl_start = 1;
    // 		  end
-		
+
+
+   
    
 
    always @(posedge clk or posedge reset)
@@ -71,57 +82,64 @@ module burst_write_wf
 		  begin
 				  master_address <= 0;
 				  master_burstcount <= 0;
-				  master_write <= 1'b0;
-				  master_writedata <= 0;
+				  master_read <= 1'b0;
 				  ctrl_busy <= 1'b0;
 				  burstCount <= 0;
+			 state <= ST_START;
+			 
 		  end
 		else
 		  begin
-			 if (local_ctrl_start == 1)
-			   begin
-				  master_address <= ctrl_baseaddress;
-				  master_burstcount <= ctrl_burstcount;
-				  master_write <= 1'b1;
-				  master_writedata <= 16;
- //32'h556699bb;
- //0;
+			 case (state)
+			   ST_START:
+				 if (local_ctrl_start == 1)
+				   begin
+					  master_address <= 32'h39000000;
+ //ctrl_baseaddress;
+					  master_burstcount <= 8;
+ //ctrl_burstcount;
+					  master_read <= 1'b1;
 
-				  ctrl_busy <= 1'b1;
+					  ctrl_busy <= 1'b1;
 
-				  burstCount <= 0;
-				  
-			   end
-			 else 
-			   if (ctrl_busy == 1)
-			   begin
-				  //master_beginbursttransfer <= 1'b0;
-				  if (master_waitrequest == 0)
-					begin
-					   if (burstCount == (ctrl_burstcount-1))
-					   //if (burstCount == 7)
+					  burstCount <= 0;
+					  state <= ST_WAITREQUEST;
+					  
+				   end // if (local_ctrl_start == 1)
+			   ST_WAITREQUEST:
+				 if (master_waitrequest == 0)
+				   begin
+					  master_read <= 1'b0;
+					  
+					  state <= ST_BURST;
+				   end
+			   ST_BURST:
+				 if (master_readdatavalid)
+				   begin
+					   //if (burstCount == (ctrl_burstcount-1))
+					   if (burstCount == 7)
 						 begin
-							master_write <= 1'b0;
 							ctrl_busy <= 1'b0;
 							burstCount <= 0;
+							state <= ST_START;
+							
 						 end
 					   else
 						 begin
-							if (ctrl_write = '1')
-							  begin
-								 master_writedata <= master_writedata + 1;
-
-								 burstCount <= burstCount + 1;
-							  end
+							burstCount <= burstCount + 1;
 						 end
-					end // if (master_waitrequest == 0)
-			   end // if (ctrl_busy == 1)
+				   end // if (master_waitrequest == 0)
+			   default:
+				 state <= ST_START;
+			   
+			 endcase // case (state)
 		  end
 	 end		
 					   
 					   
-
-   assign master_byteenable = 4'b1111;
+   assign ctrl_readdatavalid = master_readdatavalid;
+   assign ctrl_readdata = master_readdata;
+   
    
 				  
 endmodule // burst_write_wf

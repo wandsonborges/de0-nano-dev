@@ -60,8 +60,14 @@ architecture bhv of soc_top is
   signal mm_fifo_full : STD_LOGIC := '0';
   signal mm_done : STD_LOGIC := '0';
 
+  signal local_burst_transfer_wf_0_ctrl_busy: STD_LOGIC;
+
 	component cycloneV_soc is
 		port (
+			burst_transfer_wf_0_ctrl_baseaddress : in    std_logic_vector(31 downto 0) := (others => 'X'); -- baseaddress
+			burst_transfer_wf_0_ctrl_burstcount  : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- burstcount
+			burst_transfer_wf_0_ctrl_busy        : out   std_logic;                                        -- busy
+			burst_transfer_wf_0_ctrl_start       : in    std_logic                     := 'X';             -- start
 			clk_clk                                  : in    std_logic                     := 'X';             -- clk
 			--hps_0_h2f_reset_reset_n                  : out   std_logic;                                        -- reset_n
 			hps_io_hps_io_emac1_inst_TX_CLK          : out   std_logic;                                        -- hps_io_emac1_inst_TX_CLK
@@ -117,14 +123,14 @@ architecture bhv of soc_top is
 			memory_oct_rzqin                         : in    std_logic                     := 'X';             -- oct_rzqin
 			reset_reset_n                            : in    std_logic                     := 'X';             -- reset_n
 			sw_external_connection_export            : in    std_logic_vector(3 downto 0)  := (others => 'X') -- export
---			avalon_mm_temp_1_conduit_end_usrwritebuf   :in    std_logic                     := 'X';             -- usrwritebuf
---			avalon_mm_temp_1_conduit_end_ctrldone    : out   std_logic;                                        -- ctrldone
---			avalon_mm_temp_1_conduit_end_ctrlfxdloc  : in    std_logic                     := 'X';             -- ctrlfxdloc
---			avalon_mm_temp_1_conduit_end_ctrlgo      : in    std_logic                     := 'X';             -- ctrlgo
---			avalon_mm_temp_1_conduit_end_usrdata     : in    std_logic_vector(31 downto 0) := (others => 'X'); -- usrdata
---			avalon_mm_temp_1_conduit_end_usrbuffull  : out   std_logic;                                        -- usrbuffull
---			avalon_mm_temp_1_conduit_end_ctrlbase    : in    std_logic_vector(31 downto 0) := (others => 'X'); -- ctrlbase
---			avalon_mm_temp_1_conduit_end_ctrllength  : in    std_logic_vector(31 downto 0) := (others => 'X')  -- ctrllength
+----			avalon_mm_temp_1_conduit_end_usrwritebuf   :in    std_logic                     := 'X';             -- usrwritebuf
+----			avalon_mm_temp_1_conduit_end_ctrldone    : out   std_logic;                                        -- ctrldone
+----			avalon_mm_temp_1_conduit_end_ctrlfxdloc  : in    std_logic                     := 'X';             -- ctrlfxdloc
+----			avalon_mm_temp_1_conduit_end_ctrlgo      : in    std_logic                     := 'X';             -- ctrlgo
+----			avalon_mm_temp_1_conduit_end_usrdata     : in    std_logic_vector(31 downto 0) := (others => 'X'); -- usrdata
+----			avalon_mm_temp_1_conduit_end_usrbuffull  : out   std_logic;                                        -- usrbuffull
+----			avalon_mm_temp_1_conduit_end_ctrlbase    : in    std_logic_vector(31 downto 0) := (others => 'X'); -- ctrlbase
+----			avalon_mm_temp_1_conduit_end_ctrllength  : in    std_logic_vector(31 downto 0) := (others => 'X')  -- ctrllength
 		);
 	end component cycloneV_soc;
   
@@ -187,15 +193,11 @@ begin  -- architecture bhv
       hps_io_hps_io_usb1_inst_DIR     => HPS_USB_DIR,
       hps_io_hps_io_usb1_inst_NXT     => HPS_USB_NXT,
       hps_io_hps_io_uart0_inst_RX     => HPS_UART_RX,
-      hps_io_hps_io_uart0_inst_TX     => HPS_UART_TX
---      avalon_mm_temp_1_conduit_end_usrwritebuf   => HPS_H2F_RST and (not mm_fifo_full), -- avalon_mm_temp_1_conduit_end.usrwritebuf
---      avalon_mm_temp_1_conduit_end_ctrldone    => mm_done,    --                             .ctrldone
---      avalon_mm_temp_1_conduit_end_ctrlfxdloc  => '0',  --                             .ctrlfxdloc
---      avalon_mm_temp_1_conduit_end_ctrlgo      => SW(3),      --                             .ctrlgo
---      avalon_mm_temp_1_conduit_end_usrdata     => x"55555555",     --                             .usrdata
---      avalon_mm_temp_1_conduit_end_usrbuffull  => mm_fifo_full,  --                             .usrbuffull
---      avalon_mm_temp_1_conduit_end_ctrlbase    => x"FFFF0000",    --                             .ctrlbase
---      avalon_mm_temp_1_conduit_end_ctrllength  => x"00000010"   --                             .ctrllength
+      hps_io_hps_io_uart0_inst_TX     => HPS_UART_TX,
+			burst_transfer_wf_0_ctrl_baseaddress => x"38000000", 
+			burst_transfer_wf_0_ctrl_burstcount  => "1000", 
+			burst_transfer_wf_0_ctrl_busy        => local_burst_transfer_wf_0_ctrl_busy, 
+			burst_transfer_wf_0_ctrl_start       => not local_burst_transfer_wf_0_ctrl_busy
       );
 		
       LED(6 downto 0) <= s_LED(6 downto 0);

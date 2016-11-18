@@ -1,4 +1,4 @@
-module tb_burst_write_wf(/*AUTOARG*/);
+module tb_burst_read_wf(/*AUTOARG*/);
 
   localparam CONST_ADDRESS_WIDTH = 32;          // derived parameter (using system info)
   localparam CONST_LENGTH_WIDTH = 32;           // any value from 4-32 (larger the value the slower the logic will be), LENGTH_WIDTH shouldn't be larger than ADDRESS_WIDTH and should be reduced to increase the Fmax of the master.
@@ -13,9 +13,7 @@ module tb_burst_write_wf(/*AUTOARG*/);
    wire					ctrl_busy;				// From dut of burst_write_wf.v
    wire [CONST_ADDRESS_WIDTH-1:0] master_address;		// From dut of burst_write_wf.v
    wire [CONST_BURST_WIDTH-1:0] master_burstcount;	// From dut of burst_write_wf.v
-   wire [CONST_BYTE_ENABLE_WIDTH-1:0] master_byteenable;// From dut of burst_write_wf.v
-   wire					master_write;			// From dut of burst_write_wf.v
-   wire [CONST_DATA_WIDTH-1:0] master_writedata;		// From dut of burst_write_wf.v
+   wire					master_read;			// From dut of burst_write_wf.v
    // End of automatics
 
    wire 					   ctrl_start;
@@ -28,6 +26,9 @@ module tb_burst_write_wf(/*AUTOARG*/);
    reg 					 clk;
    reg 					 reset;
    reg 						  master_waitrequest;
+   reg 						  master_readdatavalid;
+   reg [CONST_DATA_WIDTH-1:0] master_readdata;		// From dut of burst_write_wf.v
+   
 
 
    assign ctrl_start = ~ctrl_busy;
@@ -35,18 +36,18 @@ module tb_burst_write_wf(/*AUTOARG*/);
 
    
    
-   burst_write_wf dut(/*AUTOINST*/
+   burst_read_wf dut(/*AUTOINST*/
 					  // Outputs
 					  .master_address	(master_address[CONST_ADDRESS_WIDTH-1:0]),
-					  .master_write		(master_write),
-					  .master_writedata	(master_writedata[CONST_DATA_WIDTH-1:0]),
+					  .master_read		(master_read),
+					  .master_readdata	(master_readdata[CONST_DATA_WIDTH-1:0]),
 					  .master_burstcount(master_burstcount[CONST_BURST_WIDTH-1:0]),
-					  .master_byteenable(master_byteenable[CONST_BYTE_ENABLE_WIDTH-1:0]),
 					  .ctrl_busy		(ctrl_busy),
 					  // Inputs
 					  .clk				(clk),
 					  .reset			(reset),
 					  .master_waitrequest(master_waitrequest),
+					 .master_readdatavalid(master_readdatavalid),
 					  .ctrl_start		(ctrl_start),
 					  .ctrl_baseaddress	(ctrl_baseaddress[CONST_ADDRESS_WIDTH-1:0]),
 					  .ctrl_burstcount	(ctrl_burstcount[CONST_BURST_WIDTH-1:0]));
@@ -85,7 +86,28 @@ module tb_burst_write_wf(/*AUTOARG*/);
 	  master_waitrequest = 1'b0;
 	  
 end
+
    
+   always @ (posedge master_read or posedge reset) begin
+	  if (reset == 1)
+		begin
+		   master_readdatavalid <= 0;
+		   master_readdata <= 32'h88990011;
+		end
+	  else
+		begin
+		   master_readdatavalid <= 0;
+		   master_readdata <= 32'h88990011;
+		   repeat(2) @(posedge clk);
+		   master_readdatavalid <= 1;
+		   @(posedge clk);
+		   master_readdatavalid <= 0;
+		   @(posedge clk);
+		   master_readdatavalid <= 1;
+		   repeat(7) @(posedge clk);
+		   master_readdatavalid <= 0;
+		end
+   end
    
    
 endmodule // tb_burst_write_wf

@@ -13,7 +13,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "5";
          type = "int";
       }
    }
@@ -66,14 +66,6 @@
    {
       datum _sortIndex
       {
-         value = "5";
-         type = "int";
-      }
-   }
-   element pattern_writer_0
-   {
-      datum _sortIndex
-      {
          value = "4";
          type = "int";
       }
@@ -82,7 +74,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "6";
          type = "int";
       }
    }
@@ -128,6 +120,11 @@
  <parameter name="timeStamp" value="0" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
+ <interface
+   name="burst_transfer_wf_0_ctrl"
+   internal="burst_transfer_wf_0.ctrl"
+   type="conduit"
+   dir="end" />
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface name="hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
  <interface
@@ -148,7 +145,7 @@
    version="1.0"
    enabled="1">
   <parameter name="ADDRESS_WIDTH" value="32" />
-  <parameter name="BURST_COUNT" value="8" />
+  <parameter name="BURST_COUNT" value="2" />
   <parameter name="BURST_WIDTH" value="4" />
   <parameter name="BYTE_ENABLE_WIDTH" value="4" />
   <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
@@ -272,7 +269,7 @@
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
   <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional</parameter>
-  <parameter name="F2SDRAM_Width" value="128" />
+  <parameter name="F2SDRAM_Width" value="32" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="0" />
   <parameter name="FIX_READ_LATENCY" value="8" />
@@ -738,23 +735,6 @@
   <parameter name="writable" value="true" />
  </module>
  <module
-   name="pattern_writer_0"
-   kind="pattern_writer"
-   version="1.0"
-   enabled="0">
-  <parameter name="ADDRESS_WIDTH" value="32" />
-  <parameter name="BURST_ENABLE" value="1" />
-  <parameter name="BURST_REALIGN_ENABLE" value="1" />
-  <parameter name="BURST_WIDTH" value="2" />
-  <parameter name="BYTE_ENABLE_WIDTH" value="4" />
-  <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
-  <parameter name="DATA_WIDTH" value="32" />
-  <parameter name="FIFO_DEPTH" value="128" />
-  <parameter name="FIFO_DEPTH_LOG2" value="7" />
-  <parameter name="LENGTH_WIDTH" value="32" />
-  <parameter name="MAX_BURST_COUNT" value="2" />
- </module>
- <module
    name="rod_pattern_writer_0"
    kind="rod_pattern_writer"
    version="1.0"
@@ -782,7 +762,7 @@
  <connection
    kind="avalon"
    version="16.0"
-   start="pattern_writer_0.avalon_master"
+   start="rod_pattern_writer_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
@@ -835,7 +815,7 @@
    kind="clock"
    version="16.0"
    start="clk_0.clk"
-   end="pattern_writer_0.clock" />
+   end="rod_pattern_writer_0.clock" />
  <connection
    kind="clock"
    version="16.0"
@@ -856,11 +836,6 @@
    version="16.0"
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="pattern_writer_0.reset" />
  <connection kind="reset" version="16.0" start="clk_0.clk_reset" end="sw.reset" />
  <connection kind="reset" version="16.0" start="clk_0.clk_reset" end="led.reset" />
  <connection
@@ -873,6 +848,11 @@
    version="16.0"
    start="clk_0.clk_reset"
    end="onchip_memory2_0.reset1" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="clk_0.clk_reset"
+   end="rod_pattern_writer_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
