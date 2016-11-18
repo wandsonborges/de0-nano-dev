@@ -84,7 +84,8 @@ module burst_write_wf
 				  master_burstcount <= 8;
  //ctrl_burstcount;
 				  master_write <= 1'b1;
-				  master_writedata <= 32'h556699bb;
+				  master_writedata <= 3;
+ //32'h556699bb;
  //0;
 
 				  ctrl_busy <= 1'b1;
@@ -98,7 +99,8 @@ module burst_write_wf
 				  //master_beginbursttransfer <= 1'b0;
 				  if (master_waitrequest == 0)
 					begin
-					   if (burstCount == (ctrl_burstcount-1))
+					   //if (burstCount == (ctrl_burstcount-1))
+					   if (burstCount == 7)
 						 begin
 							master_write <= 1'b0;
 							ctrl_busy <= 1'b0;
@@ -106,8 +108,7 @@ module burst_write_wf
 						 end
 					   else
 						 begin
-							master_writedata <= 32'h77112233;
- //master_writedata + 1;
+							master_writedata <= master_writedata + 1;
 
 							burstCount <= burstCount + 1;
 						 end

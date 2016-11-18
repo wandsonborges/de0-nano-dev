@@ -6,7 +6,7 @@ JedecChain;
 	P ActionCode(Ign)
 		Device PartName(5CSEMA5U23) MfrSpec(OpMask(0));
 	P ActionCode(Cfg)
-		Device PartName(5CSEMA4U23) Path("/home/rodrigo/MEGA/hardware_development/de0-nano/de0-nano_from_scratch/output_files/") File("cycloneV_soc.sof") MfrSpec(OpMask(1));
+		Device PartName(5CSEMA4U23) Path("/home/rodrigo/wandson/de0-nano-dev/output_files/") File("cycloneV_soc.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 
