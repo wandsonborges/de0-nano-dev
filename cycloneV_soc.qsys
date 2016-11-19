@@ -9,11 +9,19 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
+   element burst_read_wf_0
+   {
+      datum _sortIndex
+      {
+         value = "6";
+         type = "int";
+      }
+   }
    element burst_transfer_wf_0
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "7";
          type = "int";
       }
    }
@@ -74,7 +82,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "5";
          type = "int";
       }
    }
@@ -121,6 +129,11 @@
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface
+   name="burst_read_wf_0_ctrl"
+   internal="burst_read_wf_0.ctrl"
+   type="conduit"
+   dir="end" />
+ <interface
    name="burst_transfer_wf_0_ctrl"
    internal="burst_transfer_wf_0.ctrl"
    type="conduit"
@@ -139,13 +152,22 @@
    internal="sw.external_connection"
    type="conduit"
    dir="end" />
+ <module name="burst_read_wf_0" kind="burst_read_wf" version="1.0" enabled="1">
+  <parameter name="ADDRESS_WIDTH" value="32" />
+  <parameter name="BURST_COUNT" value="8" />
+  <parameter name="BURST_WIDTH" value="4" />
+  <parameter name="BYTE_ENABLE_WIDTH" value="4" />
+  <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
+  <parameter name="DATA_WIDTH" value="32" />
+  <parameter name="LENGTH_WIDTH" value="32" />
+ </module>
  <module
    name="burst_transfer_wf_0"
    kind="burst_transfer_wf"
    version="1.0"
    enabled="1">
   <parameter name="ADDRESS_WIDTH" value="32" />
-  <parameter name="BURST_COUNT" value="2" />
+  <parameter name="BURST_COUNT" value="8" />
   <parameter name="BURST_WIDTH" value="4" />
   <parameter name="BYTE_ENABLE_WIDTH" value="4" />
   <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
@@ -780,6 +802,15 @@
  <connection
    kind="avalon"
    version="16.0"
+   start="burst_read_wf_0.avalon_master_1"
+   end="hps_0.f2h_sdram0_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
    start="hps_0.h2f_axi_master"
    end="onchip_memory2_0.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -820,6 +851,11 @@
    kind="clock"
    version="16.0"
    start="clk_0.clk"
+   end="burst_read_wf_0.clock" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clk_0.clk"
    end="burst_transfer_wf_0.clock" />
  <connection
    kind="clock"
@@ -838,6 +874,11 @@
    end="hps_0.h2f_lw_axi_clock" />
  <connection kind="reset" version="16.0" start="clk_0.clk_reset" end="sw.reset" />
  <connection kind="reset" version="16.0" start="clk_0.clk_reset" end="led.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="clk_0.clk_reset"
+   end="burst_read_wf_0.reset" />
  <connection
    kind="reset"
    version="16.0"

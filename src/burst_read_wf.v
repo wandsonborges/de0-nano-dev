@@ -7,7 +7,7 @@ module burst_read_wf
    master_read,
    master_readdata,
    master_burstcount,
-   master_byteenable,
+   //master_byteenable,
    master_waitrequest,
    master_readdatavalid,
 
@@ -39,7 +39,7 @@ module burst_read_wf
    output reg master_read;
    //output reg 				   master_beginbursttransfer;
    output reg [BURST_WIDTH-1:0] master_burstcount;
-   output wire [BYTE_ENABLE_WIDTH-1:0] master_byteenable;
+   //output wire [BYTE_ENABLE_WIDTH-1:0] master_byteenable;
    input 	   master_waitrequest;
    input 	   master_readdatavalid;
    input [DATA_WIDTH-1:0] master_readdata;
