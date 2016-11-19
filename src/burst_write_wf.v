@@ -89,7 +89,7 @@ module burst_write_wf
 			 //master_write <= ctrl_write;
 
 			 //if (ctrl_busy == 0 && ctrl_write == 1)
-			 if (local_ctrl_start == 1)
+			 if (ctrl_start == 1)
 			   begin
 				  master_address <= ctrl_baseaddress;
 				  master_burstcount <= ctrl_burstcount;
