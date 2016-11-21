@@ -29,7 +29,7 @@ module burst_read_wf
   parameter BURST_WIDTH = 2;             // derived parameter
 
 
-   localparam ST_START = 3'b001, ST_WAITREQUEST = 3'b010, ST_BURST = 3'b100;
+   localparam ST_START = 4'b0001, ST_WAITREQUEST = 4'b0010, ST_BURST = 4'b0100, ST_WAITONWRITE = 4'b1000;
    
    input clk;
    input reset;					// 
@@ -49,14 +49,16 @@ module burst_read_wf
    input [ADDRESS_WIDTH-1:0] 	   ctrl_baseaddress;
    input [BURST_WIDTH-1:0] 		   ctrl_burstcount;
    output reg  ctrl_busy;
-   output wire ctrl_readdatavalid;
+   output reg ctrl_readdatavalid;
    output wire [DATA_WIDTH-1:0] ctrl_readdata;
    
 
 
 
    reg [BURST_WIDTH-1:0] burstCount;
-   reg [2:0] 			 state;
+   reg [3:0] 			 state;
+   reg [DATA_WIDTH-1:0] storage;
+   
    
 
    wire 				 local_ctrl_start;
@@ -85,6 +87,10 @@ module burst_read_wf
 				  master_read <= 1'b0;
 				  ctrl_busy <= 1'b0;
 				  burstCount <= 0;
+			 storage <= 0;
+			 ctrl_readdatavalid <= 0;
+			 
+			 
 			 state <= ST_START;
 			 
 		  end
@@ -92,7 +98,7 @@ module burst_read_wf
 		  begin
 			 case (state)
 			   ST_START:
-				 if (local_ctrl_start == 1)
+				 if (ctrl_start == 1)
 				   begin
 					  master_address <= 32'h39000000;
  //ctrl_baseaddress;
@@ -116,12 +122,16 @@ module burst_read_wf
 			   ST_BURST:
 				 if (master_readdatavalid)
 				   begin
+					  storage <= master_readdata;
+					  
 					   //if (burstCount == (ctrl_burstcount-1))
 					   if (burstCount == 7)
 						 begin
 							ctrl_busy <= 1'b0;
 							burstCount <= 0;
-							state <= ST_START;
+							ctrl_readdatavalid <= 1;
+							
+							state <= ST_WAITONWRITE;
 							
 						 end
 					   else
@@ -129,6 +139,13 @@ module burst_read_wf
 							burstCount <= burstCount + 1;
 						 end
 				   end // if (master_waitrequest == 0)
+			   ST_WAITONWRITE:
+				 if (ctrl_start == 0)
+				   begin
+					  ctrl_readdatavalid <= 0;
+					  
+					  state <= ST_START;
+				   end
 			   default:
 				 state <= ST_START;
 			   
@@ -137,8 +154,9 @@ module burst_read_wf
 	 end		
 					   
 					   
-   assign ctrl_readdatavalid = master_readdatavalid;
-   assign ctrl_readdata = master_readdata;
+   //assign ctrl_readdatavalid = master_readdatavalid;
+   assign ctrl_readdata = storage;
+//master_readdata;
    
    
 				  

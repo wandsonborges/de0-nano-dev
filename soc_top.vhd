@@ -212,11 +212,11 @@ begin  -- architecture bhv
       burst_read_wf_0_ctrl_readdatavalid        => read_valid2ctrl_write,        --                         .readdatavalid
       burst_read_wf_0_ctrl_readdata             => read_data2ctrl_data,             --                         .readdata
       burst_read_wf_0_ctrl_busy => open, --                         .writeresponsevalid_n
-      burst_read_wf_0_ctrl_start   => '1',   --                         .beginbursttransfer
+      burst_read_wf_0_ctrl_start   => not ctrl_busy,   --                         .beginbursttransfer
       burst_transfer_wf_0_ctrl_baseaddress      => x"38000000",      -- burst_transfer_wf_0_ctrl.baseaddress
       burst_transfer_wf_0_ctrl_burstcount       => "1000",       --                         .burstcount
       burst_transfer_wf_0_ctrl_busy             => ctrl_busy,             --                         .busy
-      burst_transfer_wf_0_ctrl_start            => not ctrl_busy,            --                         .start
+      burst_transfer_wf_0_ctrl_start            => read_valid2ctrl_write, --not ctrl_busy,            --                         .start
       burst_transfer_wf_0_ctrl_write            => read_valid2ctrl_write,            --                         .write
       burst_transfer_wf_0_ctrl_writedata        => read_data2ctrl_data         --                         .writedata
       );

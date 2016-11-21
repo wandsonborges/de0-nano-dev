@@ -59,12 +59,6 @@ module burst_write_wf
 
    assign local_ctrl_start = ~ctrl_busy;
    
-   // always @(ctrl_busy)
-   // 	 begin
-   // 		if (ctrl_busy == 0)
-   // 		  begin
-   // 			 local_ctrl_start = 1;
-   // 		  end
 		
    
 
@@ -85,7 +79,7 @@ module burst_write_wf
 		  end
 		else
 		  begin
-			 //master_writedata <= ctrl_writedata;
+			 master_writedata <= ctrl_writedata;
 			 //master_write <= ctrl_write;
 
 			 //if (ctrl_busy == 0 && ctrl_write == 1)
@@ -94,7 +88,7 @@ module burst_write_wf
 				  master_address <= ctrl_baseaddress;
 				  master_burstcount <= ctrl_burstcount;
 				  master_write <= 1'b1;
-				  master_writedata <= 19;
+				  //master_writedata <= 19;
  //32'h556699bb;
  //0;
 
@@ -103,8 +97,9 @@ module burst_write_wf
 				  burstCount <= 0;
 				  
 			   end
-			 else 
-			   //if (ctrl_busy == 1)
+			 else
+			   begin
+			   if (ctrl_busy == 1)
 			   begin
 				  if (master_waitrequest == 0)
 					begin
@@ -119,13 +114,14 @@ module burst_write_wf
 						 begin
 							//if (ctrl_write == 1)
 							  //begin
-								 master_writedata <= master_writedata + 1;
+								 //master_writedata <= master_writedata + 1;
 
 								 burstCount <= burstCount + 1;
 							  //end
 						 end
 					end // if (master_waitrequest == 0)
 			   end // if (ctrl_busy == 1)
+			   end
 		  end
 	 end		
 					   
