@@ -15,6 +15,7 @@ module burst_read_wf
    ctrl_baseaddress,
    ctrl_burstcount,
    ctrl_busy,
+   ctrl_address,
    ctrl_readdatavalid,
    ctrl_readdata
    );
@@ -43,6 +44,7 @@ module burst_read_wf
    input 	   master_waitrequest;
    input 	   master_readdatavalid;
    input [DATA_WIDTH-1:0] master_readdata;
+   input [BURST_WIDTH-1:0] ctrl_address;
 	   
 
    input 	   ctrl_start;
@@ -62,6 +64,7 @@ module burst_read_wf
    
 
    wire 				 local_ctrl_start;
+   reg [BURST_WIDTH-1:0] buffer_address;
    
 
 
@@ -122,7 +125,7 @@ module burst_read_wf
 			   ST_BURST:
 				 if (master_readdatavalid)
 				   begin
-					  storage <= master_readdata;
+					  //storage <= master_readdata;
 					  
 					   //if (burstCount == (ctrl_burstcount-1))
 					   if (burstCount == 7)
@@ -155,9 +158,30 @@ module burst_read_wf
 					   
 					   
    //assign ctrl_readdatavalid = master_readdatavalid;
-   assign ctrl_readdata = storage;
+   //assign ctrl_readdata = storage;
 //master_readdata;
+
+   always @ ( /*AUTOSENSE*/burstCount or ctrl_address or ctrl_busy) begin
+	  if (ctrl_busy == 1)
+		begin
+		   buffer_address = burstCount;
+		end
+	  else
+		begin
+		   buffer_address = ctrl_address;
+		end
+	  
+end
    
+
+   burst_read_buffer burstReadBuffer(
+									 // Outputs
+									 .q					(ctrl_readdata[31:0]),
+									 // Inputs
+									 .address			(buffer_address[2:0]),
+									 .clock				(clk),
+									 .data				(master_readdata[31:0]),
+									 .wren				(master_readdatavalid));
    
 				  
 endmodule // burst_write_wf

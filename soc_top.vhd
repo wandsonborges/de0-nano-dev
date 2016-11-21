@@ -64,22 +64,25 @@ architecture bhv of soc_top is
   signal ctrl_busy : STD_LOGIC := '0';
   signal read_valid2ctrl_write : STD_LOGIC := '0';
   signal read_data2ctrl_data : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
+  signal ctrl_address: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
   
 
 	component cycloneV_soc is
           port (
-                        burst_read_wf_0_ctrl_baseaddress          : in    std_logic_vector(31 downto 0) := (others => 'X'); -- baseaddress
-			burst_read_wf_0_ctrl_burstcount           : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- burstcount
-			burst_read_wf_0_ctrl_readdatavalid        : out   std_logic;                                        -- readdatavalid
-			burst_read_wf_0_ctrl_readdata             : out   std_logic_vector(31 downto 0);                    -- readdata
-                        burst_read_wf_0_ctrl_busy            : out   std_logic;                                        -- busy
-			burst_read_wf_0_ctrl_start           : in    std_logic                     := 'X';              -- start
-			burst_transfer_wf_0_ctrl_baseaddress      : in    std_logic_vector(31 downto 0) := (others => 'X'); -- baseaddress
-			burst_transfer_wf_0_ctrl_burstcount       : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- burstcount
-			burst_transfer_wf_0_ctrl_busy             : out   std_logic;                                        -- busy
-			burst_transfer_wf_0_ctrl_start            : in    std_logic                     := 'X';             -- start
-			burst_transfer_wf_0_ctrl_write            : in   std_logic;                                        -- write
-			burst_transfer_wf_0_ctrl_writedata        : in   std_logic_vector(31 downto 0) := (others => '0'); -- writedata
+		burst_read_wf_0_ctrl_baseaddress   : in    std_logic_vector(31 downto 0) := (others => '0'); --    burst_read_wf_0_ctrl.baseaddress
+		burst_read_wf_0_ctrl_burstcount    : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .burstcount
+		burst_read_wf_0_ctrl_readdatavalid : out   std_logic;                                        --                        .readdatavalid
+		burst_read_wf_0_ctrl_readdata      : out   std_logic_vector(31 downto 0);                    --                        .readdata
+		burst_read_wf_0_ctrl_busy          : out   std_logic;                                        --                        .busy
+		burst_read_wf_0_ctrl_start         : in    std_logic                     := '0';             --                        .start
+		burst_read_wf_0_ctrl_address       : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .address
+		burst_write_wf_0_ctrl_baseaddress  : in    std_logic_vector(31 downto 0) := (others => '0'); --   burst_write_wf_0_ctrl.baseaddress
+		burst_write_wf_0_ctrl_burstcount   : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .burstcount
+		burst_write_wf_0_ctrl_busy         : out   std_logic;                                        --                        .busy
+		burst_write_wf_0_ctrl_start        : in    std_logic                     := '0';             --                        .start
+		burst_write_wf_0_ctrl_write        : in    std_logic                     := '0';             --                        .write
+		burst_write_wf_0_ctrl_writedata    : in    std_logic_vector(31 downto 0) := (others => '0'); --                        .writedata
+		burst_write_wf_0_ctrl_address      : out   std_logic_vector(3 downto 0);                     --                        .address
     
 			clk_clk                                  : in    std_logic                     := 'X';             -- clk
 			--hps_0_h2f_reset_reset_n                  : out   std_logic;                                        -- reset_n
@@ -213,12 +216,14 @@ begin  -- architecture bhv
       burst_read_wf_0_ctrl_readdata             => read_data2ctrl_data,             --                         .readdata
       burst_read_wf_0_ctrl_busy => open, --                         .writeresponsevalid_n
       burst_read_wf_0_ctrl_start   => not ctrl_busy,   --                         .beginbursttransfer
-      burst_transfer_wf_0_ctrl_baseaddress      => x"38000000",      -- burst_transfer_wf_0_ctrl.baseaddress
-      burst_transfer_wf_0_ctrl_burstcount       => "1000",       --                         .burstcount
-      burst_transfer_wf_0_ctrl_busy             => ctrl_busy,             --                         .busy
-      burst_transfer_wf_0_ctrl_start            => read_valid2ctrl_write, --not ctrl_busy,            --                         .start
-      burst_transfer_wf_0_ctrl_write            => read_valid2ctrl_write,            --                         .write
-      burst_transfer_wf_0_ctrl_writedata        => read_data2ctrl_data         --                         .writedata
+      burst_read_wf_0_ctrl_address          => ctrl_address,          --     burst_read_wf_0_ctrl.baseaddress
+      burst_write_wf_0_ctrl_baseaddress      => x"38000000",      -- burst_transfer_wf_0_ctrl.baseaddress
+      burst_write_wf_0_ctrl_burstcount       => "1000",       --                         .burstcount
+      burst_write_wf_0_ctrl_busy             => ctrl_busy,             --                         .busy
+      burst_write_wf_0_ctrl_start            => read_valid2ctrl_write, --not ctrl_busy,            --                         .start
+      burst_write_wf_0_ctrl_address      => ctrl_address,      -- burst_transfer_wf_0_ctrl.baseaddress
+      burst_write_wf_0_ctrl_write            => read_valid2ctrl_write,            --                         .write
+      burst_write_wf_0_ctrl_writedata        => read_data2ctrl_data         --                         .writedata
       );
 		
       LED(6 downto 0) <= s_LED(6 downto 0);

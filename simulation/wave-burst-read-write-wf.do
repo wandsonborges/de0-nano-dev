@@ -26,8 +26,13 @@ add wave -noupdate /tb_burst_read_write_wf/master_waitrequest
 add wave -noupdate -radix hexadecimal /tb_burst_read_write_wf/ctrl_writebaseaddress
 add wave -noupdate /tb_burst_read_write_wf/ctrl_writeburstcount
 add wave -noupdate /tb_burst_read_write_wf/master_writewaitrequest
+add wave -noupdate -radix hexadecimal /tb_burst_read_write_wf/dut/burstReadBuffer/address
+add wave -noupdate /tb_burst_read_write_wf/dut/burstReadBuffer/clock
+add wave -noupdate -radix hexadecimal /tb_burst_read_write_wf/dut/burstReadBuffer/data
+add wave -noupdate /tb_burst_read_write_wf/dut/burstReadBuffer/wren
+add wave -noupdate -radix hexadecimal /tb_burst_read_write_wf/dut/burstReadBuffer/q
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {293 ps} 0}
+WaveRestoreCursors {{Cursor 1} {377 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 360
 configure wave -valuecolwidth 145
@@ -43,4 +48,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {746 ps}
+WaveRestoreZoom {264 ps} {452 ps}

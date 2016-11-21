@@ -13,15 +13,15 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "7";
          type = "int";
       }
    }
-   element burst_transfer_wf_0
+   element burst_write_wf_0
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "6";
          type = "int";
       }
    }
@@ -134,8 +134,8 @@
    type="conduit"
    dir="end" />
  <interface
-   name="burst_transfer_wf_0_ctrl"
-   internal="burst_transfer_wf_0.ctrl"
+   name="burst_write_wf_0_ctrl"
+   internal="burst_write_wf_0.ctrl"
    type="conduit"
    dir="end" />
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
@@ -162,8 +162,8 @@
   <parameter name="LENGTH_WIDTH" value="32" />
  </module>
  <module
-   name="burst_transfer_wf_0"
-   kind="burst_transfer_wf"
+   name="burst_write_wf_0"
+   kind="burst_write_wf"
    version="1.0"
    enabled="1">
   <parameter name="ADDRESS_WIDTH" value="32" />
@@ -793,7 +793,7 @@
  <connection
    kind="avalon"
    version="16.0"
-   start="burst_transfer_wf_0.avalon_master"
+   start="burst_write_wf_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
@@ -851,12 +851,12 @@
    kind="clock"
    version="16.0"
    start="clk_0.clk"
-   end="burst_read_wf_0.clock" />
+   end="burst_write_wf_0.clock" />
  <connection
    kind="clock"
    version="16.0"
    start="clk_0.clk"
-   end="burst_transfer_wf_0.clock" />
+   end="burst_read_wf_0.clock" />
  <connection
    kind="clock"
    version="16.0"
@@ -878,12 +878,12 @@
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="burst_read_wf_0.reset" />
+   end="burst_write_wf_0.reset" />
  <connection
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="burst_transfer_wf_0.reset" />
+   end="burst_read_wf_0.reset" />
  <connection
    kind="reset"
    version="16.0"

@@ -15,6 +15,7 @@ module burst_write_wf
    ctrl_baseaddress,
    ctrl_burstcount,
    ctrl_busy,
+   ctrl_address,
    ctrl_write,
    ctrl_writedata
    );
@@ -35,7 +36,7 @@ module burst_write_wf
    
    output reg [ADDRESS_WIDTH-1:0] master_address;
    output reg master_write;
-   output reg [DATA_WIDTH-1:0] master_writedata;
+   output wire [DATA_WIDTH-1:0] master_writedata;
    //output reg 				   master_beginbursttransfer;
    output reg [BURST_WIDTH-1:0] master_burstcount;
    output wire [BYTE_ENABLE_WIDTH-1:0] master_byteenable;
@@ -47,6 +48,7 @@ module burst_write_wf
    output reg  ctrl_busy;
    input ctrl_write;
    input [DATA_WIDTH-1:0] ctrl_writedata;
+   output wire [BURST_WIDTH-1:0] ctrl_address;
    
 
 
@@ -69,17 +71,16 @@ module burst_write_wf
 				  master_address <= 0;
 				  master_burstcount <= 0;
 				  master_write <= 1'b0;
-				  master_writedata <= 0;
+				  //master_writedata <= 0;
 				  ctrl_busy <= 1'b0;
 				  burstCount <= 0;
-			 master_writedata <= 0;
  //ctrl_writedata;
 			 master_write <= 0;
 //ctrl_write;
 		  end
 		else
 		  begin
-			 master_writedata <= ctrl_writedata;
+			 //master_writedata <= ctrl_writedata;
 			 //master_write <= ctrl_write;
 
 			 //if (ctrl_busy == 0 && ctrl_write == 1)
@@ -104,7 +105,6 @@ module burst_write_wf
 				  if (master_waitrequest == 0)
 					begin
 					   if (burstCount == (ctrl_burstcount-1))
-					   //if (burstCount == 7)
 						 begin
 							master_write <= 1'b0;
 							ctrl_busy <= 1'b0;
@@ -112,12 +112,7 @@ module burst_write_wf
 						 end
 					   else
 						 begin
-							//if (ctrl_write == 1)
-							  //begin
-								 //master_writedata <= master_writedata + 1;
-
 								 burstCount <= burstCount + 1;
-							  //end
 						 end
 					end // if (master_waitrequest == 0)
 			   end // if (ctrl_busy == 1)
@@ -127,7 +122,11 @@ module burst_write_wf
 					   
 					   
 
+   assign master_writedata = ctrl_writedata;
    assign master_byteenable = 4'b1111;
+   assign ctrl_address = burstCount;
+   
+
    
    
 				  

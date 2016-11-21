@@ -28,6 +28,7 @@ module tb_burst_read_write_wf(/*AUTOARG*/);
    wire [CONST_BYTE_ENABLE_WIDTH-1:0] master_byteenable;// From dut_write of burst_write_wf.v
    wire					master_write;			// From dut_write of burst_write_wf.v
    wire [CONST_DATA_WIDTH-1:0] master_writedata;		// From dut_write of burst_write_wf.v
+   wire [CONST_BURST_WIDTH-1:0] ctrl_address;	// From dut of burst_read_wf.v, ...
    // End of automatics
 
 
@@ -67,8 +68,9 @@ module tb_burst_read_write_wf(/*AUTOARG*/);
 					 .master_waitrequest(master_waitrequest),
 					 .master_readdatavalid(master_readdatavalid),
 					 .master_readdata	(master_readdata[CONST_DATA_WIDTH-1:0]),
-					 .ctrl_start		(ctrl_start),
+					 .ctrl_start		(~ctrl_writebusy), //(ctrl_start),
 					 .ctrl_baseaddress	(ctrl_baseaddress[CONST_ADDRESS_WIDTH-1:0]),
+					 .ctrl_address (ctrl_address),
 					 .ctrl_burstcount	(ctrl_burstcount[CONST_BURST_WIDTH-1:0]));
    
   defparam dut.ADDRESS_WIDTH = CONST_ADDRESS_WIDTH;
@@ -96,8 +98,9 @@ module tb_burst_read_write_wf(/*AUTOARG*/);
 							.master_waitrequest	(master_writewaitrequest),
 							.ctrl_write			(ctrl_readdatavalid),
 							.ctrl_writedata		(ctrl_readdata[CONST_DATA_WIDTH-1:0]),
-							.ctrl_start			(ctrl_start),
+							.ctrl_start			(ctrl_readdatavalid), //ctrl_start),
 							.ctrl_baseaddress	(ctrl_writebaseaddress[CONST_ADDRESS_WIDTH-1:0]),
+							.ctrl_address (ctrl_address),
 							.ctrl_burstcount	(ctrl_writeburstcount[CONST_BURST_WIDTH-1:0]));
    
   defparam dut_write.ADDRESS_WIDTH = CONST_ADDRESS_WIDTH;
@@ -150,12 +153,10 @@ end
 	  if (reset == 1)
 		begin
 		   master_readdatavalid <= 0;
-		   master_readdata <= 32'h88990011;
 		end
 	  else
 		begin
 		   master_readdatavalid <= 0;
-		   master_readdata <= 32'h88990011;
 		   repeat(2) @(posedge clk);
 		   master_readdatavalid <= 1;
 		   @(posedge clk);
@@ -165,6 +166,20 @@ end
 		   repeat(7) @(posedge clk);
 		   master_readdatavalid <= 0;
 		end
+   end
+
+   always @ ( /*AUTOSENSE*/ posedge clk) begin
+   	  if (reset == 1)
+   		begin
+   		   master_readdata <= 0;
+   		end
+   	  else
+   		begin
+   		if (master_readdatavalid == 1)
+   		  begin
+   			 master_readdata <= master_readdata + 1;
+   		  end
+   		end
    end
    
    
