@@ -17,7 +17,8 @@ module burst_read_wf
    ctrl_busy,
    ctrl_address,
    ctrl_readdatavalid,
-   ctrl_readdata
+   ctrl_readdata,
+   ctrl_read
    );
 
 
@@ -53,6 +54,8 @@ module burst_read_wf
    output reg  ctrl_busy;
    output reg ctrl_readdatavalid;
    output wire [DATA_WIDTH-1:0] ctrl_readdata;
+   input 						ctrl_read;
+   
    
 
 
@@ -66,6 +69,9 @@ module burst_read_wf
    wire 				 local_ctrl_start;
    reg [BURST_WIDTH-1:0] buffer_address;
    
+   wire 				 fifo_full;
+   wire 				 fifo_empty;
+   wire [2:0] 			 fifo_used;
 
 
    assign local_ctrl_start = ~ctrl_busy;
@@ -174,15 +180,36 @@ module burst_read_wf
 end
    
 
-   burst_read_buffer burstReadBuffer(
-									 // Outputs
-									 .q					(ctrl_readdata[31:0]),
-									 // Inputs
-									 .address			(buffer_address[2:0]),
-									 .clock				(clk),
-									 .data				(master_readdata[31:0]),
-									 .wren				(master_readdatavalid));
+   // burst_read_buffer burstReadBuffer(
+   // 									 // Outputs
+   // 									 .q					(ctrl_readdata[31:0]),
+   // 									 // Inputs
+   // 									 .address			(buffer_address[2:0]),
+   // 									 .clock				(clk),
+   // 									 .data				(master_readdata[31:0]),
+   // 									 .wren				(master_readdatavalid));
    
+
+  scfifo master_to_st_fifo (
+    .aclr   (reset),
+    .clock  (clk),
+    .data   (master_readdata[31:0]),
+    .full   (fifo_full),
+    .empty  (fifo_empty),
+    .usedw  (fifo_used[2:0]),
+    .q      (ctrl_readdata[31:0]),
+    .rdreq  (ctrl_read),
+    .wrreq  (master_readdatavalid)
+  );
+  defparam master_to_st_fifo.lpm_width = DATA_WIDTH;
+   defparam master_to_st_fifo.lpm_numwords = 8;
+     defparam master_to_st_fifo.lpm_widthu = 3;
+  defparam master_to_st_fifo.lpm_showahead = "ON";
+  defparam master_to_st_fifo.use_eab = "ON";
+  defparam master_to_st_fifo.add_ram_output_register = "ON";  // FIFO latency of 2
+  defparam master_to_st_fifo.underflow_checking = "OFF";
+  defparam master_to_st_fifo.overflow_checking = "OFF";
+
 				  
 endmodule // burst_write_wf
 

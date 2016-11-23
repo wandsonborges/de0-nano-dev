@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="cycloneV_soc" kind="cycloneV_soc" version="1.0" fabric="QSYS">
  <!-- Format version 16.0 211 (Future versions may contain additional information.) -->
- <!-- 2016.11.21.17:37:57 -->
+ <!-- 2016.11.23.14:30:24 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1479760676</value>
+  <value>1479922223</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -343,6 +343,12 @@ parameters are a RESULT of the module parameters. -->
     <direction>Input</direction>
     <width>4</width>
     <role>address</role>
+   </port>
+   <port>
+    <name>ctrl_read</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>read</role>
    </port>
   </interface>
   <interface name="avalon_master_1" kind="avalon_master" version="16.0">
@@ -901,6 +907,12 @@ parameters are a RESULT of the module parameters. -->
     <direction>Output</direction>
     <width>4</width>
     <role>address</role>
+   </port>
+   <port>
+    <name>ctrl_read</name>
+    <direction>Output</direction>
+    <width>1</width>
+    <role>read</role>
    </port>
   </interface>
   <interface name="avalon_master" kind="avalon_master" version="16.0">

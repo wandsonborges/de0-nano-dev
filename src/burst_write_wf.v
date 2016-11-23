@@ -17,7 +17,8 @@ module burst_write_wf
    ctrl_busy,
    ctrl_address,
    ctrl_write,
-   ctrl_writedata
+   ctrl_writedata,
+   ctrl_read
    );
 
 
@@ -49,6 +50,8 @@ module burst_write_wf
    input ctrl_write;
    input [DATA_WIDTH-1:0] ctrl_writedata;
    output wire [BURST_WIDTH-1:0] ctrl_address;
+   output wire 					 ctrl_read;
+   
    
 
 
@@ -61,22 +64,22 @@ module burst_write_wf
 
    assign local_ctrl_start = ~ctrl_busy;
    
-		
+   
    
 
    always @(posedge clk or posedge reset)
 	 begin
 		if (reset == 1)
 		  begin
-				  master_address <= 0;
-				  master_burstcount <= 0;
-				  master_write <= 1'b0;
-				  //master_writedata <= 0;
-				  ctrl_busy <= 1'b0;
-				  burstCount <= 0;
- //ctrl_writedata;
+			 master_address <= 0;
+			 master_burstcount <= 0;
+			 master_write <= 1'b0;
+			 //master_writedata <= 0;
+			 ctrl_busy <= 1'b0;
+			 burstCount <= 0;
+			 //ctrl_writedata;
 			 master_write <= 0;
-//ctrl_write;
+			 //ctrl_write;
 		  end
 		else
 		  begin
@@ -84,14 +87,14 @@ module burst_write_wf
 			 //master_write <= ctrl_write;
 
 			 //if (ctrl_busy == 0 && ctrl_write == 1)
-			 if (ctrl_start == 1)
+			 if (ctrl_start == 1 && ctrl_busy == 0)
 			   begin
 				  master_address <= ctrl_baseaddress;
 				  master_burstcount <= ctrl_burstcount;
 				  master_write <= 1'b1;
 				  //master_writedata <= 19;
- //32'h556699bb;
- //0;
+				  //32'h556699bb;
+				  //0;
 
 				  ctrl_busy <= 1'b1;
 
@@ -100,31 +103,32 @@ module burst_write_wf
 			   end
 			 else
 			   begin
-			   if (ctrl_busy == 1)
-			   begin
-				  if (master_waitrequest == 0)
+				  if (ctrl_busy == 1)
 					begin
-					   if (burstCount == (ctrl_burstcount-1))
+					   if (master_waitrequest == 0)
 						 begin
-							master_write <= 1'b0;
-							ctrl_busy <= 1'b0;
-							burstCount <= 0;
-						 end
-					   else
-						 begin
+							if (burstCount == (ctrl_burstcount-1))
+							  begin
+								 master_write <= 1'b0;
+								 ctrl_busy <= 1'b0;
+								 burstCount <= 0;
+							  end
+							else
+							  begin
 								 burstCount <= burstCount + 1;
-						 end
-					end // if (master_waitrequest == 0)
-			   end // if (ctrl_busy == 1)
+							  end
+						 end // if (master_waitrequest == 0)
+					end // if (ctrl_busy == 1)
 			   end
 		  end
 	 end		
-					   
-					   
+   
+   
 
    assign master_writedata = ctrl_writedata;
    assign master_byteenable = 4'b1111;
    assign ctrl_address = burstCount;
+   assign ctrl_read = master_write && ~master_waitrequest;
    
 
    

@@ -65,6 +65,7 @@ architecture bhv of soc_top is
   signal read_valid2ctrl_write : STD_LOGIC := '0';
   signal read_data2ctrl_data : STD_LOGIC_VECTOR(31 downto 0) := (others => '0');
   signal ctrl_address: STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+  signal ctrl_read: STD_LOGIC;
   
 
 	component cycloneV_soc is
@@ -76,6 +77,7 @@ architecture bhv of soc_top is
 		burst_read_wf_0_ctrl_busy          : out   std_logic;                                        --                        .busy
 		burst_read_wf_0_ctrl_start         : in    std_logic                     := '0';             --                        .start
 		burst_read_wf_0_ctrl_address       : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .address
+		burst_read_wf_0_ctrl_read          : in    std_logic                     := '0';             --                        .read
 		burst_write_wf_0_ctrl_baseaddress  : in    std_logic_vector(31 downto 0) := (others => '0'); --   burst_write_wf_0_ctrl.baseaddress
 		burst_write_wf_0_ctrl_burstcount   : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .burstcount
 		burst_write_wf_0_ctrl_busy         : out   std_logic;                                        --                        .busy
@@ -83,6 +85,7 @@ architecture bhv of soc_top is
 		burst_write_wf_0_ctrl_write        : in    std_logic                     := '0';             --                        .write
 		burst_write_wf_0_ctrl_writedata    : in    std_logic_vector(31 downto 0) := (others => '0'); --                        .writedata
 		burst_write_wf_0_ctrl_address      : out   std_logic_vector(3 downto 0);                     --                        .address
+		burst_write_wf_0_ctrl_read         : out   std_logic;                                        --                        .read
     
 			clk_clk                                  : in    std_logic                     := 'X';             -- clk
 			--hps_0_h2f_reset_reset_n                  : out   std_logic;                                        -- reset_n
@@ -217,12 +220,14 @@ begin  -- architecture bhv
       burst_read_wf_0_ctrl_busy => open, --                         .writeresponsevalid_n
       burst_read_wf_0_ctrl_start   => not ctrl_busy,   --                         .beginbursttransfer
       burst_read_wf_0_ctrl_address          => ctrl_address,          --     burst_read_wf_0_ctrl.baseaddress
+	  burst_read_wf_0_ctrl_read 	=> ctrl_read,
       burst_write_wf_0_ctrl_baseaddress      => x"38000000",      -- burst_transfer_wf_0_ctrl.baseaddress
       burst_write_wf_0_ctrl_burstcount       => "1000",       --                         .burstcount
       burst_write_wf_0_ctrl_busy             => ctrl_busy,             --                         .busy
       burst_write_wf_0_ctrl_start            => read_valid2ctrl_write, --not ctrl_busy,            --                         .start
       burst_write_wf_0_ctrl_address      => ctrl_address,      -- burst_transfer_wf_0_ctrl.baseaddress
       burst_write_wf_0_ctrl_write            => read_valid2ctrl_write,            --                         .write
+	  burst_write_wf_0_ctrl_read 	=> ctrl_read,
       burst_write_wf_0_ctrl_writedata        => read_data2ctrl_data         --                         .writedata
       );
 		
