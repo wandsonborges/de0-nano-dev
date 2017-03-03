@@ -110,9 +110,7 @@ module burst_read_wf
 				 if (ctrl_start == 1)
 				   begin
 					  master_address <= 32'h39000000;
- //ctrl_baseaddress;
 					  master_burstcount <= 8;
- //ctrl_burstcount;
 					  master_read <= 1'b1;
 
 					  ctrl_busy <= 1'b1;

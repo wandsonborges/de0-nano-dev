@@ -26,7 +26,7 @@ end entity avalon_mm_master_writer;
 
 architecture bhv of avalon_mm_master_writer is
 
-  constant MAX_BURST_TO_WRITE : integer := 16;
+  constant MAX_BURST_TO_WRITE : integer := 256;
   
   signal stall_transfer : std_logic := '0';
   signal s_writedata : unsigned(DATA_W-1 downto 0) := (others => '0');
@@ -34,7 +34,7 @@ architecture bhv of avalon_mm_master_writer is
   signal s_address : unsigned(ADDR_W-1 downto 0) := resize(x"38000000", ADDR_W);
 
   signal words_written_during_burst : unsigned(BURST_W-1 downto 0) := (others => '0');
-  signal bursts_written : unsigned(7 downto 0) := (others => '0');
+  signal bursts_written : unsigned(10 downto 0) := (others => '0');
   
 begin  -- architecture bhv
 
@@ -50,6 +50,7 @@ begin  -- architecture bhv
       elsif (bursts_written = MAX_BURST_TO_WRITE) then
         s_write <= '0';
         s_writedata <= (others => '0');
+        --bursts_written <= (others => '0');
       elsif (words_written_during_burst = BURST) then
         s_write <= '0';
         words_written_during_burst <= (others => '0');
