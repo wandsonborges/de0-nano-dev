@@ -13,16 +13,16 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "8";
          type = "int";
       }
    }
-   element burst_read_wf_0
+   element autocorrelation_0.avalon_slave_0
    {
-      datum _sortIndex
+      datum baseAddress
       {
-         value = "7";
-         type = "int";
+         value = "0";
+         type = "String";
       }
    }
    element burst_write_wf_0
@@ -138,15 +138,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
-         type = "int";
-      }
-   }
-   element rod_mm_slave_0
-   {
-      datum _sortIndex
-      {
-         value = "8";
+         value = "7";
          type = "int";
       }
    }
@@ -155,14 +147,6 @@
       datum _sortIndex
       {
          value = "5";
-         type = "int";
-      }
-   }
-   element slave_test_0
-   {
-      datum _sortIndex
-      {
-         value = "9";
          type = "int";
       }
    }
@@ -213,7 +197,6 @@
    internal="autocorrelation_0.conduit_end"
    type="conduit"
    dir="end" />
- <interface name="burst_read_wf_0_ctrl" internal="burst_read_wf_0.ctrl" />
  <interface name="burst_write_wf_0_ctrl" internal="burst_write_wf_0.ctrl" />
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface name="hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
@@ -236,15 +219,6 @@
    enabled="1">
   <parameter name="PARALLELISM_DEPTH" value="1" />
   <parameter name="mode" value="1" />
- </module>
- <module name="burst_read_wf_0" kind="burst_read_wf" version="1.0" enabled="0">
-  <parameter name="ADDRESS_WIDTH" value="32" />
-  <parameter name="BURST_COUNT" value="8" />
-  <parameter name="BURST_WIDTH" value="4" />
-  <parameter name="BYTE_ENABLE_WIDTH" value="4" />
-  <parameter name="BYTE_ENABLE_WIDTH_LOG2" value="2" />
-  <parameter name="DATA_WIDTH" value="32" />
-  <parameter name="LENGTH_WIDTH" value="32" />
  </module>
  <module
    name="burst_write_wf_0"
@@ -854,13 +828,6 @@
   <parameter name="DATA_WIDTH" value="32" />
   <parameter name="LENGTH_WIDTH" value="32" />
  </module>
- <module name="rod_mm_slave_0" kind="rod_mm_slave" version="1.0" enabled="0">
-  <parameter name="ADDR_W" value="2" />
-  <parameter name="BURST" value="8" />
-  <parameter name="BURST_W" value="8" />
-  <parameter name="BYTE_EN_W" value="4" />
-  <parameter name="DATA_W" value="32" />
- </module>
  <module
    name="rod_pattern_writer_0"
    kind="rod_pattern_writer"
@@ -872,7 +839,6 @@
   <parameter name="BYTE_EN_W" value="4" />
   <parameter name="DATA_W" value="32" />
  </module>
- <module name="slave_test_0" kind="slave_test" version="1.0" enabled="0" />
  <module name="sw" kind="altera_avalon_pio" version="16.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -899,15 +865,6 @@
  <connection
    kind="avalon"
    version="16.0"
-   start="autocorrelation_0.avalon_master"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
    start="rod_pattern_writer_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
@@ -926,7 +883,7 @@
  <connection
    kind="avalon"
    version="16.0"
-   start="burst_read_wf_0.avalon_master_1"
+   start="autocorrelation_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
@@ -945,25 +902,7 @@
    kind="avalon"
    version="16.0"
    start="hps_0.h2f_lw_axi_master"
-   end="rod_mm_slave_0.avalon_slave_0">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="hps_0.h2f_lw_axi_master"
    end="autocorrelation_0.avalon_slave_0">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.0"
-   start="hps_0.h2f_lw_axi_master"
-   end="slave_test_0.avalon_slave_0_1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -997,27 +936,7 @@
    kind="clock"
    version="16.0"
    start="clk_0.clk"
-   end="slave_test_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="rod_mm_slave_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
    end="burst_write_wf_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="burst_read_wf_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="autocorrelation_0.clock" />
  <connection
    kind="clock"
    version="16.0"
@@ -1028,6 +947,11 @@
    version="16.0"
    start="clk_0.clk"
    end="pattern_writer_0.clock" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clk_0.clk"
+   end="autocorrelation_0.clock" />
  <connection
    kind="clock"
    version="16.0"
@@ -1049,22 +973,7 @@
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="slave_test_0.reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
    end="burst_write_wf_0.reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="burst_read_wf_0.reset" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="autocorrelation_0.reset" />
  <connection
    kind="reset"
    version="16.0"
@@ -1074,12 +983,12 @@
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="onchip_memory2_0.reset1" />
+   end="autocorrelation_0.reset" />
  <connection
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="rod_mm_slave_0.reset_sink" />
+   end="onchip_memory2_0.reset1" />
  <connection
    kind="reset"
    version="16.0"

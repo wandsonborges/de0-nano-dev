@@ -21,7 +21,7 @@ entity avalonControlSlaveDecoder is
 		-- Avalon slave input: control
 		acSlaveRead 						: in std_logic;
 		acSlaveWrite 						: in std_logic;
-		acSlaveAddress						: in std_logic_vector(20 downto 0); --(N_BITS_TIME_WINDOW-1 downto 0);
+		acSlaveAddress						: in std_logic_vector(12 downto 0); --(N_BITS_TIME_WINDOW-1 downto 0);
 		acSlaveByteEnable					: in std_logic_vector(3 downto 0);
 		acSlaveWriteData					: in std_logic_vector(31 downto 0); --(N_BITS_PXL_AC_RESULT_TOTAL-1 downto 0);
 
@@ -93,8 +93,8 @@ end entity avalonControlSlaveDecoder;
  							-- 	state <= READING_DATA;
  							-- end if;
 							acSlaveReadDataValid <= '0';
-                                                         acSlaveReadData <= (others => '0');
-                                                         latencyCounter <= 0;
+							 acSlaveReadData <= (others => '0');
+							 latencyCounter <= 0;
  							state <= READING_DATA;
  						end if;
  					elsif (chipselect = '1' and acSlaveWrite = '1') then

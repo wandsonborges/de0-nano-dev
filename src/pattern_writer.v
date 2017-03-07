@@ -58,6 +58,10 @@ module pattern_writer
 
    reg [BURST_WIDTH-1:0] burstCount;
    integer 			 counter;
+   reg [31:0] 		 incrementer;
+   integer 			 pxlCounter;
+			 
+   
    
    wire 				 local_ctrl_start;
    
@@ -83,54 +87,88 @@ module pattern_writer
 			 //ctrl_write;
 		     master_writedata <= 0;
 		     counter <= 0;
-		     
+		     incrementer <= 32'h01020304;
+			 pxlCounter <= 0;
+			 
 		  end
 		else
 		  begin
 		     if (counter == 65536)
 		       begin
-			  master_address <= 32'h38000000;
-			  master_burstcount <= 8;
-			  burstCount <= 0;
-			  master_writedata <= 32'h00010203;
-			  counter <= 0;
-			  
+				  master_address <= 32'h38000000;
+				  master_burstcount <= 8;
+				  burstCount <= 0;
+				  master_writedata <= 32'h00010203;
+				  counter <= 0;
+				  incrementer <= 32'h01020304;
+				  pxlCounter <= 0;
+				  
 		       end
 		     else
 		       begin
-			  if (burstCount == 0)
-			    begin
-			       master_write <= 1'b1;
-			       burstCount <= 1;
-			       
-			    end
-			  else 
-			    begin
-			       
-				  // if (ctrl_busy == 1)
-				  // 	begin
-			      if (master_waitrequest == 0)
-				begin
-				   if (burstCount == 8)
-				     begin
-					master_write <= 1'b0;
-					//ctrl_busy <= 1'b0;
-					burstCount <= 0;
-					counter <= counter + 1;
-					master_address <= master_address + 8*4;
-					
-				     end
-				   else
-				     begin
-					burstCount <= burstCount + 1;
-				     end
-					if (master_writedata == 32'hfcfdfeff)
-					  master_writedata <= 32'h00010203;
-					else
-					  master_writedata <= master_writedata+32'h04040404;
-				end // if (master_waitrequest == 0)
-					//end // if (ctrl_busy == 1)
-			   end
+				  if (burstCount == 0)
+					begin
+					   master_write <= 1'b1;
+					   burstCount <= 1;
+					   
+					end
+				  else 
+					begin
+					   
+					   // if (ctrl_busy == 1)
+					   // 	begin
+					   if (master_waitrequest == 0)
+						 begin
+							if (burstCount == 8)
+							  begin
+								 master_write <= 1'b0;
+								 //ctrl_busy <= 1'b0;
+								 burstCount <= 0;
+								 counter <= counter + 1;
+								 master_address <= master_address + 8*4;
+								 
+							  end
+							else
+							  begin
+								 burstCount <= burstCount + 1;
+							  end // else: !if(burstCount == 8)
+
+							pxlCounter <= pxlCounter + 1;
+
+							if (pxlCounter == 31)
+							  begin
+								 pxlCounter <= 0;
+								 
+								 master_writedata <= incrementer;
+								 //32'h00010203 + incrementer;
+								 if (incrementer == 32'hfcfdfeff)
+								   incrementer <= 32'h00010203;
+								 else
+								   incrementer <= incrementer + 32'h01010101;
+							  end // if (pxlCounter == 127)
+							else
+							  begin
+								 if (master_writedata == 32'h797a7b7c)
+								   master_writedata <= 32'h7d7e7f00;
+								 else if (master_writedata == 32'h7a7b7c7d)
+								   master_writedata <= 32'h7e7f0001;
+								 else if (master_writedata == 32'h7b7c7d7e)
+								   master_writedata <= 32'h7f000102;
+								 else if (master_writedata == 32'h7c7d7e7f)
+								   master_writedata <= 32'h00010203;
+								 else if (master_writedata == 32'h7d7e7f00)
+								   master_writedata <= 32'h01020304;
+								 else if (master_writedata == 32'h7e7f0001)
+								   master_writedata <= 32'h02030405;
+								 else if (master_writedata == 32'h7f000102)
+								   master_writedata <= 32'h03040506;
+								 
+								 else
+								   master_writedata <= master_writedata+32'h04040404;
+							  end
+						 end // if (master_waitrequest == 0)
+					   //end // if (ctrl_busy == 1)
+					end
 		       end // else: !if(counter == 65536)
 		  end
 	 end		

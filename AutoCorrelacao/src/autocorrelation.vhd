@@ -7,7 +7,7 @@
 -- Author     : Wandson Borges  <wandson@ivision.ind.br>
 -- Company    : 
 -- Created    : 2016-02-12
--- Last update: 2017-02-24
+-- Last update: 2017-03-07
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ entity autocorrelation is
 		-- Avalon slave input: control
 		acSlaveRead 						: in std_logic;
 		acSlaveWrite 						: in std_logic;
-		acSlaveAddress						: in std_logic_vector(20 downto 0); --(N_BITS_TIME_WINDOW-1 downto 0);
+		acSlaveAddress						: in std_logic_vector(12 downto 0); --(N_BITS_TIME_WINDOW-1 downto 0);
 		acSlaveByteEnable					: in std_logic_vector(3 downto 0);
 		acSlaveWriteData					: in std_logic_vector(31 downto 0); --(N_BITS_PXL_AC_RESULT_TOTAL-1 downto 0);
 
