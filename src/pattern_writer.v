@@ -140,8 +140,13 @@ module pattern_writer
 								 pxlCounter <= 0;
 								 
 								 master_writedata <= incrementer;
-								 //32'h00010203 + incrementer;
-								 if (incrementer == 32'hfcfdfeff)
+								 if (incrementer == 32'h7c7d7e7f)
+								   incrementer <= 32'h7d7e7f00;
+								 else if (incrementer == 32'h7d7e7f00)
+								   incrementer <= 32'h7e7f0001;
+								 else if (incrementer == 32'h7e7f0001)
+								   incrementer <= 32'h7f000102;
+								 else if (incrementer == 32'h7f000102)
 								   incrementer <= 32'h00010203;
 								 else
 								   incrementer <= incrementer + 32'h01010101;
