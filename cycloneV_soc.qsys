@@ -89,6 +89,22 @@
          type = "String";
       }
    }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element hps_0
    {
       datum _sortIndex
@@ -217,7 +233,7 @@
    kind="autocorrelation"
    version="1.0"
    enabled="1">
-  <parameter name="PARALLELISM_DEPTH" value="1" />
+  <parameter name="PARALLELISM_DEPTH" value="16" />
   <parameter name="mode" value="1" />
  </module>
  <module
