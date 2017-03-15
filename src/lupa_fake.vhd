@@ -16,7 +16,8 @@ entity lupa_fake is
     en          : in std_logic;
     frame_valid : out std_logic;
     line_valid  : out std_logic;
-    data_out    : out std_logic_vector(9 downto 0);
+    data_valid  : out std_logic;
+    data_out    : out std_logic_vector(7 downto 0);
     startofpacket : out std_logic;
     endofpacket : out std_logic
     );
@@ -30,7 +31,7 @@ architecture bhv of lupa_fake is
   signal line_counter : unsigned(9 downto 0) := (others => '0');
   signal col_counter : unsigned(10 downto 0) := (others => '0');
 
-  signal data_out_s : unsigned(9 downto 0) := (others => '0');
+  signal data_out_s : unsigned(7 downto 0) := (others => '0');
   
   type state_type is (st_idle, st_fot, st_rot, st_valid_data);
   signal state : state_type := st_idle;
@@ -116,7 +117,9 @@ begin  -- architecture bhv
     if rst_n = '0' then                 -- asynchronous reset (active low)
       data_out_s <= (others => '0');
     elsif clk'event and clk = '1' then  -- rising clock edge
-      if (state = st_valid_data) then
+      if (state = st_fot) then
+        data_out_s <= (others => '0');
+      elsif (state = st_valid_data and en = '1') then
         data_out_s <= data_out_s + 1;
       end if;
     end if;
@@ -125,6 +128,7 @@ begin  -- architecture bhv
   frame_valid <= '1' when state = st_valid_data or state = st_rot else '0';
   line_valid <= '1' when state = st_valid_data else '0';
   data_out <= std_logic_vector(data_out_s);
+  data_valid <= '1' when state = st_valid_data else '0';
 --  data_out <= std_logic_vector(line_counter(data_out'length-1 downto 0));
   
 
