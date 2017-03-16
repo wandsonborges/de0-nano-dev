@@ -49,7 +49,7 @@ begin  -- architecture bhv
       startofpacket <= '0';
       endofpacket <= '0';
     elsif clk'event and clk = '1' then  -- rising clock edge
-      if en = '1' then
+      if en = '1' or en = '0' then
         case state is
           when st_idle =>
             line_counter <= (others => '0');
@@ -119,7 +119,7 @@ begin  -- architecture bhv
     elsif clk'event and clk = '1' then  -- rising clock edge
       if (state = st_fot) then
         data_out_s <= (others => '0');
-      elsif (state = st_valid_data and en = '1') then
+      elsif (state = st_valid_data) then -- and en = '1') then
         data_out_s <= data_out_s + 1;
       end if;
     end if;

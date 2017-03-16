@@ -51,7 +51,7 @@ architecture bhv of bridge_stSrc_mmMaster is
   signal s_masterwrite : std_logic := '0';
   signal s_master_writedata : std_logic_vector(NBITS_DATA-1 downto 0) := (others => '0');
 
-  	COMPONENT dcfifo
+   	COMPONENT dcfifo
 	GENERIC (
 		intended_device_family		: STRING;
 		lpm_numwords		: NATURAL;
@@ -103,49 +103,37 @@ begin  -- architecture bhv
 		rdempty => fifoEmpty,
 		wrfull => fifoFull
 	);
-
-
-        addr_proc: process (clk_mem, rst_n) is
-        begin  -- process addr_proc
-          if rst_n = '0' then           -- asynchronous reset (active low)
-            s_address <= ADDR_BASE;
-          elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
-            if master_waitrequest = '0' then
-              if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket                
-                s_address <= ADDR_BASE;                
-              elsif (s_masterwrite = '1') then                
-                s_address <= std_logic_vector(unsigned(s_address) + 1);                
-              end if;
-            else
-              s_address <= s_address;
-            end if;            
-          end if;
-        end process addr_proc;
+        
 
         waitreq_proc: process (clk_mem, rst_n) is
         begin  -- process waitreq_proc
           if rst_n = '0' then           -- asynchronous reset (active low)
-            s_master_writedata <= (others => '0');
-            s_masterwrite <= '0';    
+             s_address <= (others => '0');
           elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
-            if master_waitrequest = '0' then
-              s_master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
-              s_masterwrite <= fifoRd;
+            -- ADDR UPDATE
+             if s_masterwrite = '1' and master_waitrequest = '0' then
+              if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket                
+                s_address <= ADDR_BASE;                
+              else
+                s_address <= std_logic_vector(unsigned(s_address) + 1);                
+              end if;
             else
-              s_master_writedata <= s_master_writedata;
-              s_masterwrite <= s_masterwrite;
-            end if;            
+              s_address <= s_address;
+            end if; 
+            
           end if;
         end process waitreq_proc;
         
         fifoDataIn <= st_endofpacket & st_startofpacket & st_datain;
         fifoWr <= st_datavalid and (not fifoFull);
-        fifoRd <= (not master_waitrequest) and (not fifoEmpty);        
+        fifoRd <= (not master_waitrequest) and (s_masterwrite);        
         st_ready <= not fifoFull;
-
+        
+        s_masterwrite <= not fifoEmpty;
+        
         master_write <= s_masterwrite;
         master_address <= s_address;
-        master_writedata <= s_master_writedata; --fifoDataOut(NBITS_DATA-1 downto 0);
+        master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
 
        
         --master_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
