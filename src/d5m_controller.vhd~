@@ -1,0 +1,97 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_unsigned.all;
+use IEEE.numeric_std.all;
+
+entity d5m_controller is
+  port (
+    clk, rst_n  : in std_logic;
+    start       : in std_logic;
+    frame_valid : in std_logic;
+    line_valid  : in std_logic;
+    data_in     : in std_logic_vector(7 downto 0);
+
+    --Avalon ST
+    data_valid  : out std_logic;
+    data_out    : out std_logic_vector(7 downto 0);
+    startofpacket : out std_logic;
+    endofpacket : out std_logic
+    );
+  
+end entity d5m_controller;
+
+architecture bhv of d5m_controller is
+  signal line_valid_s : std_logic := '0';
+  signal data_out_s : std_logic_vector(7 downto 0) := (others => '0');
+
+  signal ff_frame_valid, ff_line_valid : std_logic := '0';
+  
+  type state_type is (st_idle, st_fot, st_valid_data);
+  signal state : state_type := st_idle;
+  
+begin  -- architecture bhv
+
+  proc: process (clk, rst_n) is
+  begin  -- process proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      state <= st_idle;
+      startofpacket <= '0';
+      endofpacket <= '0';
+      ff_frame_valid <= '0';
+      ff_line_valid <= '0';
+    elsif clk'event and clk = '1' then  -- rising clock edge
+      ff_frame_valid <= frame_valid;
+      ff_line_valid <= line_valid;
+      case state is
+        when st_idle =>
+          endofpacket <= '0';
+          if frame_valid = '1' and ff_frame_valid = '0' then
+            if line_valid = '1' and ff_line_valid = '0' then
+              state <= st_valid_data;
+              startofpacket <= '1';
+            else
+              state <= st_fot;
+            end if;            
+          else
+            state <= st_idle;
+          end if;
+
+        when st_fot =>
+          if ff_line_valid = '0' and line_valid = '1' then
+            state <= st_valid_data;
+            startofpacket <= '1';
+          else
+            state <= st_fot;
+          end if;
+
+        when st_valid_data =>
+          startofpacket <= '0';
+          if ff_frame_valid <= '1' and frame_valid = '0' then
+            endofpacket <= '1';
+            state <= st_idle;
+          else
+            state <= st_valid_data;
+          end if;
+      end case;    
+    end if;
+  end process proc;
+
+  fake_data_proc: process (clk, rst_n) is
+  begin  -- process fake_data_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      data_out_s <= (others => '0');
+      line_valid_s <= '0';
+    elsif clk'event and clk = '1' then  -- rising clock edge
+      data_out_s <= data_in;
+      line_valid_s <= line_valid;
+    end if;
+    
+  end process fake_data_proc;
+
+  data_out <= std_logic_vector(data_out_s);
+  data_valid <= '1' when (state = st_valid_data) and line_valid_s = '1'
+                 and frame_valid = '1'  else '0';
+  
+
+end architecture bhv;
+
