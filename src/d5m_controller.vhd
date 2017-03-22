@@ -10,10 +10,17 @@ entity d5m_controller is
     );
   port (
     clk, rst_n  : in std_logic;
+    
     start       : in std_logic;
     frame_valid : in std_logic;
     line_valid  : in std_logic;
     data_in     : in std_logic_vector(7 downto 0);
+
+    sclk        : out std_logic;
+    sdata       : inout std_logic;
+
+    rst_sensor  : out std_logic;
+    trigger     : out std_logic;
 
     --Avalon ST
     data_valid  : out std_logic;
@@ -31,12 +38,40 @@ architecture bhv of d5m_controller is
   signal ff_frame_valid, ff_line_valid : std_logic := '0';
 
   signal pxl_counter : unsigned(31 downto 0) := (others => '0');
+
+  signal rst_n2, mirror, exp_up, exp_down : std_logic := '0';
   
   type state_type is (st_idle, st_fot, st_valid_data);
   signal state : state_type := st_idle;
   
 begin  -- architecture bhv
 
+  I2C_CCD_Config_1: entity work.I2C_CCD_Config
+    generic map (
+      CLK_Freq              => 50000000,
+      I2C_Freq              => 20000,
+      LUT_SIZE              => 25)
+    port map (
+      iCLK            => clk,
+      iRST_N          => rst_n2,
+      iMIRROR_SW      => '0',
+      iEXPOSURE_ADJ   => '0',
+      iEXPOSURE_DEC_p => '0',
+      I2C_SCLK        => sclk,
+      I2C_SDAT        => sdata);
+
+  Reset_Delay_1: entity work.Reset_Delay
+    port map (
+      iCLK   => clk,
+      iRST   => rst_n,
+      oRST_0 => open,
+      oRST_1 => open,
+      oRST_2 => rst_n2,
+      oRST_3 => open,
+      oRST_4 => open);
+  
+---------------------------------------------------
+  -- AVALON ST SIGNALS GENERATE --------------------
   proc: process (clk, rst_n) is
   begin  -- process proc
     if rst_n = '0' then                 -- asynchronous reset (active low)
@@ -113,7 +148,10 @@ begin  -- architecture bhv
 
   data_out <= std_logic_vector(data_out_s);
   data_valid <= '1' when (state = st_valid_data) and line_valid_s = '1'
-                 and frame_valid = '1'  else '0';
+                and frame_valid = '1'  else '0';
+
+  trigger <= '1';
+  
   
 
 end architecture bhv;
