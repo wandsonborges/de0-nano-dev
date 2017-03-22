@@ -10,6 +10,19 @@ entity soc_top is
     SW       : in std_logic_vector(3 downto 0);
     LED      : out std_logic_vector(7 downto 0);
 
+    --D5M SIGNALS
+    D5M_D : in std_logic_vector(11 downto 0);
+    D5M_FVAL : in std_logic;
+    D5M_LVAL : in std_logic;
+    D5M_PIXCLK : in std_logic;
+    D5M_RESET_N : out std_logic;
+    D5M_SCLK : out std_logic;
+    D5M_SDATA : inout std_logic;	
+    D5M_STROBE : in std_logic;
+    D5M_TRIGGER : out std_logic;
+    D5M_XCLKIN : out std_logic;
+        
+
     -- HPS CONNECTIONS ---HPS_CONV_USB_N:INOUT STD_LOGIC;
     HPS_DDR3_ADDR:OUT STD_LOGIC_VECTOR(14 downto 0);
     HPS_DDR3_BA: OUT STD_LOGIC_VECTOR(2 downto 0);
@@ -70,6 +83,15 @@ architecture bhv of soc_top is
 
 	component cycloneV_soc is
           port (
+            pxl_clk_clk                                                    : in    std_logic                     := 'X';             -- clk
+			d5m_camera_0_conduit_end_datain                                : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- datain
+			d5m_camera_0_conduit_end_fvalid                                : in    std_logic                     := 'X';             -- fvalid
+			d5m_camera_0_conduit_end_lvalid                                : in    std_logic                     := 'X';             -- lvalid
+			d5m_camera_0_conduit_end_start                                 : in    std_logic                     := 'X';             -- start
+			d5m_camera_0_conduit_end_rst_sensor                            : out   std_logic;                                        -- rst_sensor
+			d5m_camera_0_conduit_end_sclk                                  : out   std_logic;                                        -- sclk
+			d5m_camera_0_conduit_end_sdata                                 : out   std_logic;                                        -- sdata
+			d5m_camera_0_conduit_end_trigger                               : out   std_logic;                                        -- trigger
 		--burst_read_wf_0_ctrl_baseaddress   : in    std_logic_vector(31 downto 0) := (others => '0'); --    burst_read_wf_0_ctrl.baseaddress
 		--burst_read_wf_0_ctrl_burstcount    : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .burstcount
 		--burst_read_wf_0_ctrl_readdatavalid : out   std_logic;                                        --                        .readdatavalid
@@ -160,10 +182,23 @@ architecture bhv of soc_top is
   signal s_LED : std_logic_vector(7 downto 0) := (others => '0');
 begin  -- architecture bhv
 
+  D5M_XCLKIN <= CLOCK_50;
+  
   cycloneV_soc_2: component cycloneV_soc
     port map (
       clk_clk                         => CLOCK_50,
       --hps_0_h2f_reset_reset_n         => HPS_H2F_RST,
+      
+      pxl_clk_clk                     => D5M_PIXCLK,
+      d5m_camera_0_conduit_end_datain => D5M_D(11 downto 4),
+      d5m_camera_0_conduit_end_fvalid => D5M_FVAL,
+      d5m_camera_0_conduit_end_lvalid => D5M_LVAL,
+      d5m_camera_0_conduit_end_start  => '1',
+      d5m_camera_0_conduit_end_rst_sensor => D5M_RESET_N,
+      d5m_camera_0_conduit_end_sclk   => D5M_SCLK,
+      d5m_camera_0_conduit_end_sdata  => D5M_SDATA,
+      d5m_camera_0_conduit_end_trigger => D5M_TRIGGER,
+      
       led_external_connection_export =>  s_LED,
       memory_mem_a                    => HPS_DDR3_ADDR,
       memory_mem_ba                   => HPS_DDR3_BA,

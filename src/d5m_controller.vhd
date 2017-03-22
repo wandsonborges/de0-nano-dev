@@ -43,22 +43,49 @@ architecture bhv of d5m_controller is
   
   type state_type is (st_idle, st_fot, st_valid_data);
   signal state : state_type := st_idle;
-  
+
+--   COMPONENT I2C_CCD_Config
+-- 	GENERIC ( default_exposure : STD_LOGIC_VECTOR(15 DOWNTO 0) := b"0000010111100101"; exposure_change_value : STD_LOGIC_VECTOR(15 DOWNTO 0) := b"0000000000110010"; CLK_Freq : INTEGER := 50000000; I2C_Freq : INTEGER := 20000;
+-- 		 LUT_SIZE : INTEGER := 25 );
+-- 	PORT
+-- 	(
+-- 		iCLK		:	 IN STD_LOGIC;
+-- 		iRST_N		:	 IN STD_LOGIC;
+-- 		iMIRROR_SW		:	 IN STD_LOGIC;
+-- 		iEXPOSURE_ADJ		:	 IN STD_LOGIC;
+-- 		iEXPOSURE_DEC_p		:	 IN STD_LOGIC;
+-- 		I2C_SCLK		:	 OUT STD_LOGIC;
+-- 		I2C_SDAT		:	 INOUT STD_LOGIC
+-- 	);
+--   END COMPONENT;
+
+--   COMPONENT Reset_Delay
+-- 	PORT
+-- 	(
+-- 		iCLK		:	 IN STD_LOGIC;
+-- 		iRST		:	 IN STD_LOGIC;
+-- 		oRST_0		:	 OUT STD_LOGIC;
+-- 		oRST_1		:	 OUT STD_LOGIC;
+-- 		oRST_2		:	 OUT STD_LOGIC;
+-- 		oRST_3		:	 OUT STD_LOGIC;
+-- 		oRST_4		:	 OUT STD_LOGIC
+-- 	);
+-- END COMPONENT;
 begin  -- architecture bhv
 
-  I2C_CCD_Config_1: entity work.I2C_CCD_Config
-    generic map (
-      CLK_Freq              => 50000000,
-      I2C_Freq              => 20000,
-      LUT_SIZE              => 25)
-    port map (
-      iCLK            => clk,
-      iRST_N          => rst_n2,
-      iMIRROR_SW      => '0',
-      iEXPOSURE_ADJ   => '0',
-      iEXPOSURE_DEC_p => '0',
-      I2C_SCLK        => sclk,
-      I2C_SDAT        => sdata);
+  -- I2C_CCD_Config_1: entity work.I2C_CCD_Config
+  --   generic map (
+  --     CLK_Freq              => 50000000,
+  --     I2C_Freq              => 20000,
+  --     LUT_SIZE              => 25)
+  --   port map (
+  --     iCLK            => clk,
+  --     iRST_N          => rst_n2,
+  --     iMIRROR_SW      => '0',
+  --     iEXPOSURE_ADJ   => '0',
+  --     iEXPOSURE_DEC_p => '0',
+  --     I2C_SCLK        => sclk,
+  --     I2C_SDAT        => sdata);
 
   Reset_Delay_1: entity work.Reset_Delay
     port map (
@@ -69,7 +96,7 @@ begin  -- architecture bhv
       oRST_2 => rst_n2,
       oRST_3 => open,
       oRST_4 => open);
-  
+
 ---------------------------------------------------
   -- AVALON ST SIGNALS GENERATE --------------------
   proc: process (clk, rst_n) is

@@ -1,0 +1,167 @@
+module d5m_controller_v (
+    clk, 
+    rst_n,  
+    start,       
+    frame_valid, 
+    line_valid,  
+    data_in,     
+    sclk,        
+    sdata,
+    ready,
+    rst_sensor,  
+    trigger,     
+    data_valid,  
+    data_out,    
+    startofpacket, 
+    endofpacket
+		       );
+   
+   input clk;
+   input rst_n;
+   input ready;   
+   input start;
+   input frame_valid;
+   input line_valid;
+   input [7:0] data_in;     
+   output      sclk;
+   inout      sdata;
+   output rst_sensor;
+   output trigger;
+   output data_valid;
+   output [7:0] data_out;
+   output reg startofpacket;
+   output reg endofpacket;
+
+   reg 	  line_valid_s;
+   reg [7:0] data_out_s;
+
+   reg 	     ff_frame_valid;
+   reg 	     ff_line_valid;
+   reg [31:0] pxl_counter;
+
+   
+   localparam st_idle = 0;
+   localparam st_fot = 1;
+   localparam st_valid_data = 2;
+
+   localparam COLS = 800;
+   localparam LINES = 480;
+   
+   reg [1:0]  state;
+   
+   Reset_Delay u0(clk,rst_n,rst0,rst_sensor,rst2,rst3,rst4);
+   I2C_CCD_Config u1 (				clk,
+						rst2,
+						iMIRROR_SW,
+						iEXPOSURE_ADJ,
+						iEXPOSURE_DEC_p,
+						//	I2C Side
+						sclk,
+						sdata
+						);
+   
+
+   
+   always@(posedge clk or negedge rst_n)
+     begin
+	if (!rst_n)
+	  begin
+	     state <= st_idle;
+	     startofpacket <= 0;
+	     endofpacket <= 0;
+	     ff_frame_valid <= 0;
+	     ff_line_valid <= 0;
+	     pxl_counter <= 0;	     
+	  end	
+	else
+	  begin
+	     ff_frame_valid <= frame_valid;
+	     ff_line_valid <= line_valid;	     
+	     case(state)
+	       st_idle: begin
+		  endofpacket <= 0;
+		  if (frame_valid == 1 & ff_frame_valid == 0)		 
+		    begin
+		       if (line_valid == 1 & ff_line_valid == 0)		      
+			 begin
+			    state <= st_valid_data;
+			    startofpacket <= 1;
+			 end
+		       else
+			 state <= st_fot;
+		    end // if (frame_valid == 1 & ff_frame_valid == 0)		  
+		  else
+		    state <= st_idle;
+	       end // case: st_idle	       
+	     
+
+	       st_fot: begin		  
+		  if(ff_line_valid == 0 &  line_valid == 1)
+		    begin
+		       state <= st_valid_data;
+		       startofpacket <= 1;
+		    end		  
+		  else
+		    state <= st_fot;
+	       end	
+	
+	       
+	
+
+	       st_valid_data: begin
+		  startofpacket <= 0;
+		  if (pxl_counter == COLS*LINES-1)
+		    begin
+		       pxl_counter <= 0;
+		       state <= st_idle;
+		       endofpacket <= 0;
+		    end
+		  else 
+		    begin
+		       if (line_valid == 1)
+			 begin
+			    if (pxl_counter == COLS*LINES-2)
+			      begin
+				 endofpacket <= 1;
+				 state <= st_valid_data;
+				 pxl_counter <= pxl_counter + 1;
+			      end
+			    else
+			      begin
+				 pxl_counter <= pxl_counter + 1;
+				 state <= st_valid_data;
+				 endofpacket <= 0;
+			      end // else: !if(pxl_counter == COLS*LINES-2)
+			 end // if (line_valid == 1)
+		    end // else: !if(pxl_counter == COLS*LINES-1)
+	       end // case: st_valid_data
+	     endcase // case (state)	     
+	     end // else: !if(!rst_n)
+     end // always@ (posedge clk or negedge rst_n)
+   
+   
+   
+   
+   
+
+
+   always@(posedge clk or negedge rst_n)
+     begin
+	if(!rst_n)
+	  begin
+	     data_out_s <= 0;
+	     line_valid_s <= 0;
+	  end
+	else
+	  begin
+	     data_out_s <= data_in;
+	     line_valid_s <= line_valid;
+	  end
+     end // always@ (posedge clk or negedge rst_n)
+
+   assign data_out = data_out_s;
+   assign data_valid = (state == st_valid_data) & (line_valid_s == 1) & (frame_valid == 1);
+   
+   assign trigger = 1;
+		    
+endmodule

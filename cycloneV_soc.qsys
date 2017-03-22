@@ -49,12 +49,12 @@
          type = "int";
       }
    }
-   element cycloneV_soc
+   element clock_bridge_0
    {
-      datum _originalDeviceFamily
+      datum _sortIndex
       {
-         value = "Cyclone V";
-         type = "String";
+         value = "14";
+         type = "int";
       }
    }
    element cycloneV_soc
@@ -135,6 +135,22 @@
       {
          value = "Cyclone V";
          type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element d5m_camera_0
+   {
+      datum _sortIndex
+      {
+         value = "13";
+         type = "int";
       }
    }
    element hps_0
@@ -271,6 +287,11 @@
    dir="end" />
  <interface name="burst_write_wf_0_ctrl" internal="burst_write_wf_0.ctrl" />
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
+ <interface
+   name="d5m_camera_0_conduit_end"
+   internal="d5m_camera_0.conduit_end"
+   type="conduit"
+   dir="end" />
  <interface name="hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
  <interface
    name="led_external_connection"
@@ -278,6 +299,11 @@
    type="conduit"
    dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
+ <interface
+   name="pxl_clk"
+   internal="clock_bridge_0.in_clk"
+   type="clock"
+   dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <interface
    name="sw_external_connection"
@@ -324,6 +350,16 @@
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
+ <module
+   name="clock_bridge_0"
+   kind="altera_clock_bridge"
+   version="16.1"
+   enabled="1">
+  <parameter name="DERIVED_CLOCK_RATE" value="0" />
+  <parameter name="EXPLICIT_CLOCK_RATE" value="0" />
+  <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
+ </module>
+ <module name="d5m_camera_0" kind="d5m_camera" version="1.0" enabled="1" />
  <module name="hps_0" kind="altera_hps" version="16.1" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
   <parameter name="ABS_RAM_MEM_INIT_FILENAME" value="meminit" />
@@ -868,7 +904,7 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="8" />
  </module>
- <module name="lupa_fake_0" kind="lupa_fake" version="1.0" enabled="1">
+ <module name="lupa_fake_0" kind="lupa_fake" version="1.0" enabled="0">
   <parameter name="COLS" value="640" />
   <parameter name="FOT" value="1200" />
   <parameter name="ROT" value="48" />
@@ -919,7 +955,7 @@
   <parameter name="DATA_WIDTH" value="32" />
   <parameter name="LENGTH_WIDTH" value="32" />
  </module>
- <module name="pll_0" kind="altera_pll" version="16.1" enabled="1">
+ <module name="pll_0" kind="altera_pll" version="16.1" enabled="0">
   <parameter name="debug_print_output" value="false" />
   <parameter name="debug_use_rbc_taf_method" value="false" />
   <parameter name="device" value="5CSEMA4U23C6" />
@@ -1262,7 +1298,7 @@
  <connection
    kind="avalon_streaming"
    version="16.1"
-   start="lupa_fake_0.avalon_streaming_source"
+   start="d5m_camera_0.avalon_streaming_source"
    end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="led.clk" />
@@ -1301,11 +1337,6 @@
    kind="clock"
    version="16.1"
    start="clk_0.clk"
-   end="bridge_stSrcMmMaster_0.clock" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="clk_0.clk"
    end="bridge_stSrcMmMaster_0.clock_mem" />
  <connection
    kind="clock"
@@ -1323,6 +1354,16 @@
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="pll_0.refclk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_bridge_0.out_clk"
+   end="d5m_camera_0.clock" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_bridge_0.out_clk"
+   end="bridge_stSrcMmMaster_0.clock" />
  <connection kind="reset" version="16.1" start="clk_0.clk_reset" end="sw.reset" />
  <connection kind="reset" version="16.1" start="clk_0.clk_reset" end="led.reset" />
  <connection
@@ -1366,6 +1407,11 @@
    version="16.1"
    start="clk_0.clk_reset"
    end="bridge_stSrcMmMaster_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clk_0.clk_reset"
+   end="d5m_camera_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />

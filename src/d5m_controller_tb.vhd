@@ -6,7 +6,7 @@
 -- Author     :   <rodrigo@snowden>
 -- Company    : 
 -- Created    : 2017-03-17
--- Last update: 2017-03-19
+-- Last update: 2017-03-22
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -48,11 +48,11 @@ architecture tb of d5m_controller_tb is
 begin  -- architecture tb
 
   -- component instantiation
-  DUT: entity work.d5m_controller
-    generic map (
-      COLS => 16,
-      LINES => 8
-      )
+  DUT: entity work.d5m_controller_v
+    -- generic map (
+    --   COLS => 16,
+    --   LINES => 8
+    --   )
     port map (
       clk           => clk,
       rst_n         => rst_n,
