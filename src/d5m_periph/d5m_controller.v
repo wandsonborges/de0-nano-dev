@@ -1,5 +1,6 @@
 module d5m_controller_v (
-    clk, 
+    clk,
+    sys_clk,			 
     rst_n,  
     start,       
     frame_valid, 
@@ -17,6 +18,7 @@ module d5m_controller_v (
 		       );
    
    input clk;
+   input sys_clk;   
    input rst_n;
    input ready;   
    input start;
@@ -34,6 +36,7 @@ module d5m_controller_v (
 
    reg 	  line_valid_s;
    reg [7:0] data_out_s;
+   reg [7:0] data_out_pattern;
 
    reg 	     ff_frame_valid;
    reg 	     ff_line_valid;
@@ -44,13 +47,13 @@ module d5m_controller_v (
    localparam st_fot = 1;
    localparam st_valid_data = 2;
 
-   localparam COLS = 800;
-   localparam LINES = 480;
+   localparam COLS = 2592; //800;
+   localparam LINES = 1944; //480;
    
    reg [1:0]  state;
    
-   Reset_Delay u0(clk,rst_n,rst0,rst_sensor,rst2,rst3,rst4);
-   I2C_CCD_Config u1 (				clk,
+   Reset_Delay u0(sys_clk,rst_n,rst0,rst_sensor,rst2,rst3,rst4);
+   I2C_CCD_Config u1 (				sys_clk,
 						rst2,
 						iMIRROR_SW,
 						iEXPOSURE_ADJ,
@@ -156,10 +159,14 @@ module d5m_controller_v (
 	  begin
 	     data_out_s <= data_in;
 	     line_valid_s <= line_valid;
+	     if (line_valid_s == 1 & frame_valid == 1)
+	       begin
+		  data_out_pattern <= data_out_pattern + 1;
+	       end	     
 	  end
      end // always@ (posedge clk or negedge rst_n)
 
-   assign data_out = data_out_s;
+   assign data_out = data_out_pattern; //data_out_s
    assign data_valid = (state == st_valid_data) & (line_valid_s == 1) & (frame_valid == 1);
    
    assign trigger = 1;

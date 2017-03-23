@@ -160,7 +160,7 @@ assign i2c_reset = iRST_N & ~exposure_adj_reset & ~combo_pulse ;
 parameter	CLK_Freq	=	50000000;	//	50	MHz
 parameter	I2C_Freq	=	20000;		//	20	KHz
 //	LUT Data Number
-parameter	LUT_SIZE	=	25;
+parameter	LUT_SIZE	=	4; //25;
 
 /////////////////////	I2C Control Clock	////////////////////////
 always@(posedge iCLK or negedge i2c_reset)
@@ -234,36 +234,36 @@ end
 always
 begin
 	case(LUT_INDEX)
-	0	:	LUT_DATA	<=	24'h000000;
-	1	:	LUT_DATA	<=	Mirror_d;				//	Mirror Row and Columns
-	2	:	LUT_DATA	<=	{8'h09, senosr_exposure};//	Exposure
-	3	:	LUT_DATA	<=	24'h050000;				//	H_Blanking
-	4	:	LUT_DATA	<=	24'h060019;				//	V_Blanking	
-	5	:	LUT_DATA	<=	24'h0A8000;				//	change latch
-	6	:	LUT_DATA	<=	24'h2B000F; 				//	Green 1 Gain
-	7	:	LUT_DATA	<=	24'h2C020F; 				//	Blue Gain
-	8	:	LUT_DATA	<=	24'h2D020F; 				//	Red Gain
-	9	:	LUT_DATA	<=	24'h2E0008;				  //	Green 2 Gain
-	10	:	LUT_DATA	<=	24'h100051;				//	set up PLL power on
+	//0	:	LUT_DATA	<=	24'h000000;
+	//1	:	LUT_DATA	<=	Mirror_d;				//	Mirror Row and Columns
+	//2	:	LUT_DATA	<=	{8'h09, senosr_exposure};//	Exposure
+	//3	:	LUT_DATA	<=	24'h050000;				//	H_Blanking
+	//4	:	LUT_DATA	<=	24'h060019;				//	V_Blanking	
+	//5	:	LUT_DATA	<=	24'h0A8000;				//	change latch
+	//6	:	LUT_DATA	<=	24'h2B000F; 				//	Green 1 Gain
+	//7	:	LUT_DATA	<=	24'h2C020F; 				//	Blue Gain
+	//8	:	LUT_DATA	<=	24'h2D020F; 				//	Red Gain
+	//9	:	LUT_DATA	<=	24'h2E0008;				  //	Green 2 Gain
+	0	:	LUT_DATA	<=	24'h100051;				//	set up PLL power on
 //`ifdef VGA_640x480p60	
 //	11	:	LUT_DATA	<=	24'h111f04;				//	PLL_m_Factor<<8+PLL_n_Divider
 //	12	:	LUT_DATA	<=	24'h120001;				//	PLL_p1_Divider
 //`else
-	11	:	LUT_DATA	<=	24'h111805;				//	PLL_m_Factor<<8+PLL_n_Divider
-	12	:	LUT_DATA	<=	24'h120003;				//	PLL_p1_Divider
+	1	:	LUT_DATA	<=	24'h111806;				//	PLL_m_Factor<<8+PLL_n_Divider
+	2	:	LUT_DATA	<=	24'h120008;				//	PLL_p1_Divider
 //`endif
-	13	:	LUT_DATA	<=	24'h100053;				//	set USE PLL	 
-	14	:	LUT_DATA	<=	24'h980000;				//	disble calibration 	
-	15	:	LUT_DATA	<=	24'hA00000;				//	Test pattern control 
-	16	:	LUT_DATA	<=	24'hA10000;				//	Test green pattern value
-	17	:	LUT_DATA	<=	24'hA20FFF;				//	Test red pattern value
-	18	:	LUT_DATA	<=	sensor_start_row 	;	//	set start row	
-	19	:	LUT_DATA	<=	sensor_start_column ;	//	set start column 	
-	20	:	LUT_DATA	<=	sensor_row_size;		//	set row size	
-	21	:	LUT_DATA	<=	sensor_column_size;	//	set column size
-	22	:	LUT_DATA	<=	sensor_row_mode;		//	set row mode in bin mode
-	23	:	LUT_DATA	<=	sensor_column_mode;	//	set column mode	 in bin mode
-	24	:	LUT_DATA	<=	24'h4900A8;  				//	row black target		
+	3	:	LUT_DATA	<=	24'h100053;				//	set USE PLL	 
+	//14	:	LUT_DATA	<=	24'h980000;				//	disble calibration 	
+	//15	:	LUT_DATA	<=	24'hA00000;				//	Test pattern control 
+	//16	:	LUT_DATA	<=	24'hA10000;				//	Test green pattern value
+	//17	:	LUT_DATA	<=	24'hA20FFF;				//	Test red pattern value
+	//18	:	LUT_DATA	<=	sensor_start_row 	;	//	set start row	
+	//19	:	LUT_DATA	<=	sensor_start_column ;	//	set start column 	
+	//20	:	LUT_DATA	<=	sensor_row_size;		//	set row size	
+	//21	:	LUT_DATA	<=	sensor_column_size;	//	set column size
+	//22	:	LUT_DATA	<=	sensor_row_mode;		//	set row mode in bin mode
+	//23	:	LUT_DATA	<=	sensor_column_mode;	//	set column mode	 in bin mode
+	//24	:	LUT_DATA	<=	24'h4900A8;  				//	row black target		
 	default:LUT_DATA	<=	24'h000000;
 	endcase
 end
