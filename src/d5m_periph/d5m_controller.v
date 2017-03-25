@@ -162,11 +162,17 @@ module d5m_controller_v (
 	     if (line_valid_s == 1 & frame_valid == 1)
 	       begin
 		  data_out_pattern <= data_out_pattern + 1;
-	       end	     
+	       end
+             else
+	       begin
+		  data_out_pattern <= 0;
+	       end	     	     
 	  end
      end // always@ (posedge clk or negedge rst_n)
 
-   assign data_out = data_out_pattern; //data_out_s
+   assign data_out = data_out_s;
+ //data_out_pattern;
+ //data_out_s;   
    assign data_valid = (state == st_valid_data) & (line_valid_s == 1) & (frame_valid == 1);
    
    assign trigger = 1;
