@@ -1,3 +1,4 @@
+
 #include <pthread>
 #include <stdio>
 #include <stdlib>
@@ -5,9 +6,16 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+
 #define FRAME_ADDR 0x38000000
 #define FRAME_SPAN 0x500000
-#define FSIZE 2592*1944
+#define FRAME_SIZE 2592*1944
+
+#define SERVER_PORT 4444
 
 void* frame_base;
 
@@ -80,17 +88,51 @@ void initRingBuffer(T_RINGBUFFER *ringBuffer)
   pthread_mutex_init(&(ringBuffer->mutex));
 }
 
+void initSocket(char* host)
+{
+  hp = gethostbyname(host);
+  if (!hp) {
+    fprintf(stderr, "socket: unknown host: %s\n", host);
+    exit(1);
+  }
+  /* build address data structure */
+  bzero((char *)&sin, sizeof(sin));
+  sin.sin_family = AF_INET;
+  bcopy(hp->h_addr, (char *)&sin.sin_addr, hp->h_length);
+  sin.sin_port = htons(SERVER_PORT);
+  /* active open */
+  if ((int_socket = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
+    perror("socket: socket error");
+    exit(1);
+  }
+  if (connect(int_socket, (struct sockaddr *)&sin, sizeof(sin)) < 0)
+    {
+      perror("socket: connect error");
+      close(int_socket);
+      exit(1);
+    }
+
+  
+  
+  
+}
 
 /**********************  end ring buffer *********************************/
 
 
-
+/************************Global Variables*****************************/
 int fd;
 void *fd_mem;
 void *frame_base;
 T_RINGBUFFER ringBufferIdle;
 T_RINGBUFFER ringBufferImagesToNet;
 void *buffers[SIZE_RINGBUFFER];
+
+struct hostent *hp;
+struct sockaddr_in sin;
+int int_socket;
+
+
 
 void f_bufferProducer()
 {
@@ -99,7 +141,7 @@ void f_bufferProducer()
   while (1)
     {
       ringBufferIdle.getBuffer(&ringBufferidle, &imgBuffer);
-      memcpy(idleBuffer, frame_base, FSIZE);
+      memcpy(idleBuffer, frame_base, FRAME_SIZE);
       ringBufferImagesToNet.addBuffer(&ringBufferImagesToNet, idleBuffer);
     }
 }
@@ -112,8 +154,9 @@ void f_bufferConsumer()
   while(1)
     {
       ringBufferImagesToNet.getBuffer(&ringBufferImagesToNet, &netBuffer);
+      send(int_socket, netBuffer, FRAME_SIZE, 0);
       //send socket
-      ringBuuferIdle.addBuffer(&ringBufferIdle, netBuffer);
+      ringBufferIdle.addBuffer(&ringBufferIdle, netBuffer);
     }
 }
 
@@ -129,15 +172,16 @@ void init()
 
   for (it=0; it<SIZE_RINGBUFFER; ++it)
     {
-      buffers[it] = (void *) malloc(FSIZE*sizeof(char));
+      buffers[it] = (void *) malloc(FRAME_SIZE*sizeof(char));
       ringBufferIdle.addBuffer(&ringBufferIdle, buffers[it]);
     }
 }
 
 			  
-int main
+int main(int argv, char* argv[])
 {
 
+  initSocket(argv[1]);
   pthread_t bufferProducer, bufferConsumer;
 
 
