@@ -134,4 +134,5 @@ create_clock -period "1 MHz" [get_ports hps_i2c0_SCL]
 create_clock -period "1 MHz" [get_ports hps_i2c1_SCL]
 create_clock -period "48 MHz" [get_ports hps_usb1_CLK]
 
+create_clock -name pxl_clk -period "80 Mhz" [get_ports {D5M_PIXCLK}]
 

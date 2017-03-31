@@ -38,8 +38,10 @@ module d5m_controller_v (
    reg [7:0] data_out_s;
    reg [7:0] data_out_pattern;
 
-   reg 	     ff_frame_valid;
+   reg 	     ff_frame_valid, frame_valid_sync, frame_valid_f;
    reg 	     ff_line_valid;
+   reg 	     line_valid_sync, line_valid_f;
+   reg [7:0] data_in_f, data_in_sync;
    reg [31:0] pxl_counter;
 
    
@@ -78,14 +80,14 @@ module d5m_controller_v (
 	  end	
 	else
 	  begin
-	     ff_frame_valid <= frame_valid;
-	     ff_line_valid <= line_valid;	     
+	     ff_frame_valid <= frame_valid_sync;
+	     ff_line_valid <= line_valid_sync;	     
 	     case(state)
 	       st_idle: begin
 		  endofpacket <= 0;
-		  if (frame_valid == 1 & ff_frame_valid == 0)		 
+		  if (frame_valid_sync == 1 & ff_frame_valid == 0)		 
 		    begin
-		       if (line_valid == 1 & ff_line_valid == 0)		      
+		       if (line_valid_sync == 1 & ff_line_valid == 0)		      
 			 begin
 			    state <= st_valid_data;
 			    startofpacket <= 1;
@@ -99,7 +101,7 @@ module d5m_controller_v (
 	     
 
 	       st_fot: begin		  
-		  if(ff_line_valid == 0 &  line_valid == 1)
+		  if(ff_line_valid == 0 &  line_valid_sync == 1)
 		    begin
 		       state <= st_valid_data;
 		       startofpacket <= 1;
@@ -121,7 +123,7 @@ module d5m_controller_v (
 		    end
 		  else 
 		    begin
-		       if (line_valid == 1)
+		       if (line_valid_sync == 1)
 			 begin
 			    if (pxl_counter == COLS*LINES-2)
 			      begin
@@ -157,9 +159,9 @@ module d5m_controller_v (
 	  end
 	else
 	  begin
-	     data_out_s <= data_in;
-	     line_valid_s <= line_valid;
-	     if (line_valid_s == 1 & frame_valid == 1)
+	     data_out_s <= data_in_sync;
+	     line_valid_s <= line_valid_sync;
+	     if (line_valid_s == 1 & frame_valid_sync == 1)
 	       begin
 		  data_out_pattern <= data_out_pattern + 1;
 	       end
@@ -170,10 +172,23 @@ module d5m_controller_v (
 	  end
      end // always@ (posedge clk or negedge rst_n)
 
+
+  always@(posedge clk)
+    begin
+       frame_valid_f <= frame_valid;
+       frame_valid_sync <= frame_valid_f;
+
+       line_valid_f <= line_valid;
+       line_valid_sync <= line_valid_f;
+
+       data_in_f <= data_in;
+       data_in_sync <= data_in_f;
+    end // always@ (posedge clk)
+   
    assign data_out = data_out_s;
  //data_out_pattern;
  //data_out_s;   
-   assign data_valid = (state == st_valid_data) & (line_valid_s == 1) & (frame_valid == 1);
+   assign data_valid = (state == st_valid_data) & (line_valid_s == 1) & (frame_valid_sync == 1);
    
    assign trigger = 1;
 		    
