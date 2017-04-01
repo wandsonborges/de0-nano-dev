@@ -20,12 +20,20 @@ entity bridge_stSrc_mmMaster is
   port (
     --clk and reset_n
     clk, clk_mem, rst_n : in std_logic;
+
+    -- avalon MM Slave
+    slave_chipselect    : in std_logic;
+    slave_read          : in std_logic;
+    slave_write         : in std_logic;
+    slave_address       : in std_logic_vector(0 downto 0);
+    slave_writedata     : in std_logic_vector(31 downto 0);
+    slave_waitrequest   : out std_logic;
+    slave_readdatavalid : out std_logic;
+    slave_readdata      : out std_logic_vector(31 downto 0);
     
     -- avalon MM Master    
     master_waitrequest : in std_logic;
     master_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
-    --master_byteenable  : out std_logic_vector(NBITS_BYTEEN-1 downto 0);
-    --master_burstcount  : out std_logic_vector(NBITS_BURST-1 downto 0);
     master_write       : out std_logic;
     master_writedata   : out std_logic_vector(NBITS_DATA-1 downto 0);
     
@@ -41,15 +49,34 @@ entity bridge_stSrc_mmMaster is
 end entity bridge_stSrc_mmMaster;
 
 architecture bhv of bridge_stSrc_mmMaster is
-
-  constant ADDR_BASE : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
+  --REGS
+  --0 (32 bits), somente leitura: endereço do buffer a ser lido
+  --1 (32 bits), somente escrita: requisição de buffer (manter em 1 enquanto
+  --estiver lendo)
+  type reg_type is array (0 to 1) of std_logic_vector(31 downto 0);
+  signal registers : reg_type := (
+    x"11223344",
+    x"55667788"
+    );
+  
+  constant ADDR_BASE_BUF0 : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
+  constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38500000";
+  
   signal fifoDataIn : std_logic_vector(NBITS_DATA+1 downto 0);
   signal fifoDataOut : std_logic_vector(NBITS_DATA+1 downto 0);
   signal fifoFull, fifoEmpty : std_logic := '0';
   signal fifoWr, fifoRd : std_logic := '0';
-  signal s_address : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE;
+  signal s_address : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF0;
   signal s_masterwrite : std_logic := '0';
   signal s_master_writedata : std_logic_vector(NBITS_DATA-1 downto 0) := (others => '0');
+
+  signal buffer_update : std_logic := '0';
+
+  type BUF_TYPE is (buffer_0, buffer_1, none);
+  signal buffer_write : BUF_TYPE := buffer_1;
+  signal buffer_read : BUF_TYPE := none;
+
+  signal request_read : std_logic := '0';
 
    	COMPONENT dcfifo
 	GENERIC (
@@ -79,6 +106,54 @@ architecture bhv of bridge_stSrc_mmMaster is
   
 begin  -- architecture bhv
 
+
+  rd_wr_slave_proc: process (clk_mem, rst_n) is
+  begin  -- process rd_wr_slave_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      slave_readdata <= (others => '0');
+      slave_readdatavalid <= '0';
+    elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
+      --LEITURA DO SLAVE
+      if slave_read = '1' then
+        slave_readdata <= registers(to_integer(unsigned(slave_address)));
+        slave_readdatavalid <= '1';
+      --ESCRITA NO SLAVE
+      elsif slave_write = '1' and slave_chipselect = '1' then
+        request_read <= slave_writedata(0);
+        slave_readdatavalid <= '0';
+      else
+        slave_readdatavalid <= '0';
+      end if;      
+    end if;
+  end process rd_wr_slave_proc;
+
+
+
+req_buffer_proc: process (clk_mem, rst_n) is
+begin  -- process slave_proc
+  if rst_n = '0' then                   -- asynchronous reset (active low)
+    buffer_read <= none;
+  elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
+    if request_read = '1' then
+      if buffer_write = buffer_0 then
+        buffer_read <= buffer_1;
+        registers(0) <= x"00223301"; --ADDR_BASE_BUF1;
+      else
+        buffer_read <= buffer_0;
+        registers(0) <= x"00445500"; --ADDR_BASE_BUF0;
+      end if;
+      registers(1) <= x"11990002";
+    else
+      buffer_read <= none;
+      registers(1) <= x"12340000";
+    end if;   
+  end if;
+end process req_buffer_proc;
+
+
+
+  -- BUFFER PING-PONG WRITE ROUTINE ------------------
+ 
   	dcfifo_component : dcfifo
 	GENERIC MAP (
 		intended_device_family => "Cyclone V",
@@ -103,17 +178,24 @@ begin  -- architecture bhv
 		rdempty => fifoEmpty,
 		wrfull => fifoFull
 	);
-        
 
-        waitreq_proc: process (clk_mem, rst_n) is
+
+     waitreq_proc: process (clk_mem, rst_n) is
         begin  -- process waitreq_proc
           if rst_n = '0' then           -- asynchronous reset (active low)
-             s_address <= (others => '0');
+            s_address <= ADDR_BASE_BUF1;
+            buffer_write <= buffer_1;             
           elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
             -- ADDR UPDATE
              if s_masterwrite = '1' and master_waitrequest = '0' then
-              if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket                
-                s_address <= ADDR_BASE;                
+               if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket received
+                 if (buffer_write = buffer_1) or (buffer_read = buffer_1) then
+                   s_address <= ADDR_BASE_BUF0;
+                   buffer_write <= buffer_0;
+                 else
+                   s_address <= ADDR_BASE_BUF1;
+                   buffer_write <= buffer_1;
+                 end if;                 
               else
                 s_address <= std_logic_vector(unsigned(s_address) + 1);                
               end if;
@@ -123,7 +205,9 @@ begin  -- architecture bhv
             
           end if;
         end process waitreq_proc;
-        
+
+
+        --AVALON ST<->MM Master ASSIGMENTS        
         fifoDataIn <= st_endofpacket & st_startofpacket & st_datain;
         fifoWr <= st_datavalid and (not fifoFull);
         fifoRd <= (not master_waitrequest) and (s_masterwrite);        
@@ -135,9 +219,7 @@ begin  -- architecture bhv
         master_address <= s_address;
         master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
 
-       
-        --master_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
-        --master_byteenable <= (others => '1');
-
+        --AVALON MM Slave ASSIGMENTS
+        slave_waitrequest <= '0';        
 
 end architecture bhv;

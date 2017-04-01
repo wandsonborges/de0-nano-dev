@@ -29,8 +29,16 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "12";
          type = "int";
+      }
+   }
+   element bridge_stSrcMmMaster_0.slave
+   {
+      datum baseAddress
+      {
+         value = "65536";
+         type = "String";
       }
    }
    element burst_write_wf_0
@@ -53,8 +61,16 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "15";
          type = "int";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
       }
    }
    element cycloneV_soc
@@ -149,7 +165,15 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "11";
+         type = "int";
+      }
+   }
+   element d5m_fake_0
+   {
+      datum _sortIndex
+      {
+         value = "10";
          type = "int";
       }
    }
@@ -218,7 +242,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "14";
          type = "int";
       }
    }
@@ -255,7 +279,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "13";
          type = "int";
       }
    }
@@ -360,6 +384,12 @@
   <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
  </module>
  <module name="d5m_camera_0" kind="d5m_camera" version="1.0" enabled="1" />
+ <module name="d5m_fake_0" kind="d5m_fake" version="1.0" enabled="0">
+  <parameter name="COLS" value="2592" />
+  <parameter name="FOT" value="2000" />
+  <parameter name="ROT" value="350" />
+  <parameter name="ROWS" value="1944" />
+ </module>
  <module name="hps_0" kind="altera_hps" version="16.1" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
   <parameter name="ABS_RAM_MEM_INIT_FILENAME" value="meminit" />
@@ -1291,6 +1321,15 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
+   kind="avalon"
+   version="16.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="bridge_stSrcMmMaster_0.slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00010000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
    kind="avalon_streaming"
    version="16.1"
    start="lupa_fake_0.avalon_streaming_source"
@@ -1301,12 +1340,12 @@
    start="d5m_camera_0.avalon_streaming_source"
    end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
- <connection kind="clock" version="16.1" start="clk_0.clk" end="led.clk" />
  <connection
    kind="clock"
    version="16.1"
    start="clk_0.clk"
    end="video_dma_controller_0.clk" />
+ <connection kind="clock" version="16.1" start="clk_0.clk" end="led.clk" />
  <connection
    kind="clock"
    version="16.1"
@@ -1333,6 +1372,7 @@
    start="clk_0.clk"
    end="autocorrelation_0.clock" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="lupa_fake_0.clock" />
+ <connection kind="clock" version="16.1" start="clk_0.clk" end="d5m_fake_0.clock" />
  <connection
    kind="clock"
    version="16.1"
@@ -1405,17 +1445,22 @@
    kind="reset"
    version="16.1"
    start="clk_0.clk_reset"
-   end="lupa_fake_0.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
    end="bridge_stSrcMmMaster_0.reset_sink" />
  <connection
    kind="reset"
    version="16.1"
    start="clk_0.clk_reset"
    end="d5m_camera_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clk_0.clk_reset"
+   end="lupa_fake_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clk_0.clk_reset"
+   end="d5m_fake_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
