@@ -29,7 +29,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "11";
          type = "int";
       }
    }
@@ -61,7 +61,7 @@
    {
       datum _sortIndex
       {
-         value = "15";
+         value = "14";
          type = "int";
       }
    }
@@ -165,14 +165,6 @@
    {
       datum _sortIndex
       {
-         value = "11";
-         type = "int";
-      }
-   }
-   element d5m_fake_0
-   {
-      datum _sortIndex
-      {
          value = "10";
          type = "int";
       }
@@ -242,7 +234,7 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "13";
          type = "int";
       }
    }
@@ -279,7 +271,7 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "12";
          type = "int";
       }
    }
@@ -384,12 +376,6 @@
   <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
  </module>
  <module name="d5m_camera_0" kind="d5m_camera" version="1.0" enabled="1" />
- <module name="d5m_fake_0" kind="d5m_fake" version="1.0" enabled="0">
-  <parameter name="COLS" value="2592" />
-  <parameter name="FOT" value="2000" />
-  <parameter name="ROT" value="350" />
-  <parameter name="ROWS" value="1944" />
- </module>
  <module name="hps_0" kind="altera_hps" version="16.1" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
   <parameter name="ABS_RAM_MEM_INIT_FILENAME" value="meminit" />
@@ -934,7 +920,7 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="8" />
  </module>
- <module name="lupa_fake_0" kind="lupa_fake" version="1.0" enabled="0">
+ <module name="lupa_fake_0" kind="lupa_fake" version="1.0" enabled="1">
   <parameter name="COLS" value="640" />
   <parameter name="FOT" value="1200" />
   <parameter name="ROT" value="48" />
@@ -1337,7 +1323,7 @@
  <connection
    kind="avalon_streaming"
    version="16.1"
-   start="d5m_camera_0.avalon_streaming_source"
+   start="lupa_fake_0.avalon_streaming_source"
    end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
  <connection
@@ -1371,8 +1357,12 @@
    version="16.1"
    start="clk_0.clk"
    end="autocorrelation_0.clock" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clk_0.clk"
+   end="bridge_stSrcMmMaster_0.clock" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="lupa_fake_0.clock" />
- <connection kind="clock" version="16.1" start="clk_0.clk" end="d5m_fake_0.clock" />
  <connection
    kind="clock"
    version="16.1"
@@ -1398,11 +1388,6 @@
    version="16.1"
    start="clock_bridge_0.out_clk"
    end="d5m_camera_0.clock" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="clock_bridge_0.out_clk"
-   end="bridge_stSrcMmMaster_0.clock" />
  <connection
    kind="clock"
    version="16.1"
@@ -1450,17 +1435,12 @@
    kind="reset"
    version="16.1"
    start="clk_0.clk_reset"
-   end="d5m_camera_0.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
    end="lupa_fake_0.reset_sink" />
  <connection
    kind="reset"
    version="16.1"
    start="clk_0.clk_reset"
-   end="d5m_fake_0.reset_sink" />
+   end="d5m_camera_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />

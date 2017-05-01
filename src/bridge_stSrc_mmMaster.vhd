@@ -137,15 +137,15 @@ begin  -- process slave_proc
     if request_read = '1' then
       if buffer_write = buffer_0 then
         buffer_read <= buffer_1;
-        registers(0) <= x"00223301"; --ADDR_BASE_BUF1;
+        registers(0) <= ADDR_BASE_BUF1;
       else
         buffer_read <= buffer_0;
-        registers(0) <= x"00445500"; --ADDR_BASE_BUF0;
+        registers(0) <= ADDR_BASE_BUF0;
       end if;
-      registers(1) <= x"11990002";
+      registers(1) <= x"00000000";
     else
       buffer_read <= none;
-      registers(1) <= x"12340000";
+      registers(1) <= x"00000001";
     end if;   
   end if;
 end process req_buffer_proc;
