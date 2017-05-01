@@ -189,13 +189,30 @@ end process req_buffer_proc;
             -- ADDR UPDATE
              if s_masterwrite = '1' and master_waitrequest = '0' then
                if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket received
-                 if (buffer_write = buffer_1) or (buffer_read = buffer_1) then
-                   s_address <= ADDR_BASE_BUF0;
+                 if (buffer_read = none) then --nao ha leitura, buffer ping
+                                              --pong corre livre
+                   if buffer_write = buffer_1 then 
+                     buffer_write <= buffer_0;
+                     s_address <= ADDR_BASE_BUF0;
+                   else
+                     buffer_write <= buffer_1;
+                     s_address <= ADDR_BASE_BUF1;
+                   end if;
+                 elsif buffer_read = buffer_1 then --buffer1 sendo lido
                    buffer_write <= buffer_0;
-                 else
+                   s_address <= ADDR_BASE_BUF0;
+                 else  --buffer0 sendo lido
+                   buffer_write <= buffer_1;  
                    s_address <= ADDR_BASE_BUF1;
-                   buffer_write <= buffer_1;
-                 end if;                 
+                 end if;
+                 
+                 -- if (buffer_write = buffer_1 and buffer_read = none) or (buffer_read = buffer_1) then
+                 --   s_address <= ADDR_BASE_BUF0;
+                 --   buffer_write <= buffer_0;
+                 -- else
+                 --   s_address <= ADDR_BASE_BUF1;
+                 --   buffer_write <= buffer_1;
+                 -- end if;                 
               else
                 s_address <= std_logic_vector(unsigned(s_address) + 1);                
               end if;

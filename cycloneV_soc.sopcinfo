@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="cycloneV_soc" kind="cycloneV_soc" version="1.0" fabric="QSYS">
  <!-- Format version 16.1 196 (Future versions may contain additional information.) -->
- <!-- 2017.04.30.00:44:53 -->
+ <!-- 2017.05.01.14:10:14 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1493523893</value>
+  <value>1493658613</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
