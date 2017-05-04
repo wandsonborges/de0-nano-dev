@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="cycloneV_soc" kind="cycloneV_soc" version="1.0" fabric="QSYS">
  <!-- Format version 16.1 196 (Future versions may contain additional information.) -->
- <!-- 2017.05.01.14:10:14 -->
+ <!-- 2017.05.01.17:33:04 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1493658613</value>
+  <value>1493670784</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -2321,18 +2321,6 @@ parameters are a RESULT of the module parameters. -->
    <clockDomainMember>
     <isBridge>false</isBridge>
     <moduleName>bridge_stSrcMmMaster_0</moduleName>
-    <slaveName>clock</slaveName>
-    <name>bridge_stSrcMmMaster_0.clock</name>
-   </clockDomainMember>
-   <clockDomainMember>
-    <isBridge>false</isBridge>
-    <moduleName>lupa_fake_0</moduleName>
-    <slaveName>clock</slaveName>
-    <name>lupa_fake_0.clock</name>
-   </clockDomainMember>
-   <clockDomainMember>
-    <isBridge>false</isBridge>
-    <moduleName>bridge_stSrcMmMaster_0</moduleName>
     <slaveName>clock_mem</slaveName>
     <name>bridge_stSrcMmMaster_0.clock_mem</name>
    </clockDomainMember>
@@ -2600,6 +2588,12 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>d5m_camera_0</moduleName>
     <slaveName>clock</slaveName>
     <name>d5m_camera_0.clock</name>
+   </clockDomainMember>
+   <clockDomainMember>
+    <isBridge>false</isBridge>
+    <moduleName>bridge_stSrcMmMaster_0</moduleName>
+    <slaveName>clock</slaveName>
+    <name>bridge_stSrcMmMaster_0.clock</name>
    </clockDomainMember>
   </interface>
  </module>
@@ -76311,351 +76305,6 @@ parameters are a RESULT of the module parameters. -->
    </port>
   </interface>
  </module>
- <module name="lupa_fake_0" kind="lupa_fake" version="1.0" path="lupa_fake_0">
-  <!-- Describes a single module. Module parameters are
-the requested settings for a module instance. -->
-  <parameter name="ROWS">
-   <type>int</type>
-   <value>480</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="COLS">
-   <type>int</type>
-   <value>640</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="FOT">
-   <type>int</type>
-   <value>1200</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="ROT">
-   <type>int</type>
-   <value>48</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <interface name="clock" kind="clock_sink" version="16.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="externallyDriven">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="ptfSchematicName">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>clock</type>
-   <isStart>false</isStart>
-   <port>
-    <name>clk</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>clk</role>
-   </port>
-  </interface>
-  <interface
-     name="avalon_streaming_source"
-     kind="avalon_streaming_source"
-     version="16.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="associatedClock">
-    <type>java.lang.String</type>
-    <value>clock</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="associatedReset">
-    <type>java.lang.String</type>
-    <value>reset_sink</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="beatsPerCycle">
-    <type>int</type>
-    <value>1</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="dataBitsPerSymbol">
-    <type>int</type>
-    <value>8</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="emptyWithinPacket">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="errorDescriptor">
-    <type>[Ljava.lang.String;</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="firstSymbolInHighOrderBits">
-    <type>boolean</type>
-    <value>true</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="highOrderSymbolAtMSB">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="maxChannel">
-    <type>int</type>
-    <value>0</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="packetDescription">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="readyLatency">
-    <type>int</type>
-    <value>0</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="symbolsPerBeat">
-    <type>int</type>
-    <value>1</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>avalon_streaming</type>
-   <isStart>true</isStart>
-   <port>
-    <name>en</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>ready</role>
-   </port>
-   <port>
-    <name>data_out</name>
-    <direction>Output</direction>
-    <width>8</width>
-    <role>data</role>
-   </port>
-   <port>
-    <name>startofpacket</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>startofpacket</role>
-   </port>
-   <port>
-    <name>endofpacket</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>endofpacket</role>
-   </port>
-   <port>
-    <name>data_valid</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>valid</role>
-   </port>
-  </interface>
-  <interface name="reset_sink" kind="reset_sink" version="16.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="associatedClock">
-    <type>java.lang.String</type>
-    <value>clock</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="synchronousEdges">
-    <type>com.altera.sopcmodel.reset.Reset$Edges</type>
-    <value>DEASSERT</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>reset</type>
-   <isStart>false</isStart>
-   <port>
-    <name>rst_n</name>
-    <direction>Input</direction>
-    <width>1</width>
-    <role>reset_n</role>
-   </port>
-  </interface>
-  <interface name="conduit_end" kind="conduit_end" version="16.1">
-   <!-- The connection points exposed by a module instance for the
-particular module parameters. Connection points and their
-parameters are a RESULT of the module parameters. -->
-   <parameter name="associatedClock">
-    <type>java.lang.String</type>
-    <value>clock</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="associatedReset">
-    <type>java.lang.String</type>
-    <value></value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="deviceFamily">
-    <type>java.lang.String</type>
-    <value>UNKNOWN</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="generateLegacySim">
-    <type>boolean</type>
-    <value>false</value>
-    <derived>false</derived>
-    <enabled>true</enabled>
-    <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <type>conduit</type>
-   <isStart>false</isStart>
-   <port>
-    <name>frame_valid</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>frame_valid</role>
-   </port>
-   <port>
-    <name>line_valid</name>
-    <direction>Output</direction>
-    <width>1</width>
-    <role>line_valid</role>
-   </port>
-  </interface>
- </module>
  <module
    name="onchip_memory2_0"
    kind="altera_avalon_onchip_memory2"
@@ -86724,10 +86373,10 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>slave</endConnectionPoint>
  </connection>
  <connection
-   name="lupa_fake_0.avalon_streaming_source/bridge_stSrcMmMaster_0.avalon_streaming_sink"
+   name="d5m_camera_0.avalon_streaming_source/bridge_stSrcMmMaster_0.avalon_streaming_sink"
    kind="avalon_streaming"
    version="16.1"
-   start="lupa_fake_0.avalon_streaming_source"
+   start="d5m_camera_0.avalon_streaming_source"
    end="bridge_stSrcMmMaster_0.avalon_streaming_sink">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
@@ -86745,7 +86394,7 @@ parameters are a RESULT of the module parameters. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <startModule>lupa_fake_0</startModule>
+  <startModule>d5m_camera_0</startModule>
   <startConnectionPoint>avalon_streaming_source</startConnectionPoint>
   <endModule>bridge_stSrcMmMaster_0</endModule>
   <endConnectionPoint>avalon_streaming_sink</endConnectionPoint>
@@ -86856,60 +86505,6 @@ parameters are a RESULT of the module parameters. -->
   <startModule>clk_0</startModule>
   <startConnectionPoint>clk</startConnectionPoint>
   <endModule>autocorrelation_0</endModule>
-  <endConnectionPoint>clock</endConnectionPoint>
- </connection>
- <connection
-   name="clk_0.clk/bridge_stSrcMmMaster_0.clock"
-   kind="clock"
-   version="16.1"
-   start="clk_0.clk"
-   end="bridge_stSrcMmMaster_0.clock">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>clk_0</startModule>
-  <startConnectionPoint>clk</startConnectionPoint>
-  <endModule>bridge_stSrcMmMaster_0</endModule>
-  <endConnectionPoint>clock</endConnectionPoint>
- </connection>
- <connection
-   name="clk_0.clk/lupa_fake_0.clock"
-   kind="clock"
-   version="16.1"
-   start="clk_0.clk"
-   end="lupa_fake_0.clock">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>clk_0</startModule>
-  <startConnectionPoint>clk</startConnectionPoint>
-  <endModule>lupa_fake_0</endModule>
   <endConnectionPoint>clock</endConnectionPoint>
  </connection>
  <connection
@@ -87048,6 +86643,33 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clock</endConnectionPoint>
  </connection>
  <connection
+   name="clock_bridge_0.out_clk/bridge_stSrcMmMaster_0.clock"
+   kind="clock"
+   version="16.1"
+   start="clock_bridge_0.out_clk"
+   end="bridge_stSrcMmMaster_0.clock">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>clock_bridge_0</startModule>
+  <startConnectionPoint>out_clk</startConnectionPoint>
+  <endModule>bridge_stSrcMmMaster_0</endModule>
+  <endConnectionPoint>clock</endConnectionPoint>
+ </connection>
+ <connection
    name="clk_0.clk_reset/sw.reset"
    kind="reset"
    version="16.1"
@@ -87183,33 +86805,6 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>reset_sink</endConnectionPoint>
  </connection>
  <connection
-   name="clk_0.clk_reset/lupa_fake_0.reset_sink"
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
-   end="lupa_fake_0.reset_sink">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>clk_0</startModule>
-  <startConnectionPoint>clk_reset</startConnectionPoint>
-  <endModule>lupa_fake_0</endModule>
-  <endConnectionPoint>reset_sink</endConnectionPoint>
- </connection>
- <connection
    name="clk_0.clk_reset/d5m_camera_0.reset_sink"
    kind="reset"
    version="16.1"
@@ -87253,7 +86848,7 @@ parameters are a RESULT of the module parameters. -->
   <version>16.1</version>
  </plugin>
  <plugin>
-  <instanceCount>49</instanceCount>
+  <instanceCount>48</instanceCount>
   <name>reset_sink</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -87261,7 +86856,7 @@ parameters are a RESULT of the module parameters. -->
   <version>16.1</version>
  </plugin>
  <plugin>
-  <instanceCount>61</instanceCount>
+  <instanceCount>60</instanceCount>
   <name>clock_sink</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -87277,7 +86872,7 @@ parameters are a RESULT of the module parameters. -->
   <version>16.1</version>
  </plugin>
  <plugin>
-  <instanceCount>9</instanceCount>
+  <instanceCount>8</instanceCount>
   <name>conduit_end</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -87365,7 +86960,7 @@ parameters are a RESULT of the module parameters. -->
   <version>1.0</version>
  </plugin>
  <plugin>
-  <instanceCount>2</instanceCount>
+  <instanceCount>1</instanceCount>
   <name>avalon_streaming_source</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -87686,14 +87281,6 @@ parameters are a RESULT of the module parameters. -->
  </plugin>
  <plugin>
   <instanceCount>1</instanceCount>
-  <name>lupa_fake</name>
-  <type>com.altera.entityinterfaces.IElementClass</type>
-  <subtype>com.altera.entityinterfaces.IModule</subtype>
-  <displayName>lupa_fake</displayName>
-  <version>1.0</version>
- </plugin>
- <plugin>
-  <instanceCount>1</instanceCount>
   <name>altera_avalon_onchip_memory2</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IModule</subtype>
@@ -87701,7 +87288,7 @@ parameters are a RESULT of the module parameters. -->
   <version>16.1</version>
  </plugin>
  <plugin>
-  <instanceCount>49</instanceCount>
+  <instanceCount>48</instanceCount>
   <name>reset</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>
@@ -87709,7 +87296,7 @@ parameters are a RESULT of the module parameters. -->
   <version>16.1</version>
  </plugin>
  <plugin>
-  <instanceCount>57</instanceCount>
+  <instanceCount>56</instanceCount>
   <name>clock</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>

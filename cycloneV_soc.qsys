@@ -920,7 +920,7 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="8" />
  </module>
- <module name="lupa_fake_0" kind="lupa_fake" version="1.0" enabled="1">
+ <module name="lupa_fake_0" kind="lupa_fake" version="1.0" enabled="0">
   <parameter name="COLS" value="640" />
   <parameter name="FOT" value="1200" />
   <parameter name="ROT" value="48" />
@@ -1323,7 +1323,7 @@
  <connection
    kind="avalon_streaming"
    version="16.1"
-   start="lupa_fake_0.avalon_streaming_source"
+   start="d5m_camera_0.avalon_streaming_source"
    end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
  <connection
@@ -1361,12 +1361,6 @@
    kind="clock"
    version="16.1"
    start="clk_0.clk"
-   end="bridge_stSrcMmMaster_0.clock" />
- <connection kind="clock" version="16.1" start="clk_0.clk" end="lupa_fake_0.clock" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="clk_0.clk"
    end="bridge_stSrcMmMaster_0.clock_mem" />
  <connection
    kind="clock"
@@ -1388,6 +1382,11 @@
    version="16.1"
    start="clock_bridge_0.out_clk"
    end="d5m_camera_0.clock" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_bridge_0.out_clk"
+   end="bridge_stSrcMmMaster_0.clock" />
  <connection
    kind="clock"
    version="16.1"
