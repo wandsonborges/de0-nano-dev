@@ -1,0 +1,17 @@
+#!/bin/ash
+
+#if ! ip link set eth0 up; then
+#	echo "error ip link"
+#fi
+#if ! ip addr add 192.168.1.13/24 dev eth0; then
+#	echo "error ip addr"
+#fi
+
+if ! tftp -g -r $1 $2; then
+	exit 1
+fi
+
+mkdir -p /tmp/sd
+mount /dev/mmcblk0p1 /tmp/sd
+mv /tmp/$1 /tmp/sd/soc_system.rbf
+umount /tmp/sd

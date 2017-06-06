@@ -93,6 +93,7 @@ architecture bhv of soc_top is
 			d5m_camera_0_conduit_end_sdata                                 : out   std_logic;                                        -- sdata
 			d5m_camera_0_conduit_end_trigger                               : out   std_logic;                                        -- trigger
                         d5m_camera_0_conduit_end_sysclk                                : in    std_logic                     := 'X';             -- sysclk
+                        pll_0_outclk0_clk : out std_logic;
 		--burst_read_wf_0_ctrl_baseaddress   : in    std_logic_vector(31 downto 0) := (others => '0'); --    burst_read_wf_0_ctrl.baseaddress
 		--burst_read_wf_0_ctrl_burstcount    : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .burstcount
 		--burst_read_wf_0_ctrl_readdatavalid : out   std_logic;                                        --                        .readdatavalid
@@ -110,9 +111,9 @@ architecture bhv of soc_top is
 		--burst_write_wf_0_ctrl_address      : out   std_logic_vector(3 downto 0);                     --                        .address
 		--burst_write_wf_0_ctrl_read         : out   std_logic;                                        --                        .read
 
-			autocorrelation_0_conduit_end_databeingwrittentoexternalmemory : in    std_logic                     := 'X';             -- databeingwrittentoexternalmemory
-			autocorrelation_0_conduit_end_enablesensordatatoexternalmemory : out   std_logic;                                        -- enablesensordatatoexternalmemory
-			autocorrelation_0_conduit_end_memorycontrollerbusy             : in    std_logic                     := 'X';              -- memorycontrollerbusy
+			-- autocorrelation_0_conduit_end_databeingwrittentoexternalmemory : in    std_logic                     := 'X';             -- databeingwrittentoexternalmemory
+			-- autocorrelation_0_conduit_end_enablesensordatatoexternalmemory : out   std_logic;                                        -- enablesensordatatoexternalmemory
+			-- autocorrelation_0_conduit_end_memorycontrollerbusy             : in    std_logic                     := 'X';              -- memorycontrollerbusy
     
 			clk_clk                                  : in    std_logic                     := 'X';             -- clk
 			--hps_0_h2f_reset_reset_n                  : out   std_logic;                                        -- reset_n
@@ -183,7 +184,7 @@ architecture bhv of soc_top is
   signal s_LED : std_logic_vector(7 downto 0) := (others => '0');
 begin  -- architecture bhv
 
-  D5M_XCLKIN <= CLOCK_50;
+  --D5M_XCLKIN <= CLOCK_50;
   
   cycloneV_soc_2: component cycloneV_soc
     port map (
@@ -200,6 +201,7 @@ begin  -- architecture bhv
       d5m_camera_0_conduit_end_sdata  => D5M_SDATA,
       d5m_camera_0_conduit_end_trigger => D5M_TRIGGER,
       d5m_camera_0_conduit_end_sysclk => CLOCK_50,
+      pll_0_outclk0_clk => D5M_XCLKIN,
       
       led_external_connection_export =>  s_LED,
       memory_mem_a                    => HPS_DDR3_ADDR,
@@ -253,10 +255,10 @@ begin  -- architecture bhv
       hps_io_hps_io_usb1_inst_DIR     => HPS_USB_DIR,
       hps_io_hps_io_usb1_inst_NXT     => HPS_USB_NXT,
       hps_io_hps_io_uart0_inst_RX     => HPS_UART_RX,
-      hps_io_hps_io_uart0_inst_TX     => HPS_UART_TX,
-      autocorrelation_0_conduit_end_databeingwrittentoexternalmemory => '0',
-      autocorrelation_0_conduit_end_enablesensordatatoexternalmemory  => open,
-      autocorrelation_0_conduit_end_memorycontrollerbusy             => '0'
+      hps_io_hps_io_uart0_inst_TX     => HPS_UART_TX
+      -- autocorrelation_0_conduit_end_databeingwrittentoexternalmemory => '0',
+      -- autocorrelation_0_conduit_end_enablesensordatatoexternalmemory  => open,
+      -- autocorrelation_0_conduit_end_memorycontrollerbusy             => '0'
      --burst_read_wf_0_ctrl_baseaddress          => x"39000000",          --     burst_read_wf_0_ctrl.baseaddress
      --burst_read_wf_0_ctrl_burstcount           => "1000",           --                         .burstcount
      --burst_read_wf_0_ctrl_readdatavalid        => read_valid2ctrl_write,        --                         .readdatavalid

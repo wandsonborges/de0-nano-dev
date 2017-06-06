@@ -58,9 +58,26 @@ architecture bhv of bridge_stSrc_mmMaster is
     x"11223344",
     x"55667788"
     );
-  
+
+  -- type reg_type is array (0 to 10) of std_logic_vector(31 downto 0);
+  -- signal registers : reg_type := (
+  --   x"11223344",
+  --   x"0000FFCB",
+  --   x"00000037",
+  --   x"00000037",
+  --   x"00000037",
+  --   x"00000005",
+  --   x"00000006",
+  --   x"00000007",
+  --   x"00000008",
+  --   x"00000009",
+  --   x"0000000A"
+  --   );
+
   constant ADDR_BASE_BUF0 : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
-  constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38500000";
+  constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
+  --constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) :=
+  --x"38500000"; --TROCAR!!
   
   signal fifoDataIn : std_logic_vector(NBITS_DATA+1 downto 0);
   signal fifoDataOut : std_logic_vector(NBITS_DATA+1 downto 0);
@@ -75,7 +92,10 @@ architecture bhv of bridge_stSrc_mmMaster is
   type BUF_TYPE is (buffer_0, buffer_1, none);
   signal buffer_write : BUF_TYPE := buffer_1;
   signal buffer_read : BUF_TYPE := none;
+  signal last_buffer_read : BUF_TYPE := buffer_1;
 
+  type db_state is (st_idle, st_define, st_lockB1, st_lockB0, st_waitFreeB0, st_waitFreeB1);
+  signal state : db_state := st_idle;
   signal request_read : std_logic := '0';
 
    	COMPONENT dcfifo
@@ -106,12 +126,12 @@ architecture bhv of bridge_stSrc_mmMaster is
   
 begin  -- architecture bhv
 
-
   rd_wr_slave_proc: process (clk_mem, rst_n) is
   begin  -- process rd_wr_slave_proc
     if rst_n = '0' then                 -- asynchronous reset (active low)
       slave_readdata <= (others => '0');
       slave_readdatavalid <= '0';
+      request_read <= '0';
     elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
       --LEITURA DO SLAVE
       if slave_read = '1' then
@@ -128,8 +148,79 @@ begin  -- architecture bhv
   end process rd_wr_slave_proc;
 
 
+  -- state_proc: process (clk_mem, rst_n) is
+  -- begin  -- process state_proc
+  --   if rst_n = '0' then                 -- asynchronous reset (active low)
+  --     state <= st_idle;
+  --     buffer_read <= none;
+  --     registers <= (x"11223344", x"55667788");
+  --     last_buffer_read <= buffer_1;
+  --   elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
+  --         ---- STATE MACHINE
+  --   case state is
+  --     when st_idle =>
+  --       registers(1) <= (others => '0');
+  --       buffer_read <= none;
+  --       if request_read = '1' then
+  --         state <= st_define;
+  --       else
+  --         state <= st_idle;
+  --       end if;
 
-req_buffer_proc: process (clk_mem, rst_n) is
+  --     when st_define =>
+  --       registers(1) <= (others => '0');
+  --       buffer_read <= none;
+  --       if last_buffer_read = buffer_1 then
+  --         state <= st_lockB0;
+  --       else
+  --         state <= st_lockB1;
+  --       end if;        
+
+  --     when st_lockB0 =>
+  --       buffer_read <= none;
+  --       registers(1) <= (others => '0');
+  --       if buffer_write = buffer_0 then
+  --         state <= st_lockB0;
+  --       else
+  --         state <= st_waitFreeB0;
+  --       end if;
+
+  --     when st_waitFreeB0 =>
+  --       buffer_read <= buffer_0;
+  --       last_buffer_read <= buffer_0;
+  --       registers(1) <= x"00000001";
+  --       registers(0) <= ADDR_BASE_BUF0;
+  --       if request_read = '0' then
+  --         state <= st_idle;
+  --       else
+  --         state <= st_waitFreeB0;
+  --       end if;
+
+  --     when st_lockB1 =>
+  --       registers(1) <= (others => '0');
+  --       buffer_read <= none;
+  --       if buffer_write = buffer_1 then
+  --         state <= st_lockB1;
+  --       else
+  --         state <= st_waitFreeB1;
+  --       end if;
+
+  --     when st_waitFreeB1 =>
+  --       buffer_read <= buffer_1;
+  --       last_buffer_read <= buffer_1;
+  --       registers(1) <= x"00000001";
+  --       registers(0) <= ADDR_BASE_BUF1;
+  --       if request_read = '0' then
+  --         state <= st_idle;
+  --       else
+  --         state <= st_waitFreeB1;
+  --       end if;
+        
+  --   end case;
+  --   end if;
+  -- end process state_proc;
+
+  req_buffer_proc: process (clk_mem, rst_n) is
 begin  -- process slave_proc
   if rst_n = '0' then                   -- asynchronous reset (active low)
     buffer_read <= none;
@@ -152,31 +243,31 @@ end process req_buffer_proc;
 
 
 
-  -- BUFFER PING-PONG WRITE ROUTINE ------------------
+----- ---  BUFFER PING-PONG WRITE ROUTINE ------------------
  
   	dcfifo_component : dcfifo
-	GENERIC MAP (
-		intended_device_family => "Cyclone V",
-		lpm_numwords => 1024,
-		lpm_showahead => "ON",
-		lpm_type => "dcfifo",
-		lpm_width => NBITS_DATA+2,
-		lpm_widthu => 10,
-		overflow_checking => "ON",
-		rdsync_delaypipe => 4,
-		underflow_checking => "ON",
-		use_eab => "ON",
-		wrsync_delaypipe => 4
-	)
-	PORT MAP (
-		data => fifoDataIn,
-		rdclk => clk_mem,
-		rdreq => fifoRd,
-		wrclk => clk,
-		wrreq => fifoWr,
-		q => fifoDataOut,
-		rdempty => fifoEmpty,
-		wrfull => fifoFull
+        GENERIC MAP (
+        	intended_device_family => "Cyclone V",
+        	lpm_numwords => 1024,
+        	lpm_showahead => "ON",
+        	lpm_type => "dcfifo",
+        	lpm_width => NBITS_DATA+2,
+        	lpm_widthu => 10,
+        	overflow_checking => "ON",
+        	rdsync_delaypipe => 4,
+        	underflow_checking => "ON",
+        	use_eab => "ON",
+        	wrsync_delaypipe => 4
+        )
+        PORT MAP (
+        	data => fifoDataIn,
+        	rdclk => clk_mem,
+        	rdreq => fifoRd,
+        	wrclk => clk,
+        	wrreq => fifoWr,
+        	q => fifoDataOut,
+        	rdempty => fifoEmpty,
+        	wrfull => fifoFull
 	);
 
 
@@ -200,10 +291,10 @@ end process req_buffer_proc;
                    end if;
                  elsif buffer_read = buffer_1 then --buffer1 sendo lido
                    buffer_write <= buffer_0;
-                   s_address <= ADDR_BASE_BUF0;
+                   s_address <= ADDR_BASE_BUF0; 
                  else  --buffer0 sendo lido
                    buffer_write <= buffer_1;  
-                   s_address <= ADDR_BASE_BUF1;
+                   s_address <= ADDR_BASE_BUF1; 
                  end if;
                  
                  -- if (buffer_write = buffer_1 and buffer_read = none) or (buffer_read = buffer_1) then
@@ -237,6 +328,6 @@ end process req_buffer_proc;
         master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
 
         --AVALON MM Slave ASSIGMENTS
-        slave_waitrequest <= '0';        
+        --slave_waitrequest <= '0';        
 
 end architecture bhv;
