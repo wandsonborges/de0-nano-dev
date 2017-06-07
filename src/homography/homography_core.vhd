@@ -43,7 +43,7 @@ entity homography_core  is
     clk         : in  std_logic;
     rst_n       : in  std_logic;
     inc_addr    : in  std_logic;
-    sw          : in  std_logic_vector(17 downto 0);
+    sw          : in  std_logic_vector(31 downto 0);
     x_in        : in  std_logic_vector(WW-1 downto 0);
     y_in        : in  std_logic_vector(HW-1 downto 0);
     last_data   : out std_logic;

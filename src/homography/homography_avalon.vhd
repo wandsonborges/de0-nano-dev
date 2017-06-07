@@ -25,19 +25,29 @@ entity homography_avalon is
     --clk and reset_n
     clk, rst_n : in std_logic;
   
-    -- avalon MM Master 1 - Write Signals
+    -- avalon MM Master 1 - Write Homography Image
     masterwr_waitrequest : in std_logic;
     masterwr_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
     masterwr_write       : out std_logic;
     masterwr_writedata   : out std_logic_vector(NBITS_DATA-1 downto 0);
     
 
-    -- avalon MM Master 2 - Read Signals
+    -- avalon MM Master 2 - Get Raw Image
     masterrd_waitrequest : in std_logic;
     masterrd_readdatavalid : in std_logic;
     masterrd_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
     masterrd_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
-    masterrd_read       : out std_logic
+    masterrd_read       : out std_logic;
+    
+    -- avalon MM Slave - Configure Homography Matrix
+    slave_chipselect    : in std_logic;
+    slave_read          : in std_logic;
+    slave_write         : in std_logic;
+    slave_address       : in std_logic_vector(3 downto 0);
+    slave_writedata     : in std_logic_vector(31 downto 0);
+    slave_waitrequest   : out std_logic;
+    slave_readdatavalid : out std_logic;
+    slave_readdata      : out std_logic_vector(31 downto 0)
 
     
     );               
@@ -58,6 +68,7 @@ architecture bhv of homography_avalon is
   
   -- HOMOG SIGNALS
   signal inc_addr : STD_LOGIC := '0';
+  signal select_homog : STD_LOGIC_VECTOR(31 downto 0);
   signal lastDataFlag : STD_LOGIC := '0';
   signal x_in : STD_LOGIC_VECTOR(NBITS_COLS-1 downto 0) := (others => '0');
   signal y_in : STD_LOGIC_VECTOR(NBITS_LINES-1 downto 0) := (others => '0');
@@ -81,7 +92,29 @@ architecture bhv of homography_avalon is
   signal rdcount : UNSIGNED(NBITS_COLS+NBITS_LINES-1 downto 0) := (others => '0');
 
 
-  -- STATE MACHINES
+  -- CONFIGURE HOMOG SIGNALS
+  type reg_type is array (0 to 15) of std_logic_vector(31 downto 0);
+  constant init_registers : reg_type := (
+    x"11223300", --id
+    x"00000020", --nbits_frac
+    x"00000000", --matrix select
+    x"00100000", --h[0,0]
+    x"00000000", --h[0,2]
+    x"00000000", --h[0,3]
+    x"00000000", --h[1,1]
+    x"00010000", --h[1,2]
+    x"00000000", --h[1,3]
+    x"00000000", --h[2,1]
+    x"00000000", --h[2,2]
+    x"00100000", --h[2,3]
+    x"00000000", --reserved
+    x"00000000", --reserved
+    x"00000000", --reserved
+    x"00000000" --reserved
+    );
+  signal registers : reg_type := init_registers;
+  
+
  
 COMPONENT lpm_mult
 	GENERIC (
@@ -129,6 +162,32 @@ COMPONENT lpm_mult
   
 begin  -- architecture bhv
 
+-- AVALON SLAVE: HOMOG CONF
+  
+ rd_wr_slave_proc: process (clk, rst_n) is
+  begin  -- process rd_wr_slave_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      slave_readdata <= (others => '0');
+      slave_readdatavalid <= '0';      
+    elsif clk'event and clk = '1' then  -- rising clock edge     
+      --LEITURA DO SLAVE  ---- READ PROC
+      if slave_read = '1' then
+        slave_readdata <= registers(to_integer(unsigned(slave_address)));
+        slave_readdatavalid <= '1';
+      --ESCRITA NO SLAVE
+      elsif slave_write = '1' and slave_chipselect = '1' then
+        if unsigned(slave_address) > 1 then 
+          registers(to_integer(unsigned(slave_address))) <= slave_writedata;
+          slave_readdatavalid <= '0';
+        else
+          slave_readdatavalid <= '0';  
+        end if;        
+      else
+        slave_readdatavalid <= '0';
+      end if;      
+    end if;
+  end process rd_wr_slave_proc;
+  
   homography_core_1: entity work.homography_core
     generic map (
       WIDTH           => COLS,
@@ -145,10 +204,13 @@ begin  -- architecture bhv
       y_in           => y_in,
       inc_addr       => inc_addr,
       last_data      => open,
-      sw             => (others => '0'),
+      sw             => select_homog,
       x_out          => x_out,
       y_out          => y_out);
-
+  
+-- CHOOSE HOMOG
+  select_homog <= registers(2);
+  
   -- MULTIPLICA VALOR POR COLS EM 1 CICLO
   lpm_mult_component : lpm_mult
 	GENERIC MAP (
