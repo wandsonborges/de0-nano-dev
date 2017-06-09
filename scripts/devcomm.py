@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import socket
+from time import sleep
 
 def recvall(sock, n):
     # Helper function to recv n bytes or return None if EOF is hit

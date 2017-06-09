@@ -30,6 +30,7 @@ entity homography_avalon is
     masterwr_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
     masterwr_write       : out std_logic;
     masterwr_writedata   : out std_logic_vector(NBITS_DATA-1 downto 0);
+    masterwr_burstcount  : out std_logic_vector(NBITS_BURST-1 downto 0);
     
 
     -- avalon MM Master 2 - Get Raw Image
@@ -63,8 +64,8 @@ architecture bhv of homography_avalon is
   signal fifoEmpty : STD_LOGIC;
   signal fifoFull  : STD_LOGIC;
   signal fifoDataOut     : STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
-  signal usedw : STD_LOGIC_VECTOR (9 DOWNTO 0);
-  signal almost_full : STD_LOGIC := '0';
+  signal usedw : STD_LOGIC_VECTOR (11 DOWNTO 0);
+  signal half_full : STD_LOGIC := '0';
   
   -- HOMOG SIGNALS
   signal inc_addr : STD_LOGIC := '0';
@@ -90,8 +91,11 @@ architecture bhv of homography_avalon is
 
   --GENERAL SIGNALS
   signal rdcount : UNSIGNED(NBITS_COLS+NBITS_LINES-1 downto 0) := (others => '0');
+  signal words_written_during_burst : UNSIGNED(NBITS_BURST-1 downto 0) := (others => '0');
 
-
+  type wr_control_st is (st_idle, st_write);
+  signal state_write : wr_control_st := st_idle;
+  
   -- CONFIGURE HOMOG SIGNALS
   type reg_type is array (0 to 15) of std_logic_vector(31 downto 0);
   constant init_registers : reg_type := (
@@ -126,9 +130,9 @@ COMPONENT lpm_mult
 		lpm_widthp		: NATURAL
 	);
 	PORT (
-			dataa	: IN STD_LOGIC_VECTOR (11 DOWNTO 0);
-			datab	: IN STD_LOGIC_VECTOR (11 DOWNTO 0);
-			result	: OUT STD_LOGIC_VECTOR (23 DOWNTO 0)
+			dataa	: IN STD_LOGIC_VECTOR (NBITS_LINES-1 DOWNTO 0);
+			datab	: IN STD_LOGIC_VECTOR (NBITS_COLS-1 DOWNTO 0);
+			result	: OUT STD_LOGIC_VECTOR (NBITS_LINES+NBITS_COLS-1 DOWNTO 0)
 	);
 	END COMPONENT;
   
@@ -154,7 +158,7 @@ COMPONENT lpm_mult
 			empty	: OUT STD_LOGIC ;
 			full	: OUT STD_LOGIC ;
 			q	: OUT STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
-			usedw	: OUT STD_LOGIC_VECTOR (9 DOWNTO 0)
+			usedw	: OUT STD_LOGIC_VECTOR (11 DOWNTO 0)
 	);
 	END COMPONENT;
 
@@ -230,11 +234,11 @@ begin  -- architecture bhv
     GENERIC MAP (
       add_ram_output_register => "OFF",
       intended_device_family => "Cyclone V",
-      lpm_numwords => 1024,
+      lpm_numwords => 4096,
       lpm_showahead => "ON",
       lpm_type => "scfifo",
       lpm_width => NBITS_DATA+1,
-      lpm_widthu => 10,
+      lpm_widthu => 12,
       overflow_checking => "ON",
       underflow_checking => "ON",
       use_eab => "ON"
@@ -247,18 +251,18 @@ begin  -- architecture bhv
       empty => fifoEmpty,
       full => fifoFull,
       q => fifoDataOut,
-      usedw => open
+      usedw => usedw
       );
 
   inc_addr <= s_masterread and (not masterrd_waitrequest);
   fifoDataIn <= lastDataFlag & masterrd_readdata;
-  s_masterread <= not fifoFull;
+  s_masterread <= not half_full;
   masterrd_read <= s_masterread;
   masterrd_address <= std_logic_vector(UNSIGNED(mult_result) + UNSIGNED(x_out) + UNSIGNED(ADDR_BASE_READ));
   wrreq <= masterrd_readdatavalid and (not fifoFull);
  
 
-  almost_full <= usedw(9) and usedw(8);
+  half_full <= usedw(11);
  
 xy_gen: process (clk, rst_n) is
 begin  -- process xy_gen
@@ -297,23 +301,56 @@ begin  -- process xy_gen
 end process xy_gen;
 
 
-  s_masterwrite <= not fifoEmpty;
+  s_masterwrite <= '1' when state_write = st_write else '0';--not fifoEmpty;
   masterwr_write <= s_masterwrite;
   masterwr_address <= s_address;
   masterwr_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
   rdreq <= (not masterwr_waitrequest) and s_masterwrite;
+  masterwr_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
 
+
+  stwrite_proc: process (clk, rst_n) is
+  begin  -- process write_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      state_write <= st_idle;
+    elsif clk'event and clk = '1' then  -- rising clock edge
+      case state_write is
+        when st_idle =>
+          if (unsigned(usedw) > BURST) then
+            state_write <= st_write;
+          else
+            state_write <= st_idle;
+          end if;
+
+        when st_write =>
+          if words_written_during_burst = BURST-1 then
+            state_write <= st_idle;
+          else
+            state_write <= st_write;
+          end if;
+      end case;
+      
+    end if;
+  end process stwrite_proc;
+  
   waitreq_proc: process (clk, rst_n) is
   begin  -- process waitreq_proc
     if rst_n = '0' then           -- asynchronous reset (active low)
       s_address <= ADDR_BASE_WRITE;
+      words_written_during_burst <= (others => '0');
     elsif clk'event and clk = '1' then  -- rising clock edge
       -- ADDR UPDATE
       if rdreq = '1' then
         if fifoDataOut(NBITS_DATA) = '1' then --endofpacket received
           s_address <= ADDR_BASE_WRITE;
+          words_written_during_burst <= (others => '0');
         else
-          s_address <= std_logic_vector(unsigned(s_address) + 1);                
+          if words_written_during_burst = BURST-1 then
+            words_written_during_burst <= (others => '0');
+            s_address <= std_logic_vector(unsigned(s_address) + BURST);
+          else
+            words_written_during_burst <= words_written_during_burst + 1;
+          end if;          
         end if;
       else
         s_address <= s_address;

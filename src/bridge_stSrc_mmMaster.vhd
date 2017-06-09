@@ -36,6 +36,7 @@ entity bridge_stSrc_mmMaster is
     master_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
     master_write       : out std_logic;
     master_writedata   : out std_logic_vector(NBITS_DATA-1 downto 0);
+    master_burstcount   : out std_logic_vector(NBITS_BURST-1 downto 0);
     
     -- avalon ST Sink
     st_startofpacket : in std_logic;
@@ -83,6 +84,7 @@ architecture bhv of bridge_stSrc_mmMaster is
   signal fifoDataOut : std_logic_vector(NBITS_DATA+1 downto 0);
   signal fifoFull, fifoEmpty : std_logic := '0';
   signal fifoWr, fifoRd : std_logic := '0';
+  signal rdusedw : std_logic_vector (11 downto 0) := (others => '0');
   signal s_address : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF0;
   signal s_masterwrite : std_logic := '0';
   signal s_master_writedata : std_logic_vector(NBITS_DATA-1 downto 0) := (others => '0');
@@ -98,7 +100,14 @@ architecture bhv of bridge_stSrc_mmMaster is
   signal state : db_state := st_idle;
   signal request_read : std_logic := '0';
 
-   	COMPONENT dcfifo
+
+  --write state
+  type wr_control_st is (st_idle, st_write);
+  signal state_write : wr_control_st := st_idle;
+
+  signal words_written_during_burst : unsigned(NBITS_BURST-1 downto 0) := (others => '0');
+
+  	COMPONENT dcfifo
 	GENERIC (
 		intended_device_family		: STRING;
 		lpm_numwords		: NATURAL;
@@ -120,9 +129,11 @@ architecture bhv of bridge_stSrc_mmMaster is
 			wrreq	: IN STD_LOGIC ;
 			q	: OUT STD_LOGIC_VECTOR (NBITS_DATA+1 DOWNTO 0);
 			rdempty	: OUT STD_LOGIC ;
+			rdusedw	: OUT STD_LOGIC_VECTOR (11 DOWNTO 0);
 			wrfull	: OUT STD_LOGIC 
 	);
 	END COMPONENT;
+
   
 begin  -- architecture bhv
 
@@ -248,11 +259,11 @@ end process req_buffer_proc;
   	dcfifo_component : dcfifo
         GENERIC MAP (
         	intended_device_family => "Cyclone V",
-        	lpm_numwords => 1024,
+        	lpm_numwords => 4096,
         	lpm_showahead => "ON",
         	lpm_type => "dcfifo",
         	lpm_width => NBITS_DATA+2,
-        	lpm_widthu => 10,
+        	lpm_widthu => 12,
         	overflow_checking => "ON",
         	rdsync_delaypipe => 4,
         	underflow_checking => "ON",
@@ -267,67 +278,94 @@ end process req_buffer_proc;
         	wrreq => fifoWr,
         	q => fifoDataOut,
         	rdempty => fifoEmpty,
+                rdusedw => rdusedw,
         	wrfull => fifoFull
 	);
 
 
-     waitreq_proc: process (clk_mem, rst_n) is
-        begin  -- process waitreq_proc
-          if rst_n = '0' then           -- asynchronous reset (active low)
+waitreq_proc: process (clk_mem, rst_n) is
+begin  -- process waitreq_proc
+  if rst_n = '0' then           -- asynchronous reset (active low)
+    s_address <= ADDR_BASE_BUF1;
+    buffer_write <= buffer_1;
+    words_written_during_burst <= (others => '0');
+  elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
+    -- ADDR UPDATE
+    if s_masterwrite = '1' and master_waitrequest = '0' then
+      if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket received
+        if (buffer_read = none) then --nao ha leitura, buffer ping
+                                               --pong corre livre
+          if buffer_write = buffer_1 then 
+            buffer_write <= buffer_0;
+            s_address <= ADDR_BASE_BUF0;
+          else
+            buffer_write <= buffer_1;
             s_address <= ADDR_BASE_BUF1;
-            buffer_write <= buffer_1;             
-          elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
-            -- ADDR UPDATE
-             if s_masterwrite = '1' and master_waitrequest = '0' then
-               if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket received
-                 if (buffer_read = none) then --nao ha leitura, buffer ping
-                                              --pong corre livre
-                   if buffer_write = buffer_1 then 
-                     buffer_write <= buffer_0;
-                     s_address <= ADDR_BASE_BUF0;
-                   else
-                     buffer_write <= buffer_1;
-                     s_address <= ADDR_BASE_BUF1;
-                   end if;
-                 elsif buffer_read = buffer_1 then --buffer1 sendo lido
-                   buffer_write <= buffer_0;
-                   s_address <= ADDR_BASE_BUF0; 
-                 else  --buffer0 sendo lido
-                   buffer_write <= buffer_1;  
-                   s_address <= ADDR_BASE_BUF1; 
-                 end if;
-                 
-                 -- if (buffer_write = buffer_1 and buffer_read = none) or (buffer_read = buffer_1) then
-                 --   s_address <= ADDR_BASE_BUF0;
-                 --   buffer_write <= buffer_0;
-                 -- else
-                 --   s_address <= ADDR_BASE_BUF1;
-                 --   buffer_write <= buffer_1;
-                 -- end if;                 
-              else
-                s_address <= std_logic_vector(unsigned(s_address) + 1);                
-              end if;
-            else
-              s_address <= s_address;
-            end if; 
-            
           end if;
-        end process waitreq_proc;
+        elsif buffer_read = buffer_1 then --buffer1 sendo lido
+          buffer_write <= buffer_0;
+          s_address <= ADDR_BASE_BUF0; 
+        else  --buffer0 sendo lido
+          buffer_write <= buffer_1;  
+          s_address <= ADDR_BASE_BUF1; 
+        end if;
+        words_written_during_burst <= (others => '0');
+      else
+        if words_written_during_burst = BURST-1 then
+          words_written_during_burst <= (others => '0');
+          s_address <= std_logic_vector(unsigned(s_address) + BURST);
+        else
+          words_written_during_burst <= words_written_during_burst + 1;
+        end if;        
+      end if;
+    else
+      s_address <= s_address;
+    end if; 
+    
+  end if;
+end process waitreq_proc;
 
 
-        --AVALON ST<->MM Master ASSIGMENTS        
-        fifoDataIn <= st_endofpacket & st_startofpacket & st_datain;
-        fifoWr <= st_datavalid and (not fifoFull);
-        fifoRd <= (not master_waitrequest) and (s_masterwrite);        
-        st_ready <= not fifoFull;
-        
-        s_masterwrite <= not fifoEmpty;
-        
-        master_write <= s_masterwrite;
-        master_address <= s_address;
-        master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
+  stwrite_proc: process (clk_mem, rst_n) is
+  begin  -- process write_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      state_write <= st_idle;
+    elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
+      case state_write is
+        when st_idle =>
+          if (unsigned(rdusedw) > BURST) then
+            state_write <= st_write;
+          else
+            state_write <= st_idle;
+          end if;
 
-        --AVALON MM Slave ASSIGMENTS
-        --slave_waitrequest <= '0';        
+        when st_write =>
+          if words_written_during_burst = BURST-1 then
+            state_write <= st_idle;
+          else
+            state_write <= st_write;
+          end if;
+      end case;
+      
+    end if;
+  end process stwrite_proc;
+
+  
+--AVALON ST<->MM Master ASSIGMENTS        
+fifoDataIn <= st_endofpacket & st_startofpacket & st_datain;
+fifoWr <= st_datavalid and (not fifoFull);
+fifoRd <= (not master_waitrequest) and (s_masterwrite);        
+st_ready <= not fifoFull;
+
+s_masterwrite <= '1' when state_write = st_write else '0'; --not fifoEmpty;
+
+master_write <= s_masterwrite;
+master_address <= s_address;
+master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
+
+master_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
+
+--AVALON MM Slave ASSIGMENTS
+--slave_waitrequest <= '0';        
 
 end architecture bhv;

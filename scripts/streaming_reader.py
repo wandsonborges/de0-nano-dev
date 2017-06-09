@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import socket
+import sys
+from time import sleep
 
 def recvall(sock, n):
     # Helper function to recv n bytes or return None if EOF is hit
@@ -18,9 +20,14 @@ def processImgD5M(img):
     return img
 
 
+def processImgD5MHomog(img):    
+    #img = cv2.cvtColor(img, cv2.COLOR_BayerBG2BGR)
+    img = cv2.resize(img, (COLS/2, LINES/2))
+    return img
 
-COLS = 640 #2592
-LINES = 480 #1944
+
+COLS = int(sys.argv[1]) #2592#640
+LINES = int(sys.argv[2]) #1944#480 #1944
 NPIXELS = COLS*LINES;
 FRAME_SIZE = NPIXELS + ((512 - (NPIXELS % 512)) % 512)
 
@@ -44,9 +51,9 @@ if (ord(data) == 139):
            #ack = client_socket.recv(8);
            img_array = np.fromstring(recvall(client_socket, FRAME_SIZE), dtype='uint8')
            img_array.resize(LINES,COLS)
-
-           cv2.imshow("Display", img_array)
-           #cv2.imshow("Display", processImgD5M(img_array))
+           print("rec img")
+           #cv2.imshow("Display", img_array)
+           cv2.imshow("Display", processImgD5MHomog(img_array))
            keyPressed = cv2.waitKey(1)
 
             

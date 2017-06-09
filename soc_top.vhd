@@ -92,10 +92,10 @@ architecture bhv of soc_top is
 			d5m_camera_0_conduit_end_sclk                                  : out   std_logic;                                        -- sclk
 			d5m_camera_0_conduit_end_sdata                                 : out   std_logic;                                        -- sdata
 			d5m_camera_0_conduit_end_trigger                               : out   std_logic;                                        -- trigger
-                        d5m_camera_0_conduit_end_sysclk                                : in    std_logic                     := 'X';             -- sysclk
                         pll_0_outclk0_clk : out std_logic;
 		--burst_read_wf_0_ctrl_baseaddress   : in    std_logic_vector(31 downto 0) := (others => '0'); --    burst_read_wf_0_ctrl.baseaddress
-		--burst_read_wf_0_ctrl_burstcount    : in    std_logic_vector(3 downto 0)  := (others => '0'); --                        .burstcount
+		--burst_read_wf_0_ctrl_burstcount    : in    std_logi
+		--c_vector(3 downto 0)  := (others => '0'); --                        .burstcount
 		--burst_read_wf_0_ctrl_readdatavalid : out   std_logic;                                        --                        .readdatavalid
 		--burst_read_wf_0_ctrl_readdata      : out   std_logic_vector(31 downto 0);                    --                        .readdata
 		--burst_read_wf_0_ctrl_busy          : out   std_logic;                                        --                        .busy
@@ -200,7 +200,6 @@ begin  -- architecture bhv
       d5m_camera_0_conduit_end_sclk   => D5M_SCLK,
       d5m_camera_0_conduit_end_sdata  => D5M_SDATA,
       d5m_camera_0_conduit_end_trigger => D5M_TRIGGER,
-      d5m_camera_0_conduit_end_sysclk => CLOCK_50,
       pll_0_outclk0_clk => D5M_XCLKIN,
       
       led_external_connection_export =>  s_LED,

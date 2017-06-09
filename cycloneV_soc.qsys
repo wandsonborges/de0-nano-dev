@@ -13,7 +13,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "9";
          type = "int";
       }
    }
@@ -37,8 +37,16 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "5";
          type = "int";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
       }
    }
    element cycloneV_soc
@@ -149,7 +157,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "10";
          type = "int";
       }
    }
@@ -157,7 +165,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "8";
          type = "int";
       }
    }
@@ -210,7 +218,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "7";
          type = "int";
       }
    }
@@ -234,7 +242,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "6";
          type = "int";
       }
    }
@@ -313,12 +321,12 @@
    name="bridge_stSrcMmMaster_0"
    kind="bridge_stSrcMmMaster"
    version="1.0"
-   enabled="0">
-  <parameter name="BURST" value="1" />
-  <parameter name="COLS" value="640" />
-  <parameter name="LINES" value="480" />
+   enabled="1">
+  <parameter name="BURST" value="32" />
+  <parameter name="COLS" value="2592" />
+  <parameter name="LINES" value="1944" />
   <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
+  <parameter name="NBITS_BURST" value="6" />
   <parameter name="NBITS_BYTEEN" value="4" />
   <parameter name="NBITS_DATA" value="8" />
  </module>
@@ -343,17 +351,17 @@
    kind="homography_dma"
    version="1.0"
    enabled="1">
-  <parameter name="BURST" value="8" />
-  <parameter name="COLS" value="640" />
+  <parameter name="BURST" value="32" />
+  <parameter name="COLS" value="2592" />
   <parameter name="HOMOG_BITS_FRAC" value="20" />
   <parameter name="HOMOG_BITS_INT" value="12" />
-  <parameter name="LINES" value="480" />
+  <parameter name="LINES" value="1944" />
   <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
+  <parameter name="NBITS_BURST" value="6" />
   <parameter name="NBITS_BYTEEN" value="4" />
-  <parameter name="NBITS_COLS" value="12" />
+  <parameter name="NBITS_COLS" value="13" />
   <parameter name="NBITS_DATA" value="8" />
-  <parameter name="NBITS_LINES" value="12" />
+  <parameter name="NBITS_LINES" value="13" />
  </module>
  <module name="hps_0" kind="altera_hps" version="16.0" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
@@ -453,7 +461,7 @@
   <parameter name="EXTRA_SETTINGS" value="" />
   <parameter name="F2H_AXI_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM0_CLOCK_FREQ" value="50000000" />
-  <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="100" />
+  <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="50000000" />
   <parameter name="F2H_SDRAM2_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM3_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM4_CLOCK_FREQ" value="100" />
@@ -465,8 +473,8 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional</parameter>
-  <parameter name="F2SDRAM_Width" value="32" />
+  <parameter name="F2SDRAM_Type">Avalon-MM Write-Only,Avalon-MM Read-Only</parameter>
+  <parameter name="F2SDRAM_Width" value="64,64" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="0" />
   <parameter name="FIX_READ_LATENCY" value="8" />
@@ -1157,17 +1165,17 @@
  <connection
    kind="avalon"
    version="16.0"
-   start="homography_dma_0.avalon_master"
+   start="bridge_stSrcMmMaster_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="arbitrationPriority" value="2" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="16.0"
-   start="bridge_stSrcMmMaster_0.avalon_master"
-   end="hps_0.f2h_sdram0_data">
+   start="homography_dma_0.avalon_master"
+   end="hps_0.f2h_sdram1_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -1177,7 +1185,7 @@
    version="16.0"
    start="homography_dma_0.avalon_master_1"
    end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="arbitrationPriority" value="3" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
@@ -1229,7 +1237,7 @@
  <connection
    kind="avalon_streaming"
    version="16.0"
-   start="lupa_fake_0.avalon_streaming_source"
+   start="d5m_camera_0.avalon_streaming_source"
    end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
  <connection kind="clock" version="16.0" start="clk_0.clk" end="sw.clk" />
  <connection kind="clock" version="16.0" start="clk_0.clk" end="led.clk" />
@@ -1238,17 +1246,12 @@
    version="16.0"
    start="clk_0.clk"
    end="onchip_memory2_0.clk1" />
+ <connection kind="clock" version="16.0" start="clk_0.clk" end="lupa_fake_0.clock" />
  <connection
    kind="clock"
    version="16.0"
    start="clk_0.clk"
    end="homography_dma_0.clock" />
- <connection
-   kind="clock"
-   version="16.0"
-   start="clk_0.clk"
-   end="bridge_stSrcMmMaster_0.clock" />
- <connection kind="clock" version="16.0" start="clk_0.clk" end="lupa_fake_0.clock" />
  <connection
    kind="clock"
    version="16.0"
@@ -1263,6 +1266,11 @@
    kind="clock"
    version="16.0"
    start="clk_0.clk"
+   end="hps_0.f2h_sdram1_clock" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clk_0.clk"
    end="hps_0.h2f_axi_clock" />
  <connection
    kind="clock"
@@ -1270,6 +1278,16 @@
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
  <connection kind="clock" version="16.0" start="clk_0.clk" end="pll_0.refclk" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clk_0.clk"
+   end="d5m_camera_0.sys_clk" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clock_bridge_0.out_clk"
+   end="bridge_stSrcMmMaster_0.clock" />
  <connection
    kind="clock"
    version="16.0"
@@ -1287,12 +1305,7 @@
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="d5m_camera_0.reset_sink" />
- <connection
-   kind="reset"
-   version="16.0"
-   start="clk_0.clk_reset"
-   end="homography_dma_0.reset_sink" />
+   end="lupa_fake_0.reset_sink" />
  <connection
    kind="reset"
    version="16.0"
@@ -1302,7 +1315,12 @@
    kind="reset"
    version="16.0"
    start="clk_0.clk_reset"
-   end="lupa_fake_0.reset_sink" />
+   end="d5m_camera_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="clk_0.clk_reset"
+   end="homography_dma_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />

@@ -160,7 +160,7 @@ assign i2c_reset = iRST_N & ~exposure_adj_reset & ~combo_pulse ;
 parameter	CLK_Freq	=	50000000;	//	50	MHz
 parameter	I2C_Freq	=	20000;		//	20	KHz
 //	LUT Data Number
-parameter	LUT_SIZE	=	4; //25;
+   parameter	LUT_SIZE	=	4; //7; //25;
 
 /////////////////////	I2C Control Clock	////////////////////////
 always@(posedge iCLK or negedge i2c_reset)
@@ -243,7 +243,7 @@ begin
 	//6	:	LUT_DATA	<=	24'h2B000F; 				//	Green 1 Gain
 	//7	:	LUT_DATA	<=	24'h2C020F; 				//	Blue Gain
 	//8	:	LUT_DATA	<=	24'h2D020F; 				//	Red Gain
-	//9	:	LUT_DATA	<=	24'h2E0008;				  //	Green 2 Gain
+	//9	:	LUT_DATA	<=	24'h2E0008;				  //	Green 2 Gain	  	  	  
 	0	:	LUT_DATA	<=	24'h100051;				//	set up PLL power on
 //`ifdef VGA_640x480p60	
 //	11	:	LUT_DATA	<=	24'h111f04;				//	PLL_m_Factor<<8+PLL_n_Divider
@@ -252,7 +252,13 @@ begin
 	1	:	LUT_DATA	<=	24'h111806;				//	PLL_m_Factor<<8+PLL_n_Divider
 	2	:	LUT_DATA	<=	24'h120008;				//	PLL_p1_Divider
 //`endif
-	3	:	LUT_DATA	<=	24'h100053;				//	set USE PLL	 
+	3	:	LUT_DATA	<=	24'h100053;				//	set USE PLL
+
+	//4	:	LUT_DATA	<=	24'h0301df;				//	set USE PLL
+	//5	:	LUT_DATA	<=	24'h04027f;				//	set USE PLL
+	//6	:	LUT_DATA	<=	24'h0901df;				//	set USE PLL	 
+	  // 	  // 	  
+	  
 	//14	:	LUT_DATA	<=	24'h980000;				//	disble calibration 	
 	//15	:	LUT_DATA	<=	24'hA00000;				//	Test pattern control 
 	//16	:	LUT_DATA	<=	24'hA10000;				//	Test green pattern value
