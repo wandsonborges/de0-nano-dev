@@ -6,7 +6,7 @@
 -- Author     :   <rodrigo@snowden>
 -- Company    : 
 -- Created    : 2015-05-20
--- Last update: 2017-06-07
+-- Last update: 2017-06-09
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -47,6 +47,15 @@ entity homography_core  is
     x_in        : in  std_logic_vector(WW-1 downto 0);
     y_in        : in  std_logic_vector(HW-1 downto 0);
     last_data   : out std_logic;
+    mat00       : in std_logic_vector(31 downto 0);
+    mat01       : in std_logic_vector(31 downto 0);
+    mat02       : in std_logic_vector(31 downto 0);
+    mat10       : in std_logic_vector(31 downto 0);
+    mat11       : in std_logic_vector(31 downto 0);
+    mat12       : in std_logic_vector(31 downto 0);
+    mat20       : in std_logic_vector(31 downto 0);
+    mat21       : in std_logic_vector(31 downto 0);
+    mat22       : in std_logic_vector(31 downto 0);
     x_out       : out std_logic_vector(WW-1 downto 0);
     y_out       : out std_logic_vector(HW-1 downto 0));
 
@@ -245,17 +254,17 @@ divisor2 : lpm.lpm_components.lpm_divide
   --     source     => soft_matrix);
   
 
- matriz_homog_soft(0)(0) <= soft_matrix(287 downto 256);
- matriz_homog_soft(0)(1) <= soft_matrix(255 downto 224);
- matriz_homog_soft(0)(2) <= soft_matrix(223 downto 192);
+ matriz_homog_soft(0)(0) <= mat00;
+ matriz_homog_soft(0)(1) <= mat01;
+ matriz_homog_soft(0)(2) <= mat02;
 
- matriz_homog_soft(1)(0) <= soft_matrix(191 downto 160);
- matriz_homog_soft(1)(1) <= soft_matrix(159 downto 128);
- matriz_homog_soft(1)(2) <= soft_matrix(127 downto 96);
+ matriz_homog_soft(1)(0) <= mat10;
+ matriz_homog_soft(1)(1) <= mat11;
+ matriz_homog_soft(1)(2) <= mat12;
 
- matriz_homog_soft(2)(0) <= soft_matrix(95 downto 64);
- matriz_homog_soft(2)(1) <= soft_matrix(63 downto 32);
- matriz_homog_soft(2)(2) <= soft_matrix(31 downto 0); 
+ matriz_homog_soft(2)(0) <= mat20;
+ matriz_homog_soft(2)(1) <= mat21;
+ matriz_homog_soft(2)(2) <= mat22;
   
   
 

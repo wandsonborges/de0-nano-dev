@@ -10,7 +10,11 @@ module d5m_controller_v (
     sdata,
     ready,
     rst_sensor,  
-    trigger,     
+    trigger,
+    slave_write,
+slave_address,			 
+    slave_chipselect,
+    slave_writedata,			 
     data_valid,  
     data_out,    
     startofpacket, 
@@ -24,7 +28,13 @@ module d5m_controller_v (
    input start;
    input frame_valid;
    input line_valid;
-   input [7:0] data_in;     
+   input [7:0] data_in;
+
+   input       slave_write;
+   input       slave_chipselect;
+   input [31:0] slave_writedata;
+   input 	slave_address;
+   
    output      sclk;
    inout      sdata;
    output rst_sensor;
@@ -44,7 +54,7 @@ module d5m_controller_v (
    reg [7:0] data_in_f, data_in_sync;
    reg [31:0] pxl_counter;
 
-   
+   reg 	      enable_pattern;   
    localparam st_idle = 0;
    localparam st_fot = 1;
    localparam st_valid_data = 2;
@@ -66,7 +76,23 @@ module d5m_controller_v (
 						);
    
 
+
+   always@(posedge sys_clk or negedge rst_n)
+     begin
+	if(!rst_n)
+	  begin
+	     enable_pattern <= 0;	     
+	  end	
+	else
+	  begin
+	     if (slave_write && slave_chipselect)
+	       begin
+		  enable_pattern <= slave_writedata[0];
+	       end
+	  end // else: !if(!rst_n)
+     end // always@ (posedge clk_sys or negedge rst_n)
    
+		  
    always@(posedge clk or negedge rst_n)
      begin
 	if (!rst_n)
@@ -185,7 +211,7 @@ module d5m_controller_v (
        data_in_sync <= data_in_f;
     end // always@ (posedge clk)
    
-   assign data_out = data_out_s;
+   assign data_out = (enable_pattern) ? data_out_pattern : data_out_s;
  //data_out_pattern;
  //data_out_s;   
    assign data_valid = (state == st_valid_data) & (line_valid_s == 1) & (frame_valid_sync == 1);

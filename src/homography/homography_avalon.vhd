@@ -117,7 +117,7 @@ architecture bhv of homography_avalon is
     x"00000000" --reserved
     );
   signal registers : reg_type := init_registers;
-  
+  constant MAT_OFFSET : integer := 3;
 
  
 COMPONENT lpm_mult
@@ -208,6 +208,15 @@ begin  -- architecture bhv
       y_in           => y_in,
       inc_addr       => inc_addr,
       last_data      => open,
+      mat00            => registers(MAT_OFFSET+0),
+      mat01            => registers(MAT_OFFSET+1),
+      mat02            => registers(MAT_OFFSET+2),
+      mat10            => registers(MAT_OFFSET+3),
+      mat11            => registers(MAT_OFFSET+4),
+      mat12            => registers(MAT_OFFSET+5),
+      mat20            => registers(MAT_OFFSET+6),
+      mat21            => registers(MAT_OFFSET+7),
+      mat22            => registers(MAT_OFFSET+8),
       sw             => select_homog,
       x_out          => x_out,
       y_out          => y_out);
@@ -215,7 +224,7 @@ begin  -- architecture bhv
 -- CHOOSE HOMOG
   select_homog <= registers(2);
   
-  -- MULTIPLICA VALOR POR COLS EM 1 CICLO
+  -- MULTIPLICA VALOR POR COLS -- COMBINACIONAL
   lpm_mult_component : lpm_mult
 	GENERIC MAP (
 		lpm_hint => "INPUT_B_IS_CONSTANT=YES,DEDICATED_MULTIPLIER_CIRCUITRY=YES,MAXIMIZE_SPEED=5",

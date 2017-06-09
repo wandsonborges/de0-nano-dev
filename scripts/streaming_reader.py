@@ -54,6 +54,9 @@ if (ord(data) == 139):
            print("rec img")
            #cv2.imshow("Display", img_array)
            cv2.imshow("Display", processImgD5MHomog(img_array))
+           if keyPressed == ord('s'):
+               cv2.imwrite("img.pgm", img_array)
+               print("image saved")
            keyPressed = cv2.waitKey(1)
 
             

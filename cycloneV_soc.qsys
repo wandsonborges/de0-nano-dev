@@ -161,6 +161,14 @@
          type = "int";
       }
    }
+   element d5m_camera_0.slave
+   {
+      datum baseAddress
+      {
+         value = "65552";
+         type = "String";
+      }
+   }
    element homography_dma_0
    {
       datum _sortIndex
@@ -462,7 +470,7 @@
   <parameter name="F2H_AXI_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM0_CLOCK_FREQ" value="50000000" />
   <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="50000000" />
-  <parameter name="F2H_SDRAM2_CLOCK_FREQ" value="100" />
+  <parameter name="F2H_SDRAM2_CLOCK_FREQ" value="50000000" />
   <parameter name="F2H_SDRAM3_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM4_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM5_CLOCK_FREQ" value="100" />
@@ -473,8 +481,8 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type">Avalon-MM Write-Only,Avalon-MM Read-Only</parameter>
-  <parameter name="F2SDRAM_Width" value="64,64" />
+  <parameter name="F2SDRAM_Type">Avalon-MM Write-Only,Avalon-MM Read-Only,Avalon-MM Write-Only</parameter>
+  <parameter name="F2SDRAM_Width" value="64,64,64" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="0" />
   <parameter name="FIX_READ_LATENCY" value="8" />
@@ -1184,8 +1192,8 @@
    kind="avalon"
    version="16.0"
    start="homography_dma_0.avalon_master_1"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="3" />
+   end="hps_0.f2h_sdram2_data">
+  <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
@@ -1235,6 +1243,15 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
+   kind="avalon"
+   version="16.0"
+   start="hps_0.h2f_lw_axi_master"
+   end="d5m_camera_0.slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00010010" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
    kind="avalon_streaming"
    version="16.0"
    start="d5m_camera_0.avalon_streaming_source"
@@ -1267,6 +1284,11 @@
    version="16.0"
    start="clk_0.clk"
    end="hps_0.f2h_sdram1_clock" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="clk_0.clk"
+   end="hps_0.f2h_sdram2_clock" />
  <connection
    kind="clock"
    version="16.0"
