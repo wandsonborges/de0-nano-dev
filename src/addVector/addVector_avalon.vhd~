@@ -1,0 +1,356 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+LIBRARY altera_mf;
+USE altera_mf.all;
+
+entity addVector_avalon is
+  
+  generic (
+    NBITS_ADDR : integer := 32;
+    NBITS_DATA : integer := 32;
+    NBITS_BURST : integer := 4;
+    NBITS_BYTEEN : integer := 4;
+    BURST : integer := 8
+    );
+
+  port (
+    --clk and reset_n
+    clk, rst_n : in std_logic;
+  
+    -- avalon MM Master 1 - Write Add Vector Result
+    masterwr_waitrequest : in std_logic;
+    masterwr_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
+    masterwr_write       : out std_logic;
+    masterwr_writedata   : out std_logic_vector(NBITS_DATA-1 downto 0);
+    masterwr_burstcount  : out std_logic_vector(NBITS_BURST-1 downto 0);
+    
+
+    -- avalon MM Master 2 - Get Header and Vector 1
+    masterrd1_waitrequest : in std_logic;
+    masterrd1_readdatavalid : in std_logic;
+    masterrd1_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
+    masterrd1_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
+    masterrd1_read       : out std_logic;
+
+    -- avalon MM Master 2 - Get Vector 2 
+    masterrd2_waitrequest : in std_logic;
+    masterrd2_readdatavalid : in std_logic;
+    masterrd2_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
+    masterrd2_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
+    masterrd2_read       : out std_logic;
+    
+    -- avalon MM Slave - Configure addVector Hardware
+    slave_chipselect    : in std_logic;
+    slave_read          : in std_logic;
+    slave_write         : in std_logic;
+    slave_address       : in std_logic_vector(1 downto 0);
+    slave_writedata     : in std_logic_vector(31 downto 0);
+    slave_waitrequest   : out std_logic;
+    slave_readdatavalid : out std_logic;
+    slave_readdata      : out std_logic_vector(31 downto 0)
+    
+    );               
+
+end entity addVector_avalon;
+
+architecture bhv of addVector_avalon is
+
+  -- FIFO SIGNALS
+  signal fifoDataIn  : STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+  signal rdreq : STD_LOGIC;
+  signal wrreq : STD_LOGIC;
+  signal fifoEmpty : STD_LOGIC;
+  signal fifoFull  : STD_LOGIC;
+  signal fifoDataOut     : STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+  signal usedw : STD_LOGIC_VECTOR (7 DOWNTO 0);
+  signal half_full : STD_LOGIC := '0';
+  
+
+ 
+  -- BUFFER ADDR:
+  constant ADDR_BASE_WRITE : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38500000";
+  constant ADDR_BASE_READ : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
+  signal ADDR_BASE_READ_PARAM2 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_READ;
+
+    -- AVALON SIGNALS
+  signal s_address : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_WRITE;
+  signal s_masterwrite, s_masterread, s_masterread_f : std_logic := '0';
+
+  --GENERAL SIGNALS
+  signal rdcount : UNSIGNED(31 downto 0) := (others => '0');
+  signal words_written_during_burst : UNSIGNED(NBITS_BURST-1 downto 0) := (others => '0');
+  signal  : STD_LOGIC := '0';
+
+  --CONTROL SIGNAL
+  signal start_op, start_op_f : std_logic := '0';
+  signal req_read, running : std_logic := '0';
+
+  --HEADER SIGNALS
+  signal words2read : UNSIGNED(31 downto 0) := (others => '0');
+  signal got_header_flag : std_logic := '0';
+
+  --BURST WRITE SM
+  type wr_control_st is (st_idle, st_write);
+  signal state_write : wr_control_st := st_idle;
+
+  --READ PARAMETER STATE MACHINE
+  type read_control_st is (st_idle, st_extract_header, st_extract_data_pair, st_extract_data_odd, st_finish);
+  signal state_read : read_control_st := st_idle;
+  signal get_data_states, req_data_states : std_logic := '0'; 
+  
+  -- CONFIGURE ADD VECTOR HW SIGNALS
+  type reg_type is array (0 to 3) of std_logic_vector(31 downto 0);
+  constant init_registers : reg_type := (
+    x"11223344", --id
+    x"00000000", --start
+    x"00000000", --busy
+    x"00000000" --reserved
+    );
+  signal registers : reg_type := init_registers;
+  
+  	COMPONENT scfifo
+	GENERIC (
+		add_ram_output_register		: STRING;
+		intended_device_family		: STRING;
+		lpm_numwords		: NATURAL;
+		lpm_showahead		: STRING;
+		lpm_type		: STRING;
+		lpm_width		: NATURAL;
+		lpm_widthu		: NATURAL;
+		overflow_checking		: STRING;
+		underflow_checking		: STRING;
+		use_eab		: STRING
+	);
+	PORT (
+			clock	: IN STD_LOGIC ;
+			data	: IN STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+			rdreq	: IN STD_LOGIC ;
+			wrreq	: IN STD_LOGIC ;
+			empty	: OUT STD_LOGIC ;
+			full	: OUT STD_LOGIC ;
+			q	: OUT STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+			usedw	: OUT STD_LOGIC_VECTOR (7 DOWNTO 0)
+	);
+	END COMPONENT;
+
+
+  
+begin  -- architecture bhv
+
+-- AVALON SLAVE: ADD VECTOR HW CONF
+  
+ rd_wr_slave_proc: process (clk, rst_n) is
+  begin  -- process rd_wr_slave_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      slave_readdata <= (others => '0');
+      slave_readdatavalid <= '0';      
+    elsif clk'event and clk = '1' then  -- rising clock edge     
+      --LEITURA DO SLAVE  ---- READ PROC
+      if slave_read = '1' then
+        slave_readdata <= registers(to_integer(unsigned(slave_address)));
+        slave_readdatavalid <= '1';
+      --ESCRITA NO SLAVE
+      elsif slave_write = '1' and slave_chipselect = '1' then
+        if unsigned(slave_address) > 1 then 
+          registers(to_integer(unsigned(slave_address))) <= slave_writedata;
+          slave_readdatavalid <= '0';
+        else
+          slave_readdatavalid <= '0';  
+        end if;        
+      else
+        slave_readdatavalid <= '0';
+      end if;      
+    end if;
+  end process rd_wr_slave_proc;
+
+
+  --- FIFO GET DATA VECTOR 1 ------------------------------------------------------------
+  scfifo_component_1 : scfifo
+    GENERIC MAP (
+      add_ram_output_register => "OFF",
+      intended_device_family => "Cyclone V",
+      lpm_numwords => 256,
+      lpm_showahead => "ON",
+      lpm_type => "scfifo",
+      lpm_width => NBITS_DATA,
+      lpm_widthu => 8,
+      overflow_checking => "ON",
+      underflow_checking => "ON",
+      use_eab => "ON"
+      )
+    PORT MAP (
+      clock => clk,
+      data => fifoDataIn,
+      rdreq => rdreq,
+      wrreq => wrreq,
+      empty => fifoEmpty,
+      full => fifoFull,
+      q => fifoDataOut,
+      usedw => usedw
+      );
+
+
+  fifoDataIn <= masterrd1_readdata;
+  s1_masterread <= not fifoEmpty and req_data_states;
+  masterrd1_read <= s1_masterread;
+  masterrd1_address <= std_logic_vector(UNSIGNED(rdcount) + UNSIGNED(ADDR_BASE_READ));
+  wrreq <= masterrd1_readdatavalid and (not fifoFull) and get_data_states;
+
+  ---------------------------------------------------------------------------------------
+
+    --- FIFO GET DATA VECTOR 2 ------------------------------------------------------------
+  scfifo_component_1 : scfifo
+    GENERIC MAP (
+      add_ram_output_register => "OFF",
+      intended_device_family => "Cyclone V",
+      lpm_numwords => 256,
+      lpm_showahead => "ON",
+      lpm_type => "scfifo",
+      lpm_width => NBITS_DATA,
+      lpm_widthu => 8,
+      overflow_checking => "ON",
+      underflow_checking => "ON",
+      use_eab => "ON"
+      )
+    PORT MAP (
+      clock => clk,
+      data => fifoDataIn,
+      rdreq => rdreq,
+      wrreq => wrreq,
+      empty => fifoEmpty,
+      full => fifoFull,
+      q => fifoDataOut,
+      usedw => usedw
+      );
+
+
+  fifoDataIn <= masterrd2_readdata;
+  s2_masterread <= not fifoEmpty and req_data_states;
+  masterrd2_read <= s2_masterread;
+  masterrd2_address <= std_logic_vector(UNSIGNED(rdcount) + UNSIGNED(ADDR_BASE_READ));
+  wrreq <= masterrd1_readdatavalid and (not fifoFull) and get_data_states;
+
+  ---------------------------------------------------------------------------------------
+
+
+  
+  get_data_states <= '1' when state_read = st_extract_data else '0';
+  req_data_states <= '1' when state_read = st_extract_data or state_read = st_extract_header else '0';
+  
+  half_full <= usedw(7);
+
+  --STATE MACHINE TO GET HEADER
+  
+count_gen: process (clk, rst_n) is
+begin  -- process count_gen
+  if rst_n = '0' then                   -- asynchronous reset (active low)
+    rdcount <= (others => '0');
+    state_read <= st_idle;
+  elsif clk'event and clk = '1' then    -- rising clock edge
+    start_op_f <= start_op;
+    case state_read is
+      when st_idle =>
+        rdcount <= (others => '0');
+        words2read <= (others => '0');
+        if start_op_f = '0' and start_op = '1' then
+          state_read <= st_extract_header;
+        else
+          state_read <= st_idle;
+        end if;
+
+      when st_extract_header =>
+        if masterrd1_waitrequest = '0' then
+          words2read <= unsigned(masterrd1_readdata);
+          state_read <= st_extract_data;
+        else
+          state_read <= st_extract_header;
+        end if;
+
+      when st_extract_data =>
+        if masterrd1_waitrequest = '0' then
+          if rdcount = words2read-1 then
+            state_read <= st_finish;
+            rdcount <= (others => '0');
+          else
+            rdcount <= rdcount + 1;
+            state_read <= st_extract_data;
+          end if;
+        else
+          rdcount <= rdcount;
+          state_read <= state_read;
+        end if;
+        
+      when st_finish =>
+        state_read <= st_idle;
+
+    end case;
+    
+  end if;
+end process count_gen;
+
+  
+
+
+------ RESULT WRITE PROCESS  
+  s_masterwrite <= '1' when state_write = st_write else '0';--not fifoEmpty;
+  masterwr_write <= s_masterwrite;
+  masterwr_address <= s_address;
+  masterwr_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
+  rdreq <= (not masterwr_waitrequest) and s_masterwrite;
+  masterwr_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
+
+
+  stwrite_proc: process (clk, rst_n) is
+  begin  -- process write_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      state_write <= st_idle;
+    elsif clk'event and clk = '1' then  -- rising clock edge
+      case state_write is
+        when st_idle =>
+          if (unsigned(usedw) > BURST) then
+            state_write <= st_write;
+          else
+            state_write <= st_idle;
+          end if;
+
+        when st_write =>
+          if words_written_during_burst = BURST-1 then
+            state_write <= st_idle;
+          else
+            state_write <= st_write;
+          end if;
+      end case;
+      
+    end if;
+  end process stwrite_proc;
+  
+  waitreq_proc: process (clk, rst_n) is
+  begin  -- process waitreq_proc
+    if rst_n = '0' then           -- asynchronous reset (active low)
+      s_address <= ADDR_BASE_WRITE;
+      words_written_during_burst <= (others => '0');
+    elsif clk'event and clk = '1' then  -- rising clock edge
+      -- ADDR UPDATE
+      if rdreq = '1' then
+        if fifoDataOut(NBITS_DATA) = '1' then --endofpacket received
+          s_address <= ADDR_BASE_WRITE;
+          words_written_during_burst <= (others => '0');
+        else
+          if words_written_during_burst = BURST-1 then
+            words_written_during_burst <= (others => '0');
+            s_address <= std_logic_vector(unsigned(s_address) + BURST);
+          else
+            words_written_during_burst <= words_written_during_burst + 1;
+          end if;          
+        end if;
+      else
+        s_address <= s_address;
+      end if; 
+      
+    end if;
+  end process waitreq_proc;
+
+  
+end architecture bhv;
