@@ -43,13 +43,14 @@ end entity readPacketsAvalon;
 architecture bhv of readPacketsAvalon is
 
   -- FIFO SIGNALS
-  signal fifoDataIn  : STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+  signal fifoDataIn  : STD_LOGIC_VECTOR (NBITS_DATA-1 DOWNTO 0);
   signal rdreq : STD_LOGIC;
   signal wrreq : STD_LOGIC;
   signal fifoEmpty : STD_LOGIC;
-  signal fifoFull  : STD_LOGIC;
-  signal fifoDataOut     : STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+  signal fifoFull, almost_full  : STD_LOGIC := '0';
+  signal fifoDataOut     : STD_LOGIC_VECTOR (NBITS_DATA-1 DOWNTO 0);
   signal usedw : STD_LOGIC_VECTOR (7 DOWNTO 0);
+  signal  fifo_count : UNSIGNED (7 DOWNTO 0);
   signal half_full : STD_LOGIC := '0';
   
   -- AVALON SIGNALS
@@ -71,11 +72,11 @@ architecture bhv of readPacketsAvalon is
   --READ PARAMETER STATE MACHINE
   type read_control_st is (st_idle, st_setup, st_reading, st_finish);
   signal state : read_control_st := st_idle;
-  
-  
-  	COMPONENT scfifo
+	COMPONENT scfifo
 	GENERIC (
 		add_ram_output_register		: STRING;
+		almost_empty_value		: NATURAL;
+		almost_full_value		: NATURAL;
 		intended_device_family		: STRING;
 		lpm_numwords		: NATURAL;
 		lpm_showahead		: STRING;
@@ -88,30 +89,33 @@ architecture bhv of readPacketsAvalon is
 	);
 	PORT (
 			clock	: IN STD_LOGIC ;
-			data	: IN STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+			data	: IN STD_LOGIC_VECTOR (NBITS_DATA-1 DOWNTO 0);
 			rdreq	: IN STD_LOGIC ;
 			wrreq	: IN STD_LOGIC ;
+			almost_empty	: OUT STD_LOGIC ;
+			almost_full	: OUT STD_LOGIC ;
 			empty	: OUT STD_LOGIC ;
 			full	: OUT STD_LOGIC ;
-			q	: OUT STD_LOGIC_VECTOR (NBITS_DATA DOWNTO 0);
+			q	: OUT STD_LOGIC_VECTOR (NBITS_DATA-1 DOWNTO 0);
 			usedw	: OUT STD_LOGIC_VECTOR (7 DOWNTO 0)
 	);
 	END COMPONENT;
-
 
   
 begin  -- architecture bhv
 
 
   --- FIFO GET DATA VECTOR  ------------------------------------------------------------
-  scfifo_component_1 : scfifo
+  scfifo_component : scfifo
     GENERIC MAP (
       add_ram_output_register => "OFF",
+      almost_empty_value => 16,
+      almost_full_value => 240,
       intended_device_family => "Cyclone V",
-      lpm_numwords => FIFO_SIZE,
+      lpm_numwords => 256,
       lpm_showahead => "ON",
       lpm_type => "scfifo",
-      lpm_width => NBITS_DATA,
+      lpm_width => 32,
       lpm_widthu => 8,
       overflow_checking => "ON",
       underflow_checking => "ON",
@@ -122,6 +126,8 @@ begin  -- architecture bhv
       data => fifoDataIn,
       rdreq => rdreq,
       wrreq => wrreq,
+      almost_empty => open,
+      almost_full => almost_full,
       empty => fifoEmpty,
       full => fifoFull,
       q => fifoDataOut,
@@ -130,7 +136,7 @@ begin  -- architecture bhv
 
 
   fifoDataIn <= masterrd_readdata;
-  s_masterread <= '1' when fifoFull = '0' and (state = st_reading);
+  s_masterread <= '1' when almost_full = '0' and (state = st_reading) else '0';
   masterrd_read <= s_masterread;
   masterrd_address <= std_logic_vector(UNSIGNED(rdcount) + UNSIGNED(address_init_flop));
   wrreq <= masterrd_readdatavalid; 
@@ -140,7 +146,20 @@ begin  -- architecture bhv
   get_read_data <= rdreq;
   data_ready <= not fifoEmpty;
   half_full <= usedw(7);
- 
+
+fifoCount: process (clk, rst_n) is
+begin  -- process fifoCount
+  if rst_n = '0' then                   -- asynchronous reset (active low)
+    fifo_count <= (others => '0');
+  elsif clk'event and clk = '1' then    -- rising clock edge
+    if wrreq = '1' then
+      fifo_count <= fifo_count + 1;
+    elsif rdreq = '1' and fifo_count > 0 then
+      fifo_count <= fifo_count - 1;
+    end if;
+    
+  end if;
+end process fifoCount;
   
 countProc: process (clk, rst_n) is
   begin  -- process countProc
@@ -150,7 +169,7 @@ countProc: process (clk, rst_n) is
     elsif clk'event and clk = '1' then  -- rising clock edge
       enable_read_f <= enable_read;
       
-      if UNSIGNED(usedw) >= BURST then
+      if UNSIGNED(fifo_count) >= BURST then
         burst_en <= '1';
       else
         burst_en <= '0';

@@ -48,10 +48,12 @@ entity addVector_avalon is
     slave_read          : in std_logic;
     slave_write         : in std_logic;
     slave_address       : in std_logic_vector(1 downto 0);
+    slave_byteenable    : in std_logic_vector(NBITS_BYTEEN-1 downto 0);
     slave_writedata     : in std_logic_vector(31 downto 0);
     slave_waitrequest   : out std_logic;
     slave_readdatavalid : out std_logic;
     slave_readdata      : out std_logic_vector(31 downto 0)
+    
     
     );               
 
@@ -94,7 +96,7 @@ architecture bhv of addVector_avalon is
 
 
   --GENERAL SIGNALS
-  signal rdcount : UNSIGNED(31 downto 0) := (others => '0');
+  signal rdcount, wrcount : UNSIGNED(31 downto 0) := (others => '0');
   signal words_written_during_burst : UNSIGNED(NBITS_BURST-1 downto 0) := (others => '0');
 
 
@@ -103,8 +105,9 @@ architecture bhv of addVector_avalon is
 
 
   --HEADER SIGNALS
-  signal words2read : UNSIGNED(31 downto 0) := (others => '0');
+  signal words2read, words2write : UNSIGNED(31 downto 0) := (others => '0');
   signal got_header_flag : std_logic := '0';
+  signal clean : std_logic := '0';
 
   
   -- CONFIGURE ADD VECTOR HW SIGNALS
@@ -113,12 +116,12 @@ architecture bhv of addVector_avalon is
     x"11223344", --id
     x"00000000", --start
     x"00000000", --busy
-    x"00000000" --reserved
+    x"00000000" --clean
     );
   signal registers : reg_type := init_registers;
 
     --READ PARAMETER STATE MACHINE
-  type read_control_st is (st_idle, st_extract_header, st_extract_data, st_finish);
+  type read_control_st is (st_idle, st_clean, st_extract_header, st_extract_data, st_finish);
   signal state_read : read_control_st := st_idle;
 
   --BURST WRITE SM
@@ -132,7 +135,6 @@ architecture bhv of addVector_avalon is
 begin  -- architecture bhv
 
 -- AVALON SLAVE: ADD VECTOR HW CONF
-  
  rd_wr_slave_proc: process (clk, rst_n) is
   begin  -- process rd_wr_slave_proc
     if rst_n = '0' then                 -- asynchronous reset (active low)
@@ -145,7 +147,7 @@ begin  -- architecture bhv
         slave_readdatavalid <= '1';
       --ESCRITA NO SLAVE
       elsif slave_write = '1' and slave_chipselect = '1' then
-        if unsigned(slave_address) > 1 then 
+        if unsigned(slave_address) > 0 then 
           registers(to_integer(unsigned(slave_address))) <= slave_writedata;
           slave_readdatavalid <= '0';
         else
@@ -158,7 +160,7 @@ begin  -- architecture bhv
   end process rd_wr_slave_proc;
 
   start_op <= registers(1)(0);
-
+  clean <= registers(3)(0);
 
   readPacketsAvalon_1: entity work.readPacketsAvalon
     generic map (
@@ -187,7 +189,7 @@ begin  -- architecture bhv
       v1_masterrd_readdata <= masterrd1_readdata; 
       masterrd1_address <= v1_masterrd_address when state_read = st_extract_data else ADDR_BASE_READ;
       masterrd1_read <= '1' when v1_masterrd_read = '1' or state_read = st_extract_header else '0';
-      v1_enable_read <= '1' when state_read = st_extract_data;
+      v1_enable_read <= '1' when state_read = st_extract_data else '0';
       v1_packets_to_read <= std_logic_vector(words2read);
       v1_address_init <= std_logic_vector(unsigned(ADDR_BASE_READ)+1);
   
@@ -239,13 +241,20 @@ begin  -- process count_gen
         words2read <= (others => '0');
         if start_op_f = '0' and start_op = '1' then
           state_read <= st_extract_header;
-        else
+        elsif clean = '1' then
+          state_read <= st_clean;
+        else          
           state_read <= st_idle;
         end if;
 
+      when st_clean =>
+        words2write <= (others => '0');
+        state_read <= st_idle;
+        
       when st_extract_header =>
         if masterrd1_waitrequest = '0' and masterrd1_readdatavalid = '1' then
           words2read <= unsigned(masterrd1_readdata);
+          words2write <= unsigned(masterrd1_readdata);
           state_read <= st_extract_data;
         else
           state_read <= st_extract_header;
@@ -284,7 +293,8 @@ end process count_gen;
   rdreq <= (not masterwr_waitrequest) and s_masterwrite;
   v1_get_read_data <= rdreq;
   v2_get_read_data <= rdreq;
-  masterwr_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
+  --masterwr_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
+  masterwr_burstcount <= std_logic_vector(to_unsigned(1, NBITS_BURST));
 
 
   stwrite_proc: process (clk, rst_n) is
@@ -294,6 +304,8 @@ end process count_gen;
     elsif clk'event and clk = '1' then  -- rising clock edge
       case state_write is
         when st_idle =>
+          s_address <= ADDR_BASE_WRITE;
+          wrcount <= (others => '0');
           if (v1_burst_en = '1' and v2_burst_en = '1') then
             state_write <= st_write;
           else
@@ -301,44 +313,21 @@ end process count_gen;
           end if;
 
         when st_write =>
-          if words_written_during_burst = BURST-1 then
-            state_write <= st_idle;
+          if masterwr_waitrequest = '0' then
+            s_address <= std_logic_vector(unsigned(s_address) + 1);
+            wrcount <= wrcount + 1;
+            if wrcount = words2write-1 then
+              state_write <= st_idle;
+            else
+              state_write <= st_write;
+            end if;
           else
             state_write <= st_write;
-          end if;
+          end if;          
       end case;
       
     end if;
   end process stwrite_proc;
   
-  waitreq_proc: process (clk, rst_n) is
-  begin  -- process waitreq_proc
-    if rst_n = '0' then           -- asynchronous reset (active low)
-      s_address <= ADDR_BASE_WRITE;
-      words_written_during_burst <= (others => '0');
-    elsif clk'event and clk = '1' then  -- rising clock edge
-      -- ADDR UPDATE
-      if rdreq = '1' then
-        if rdcount = words2read-1 then --endofpacket received
-          s_address <= ADDR_BASE_WRITE;
-          words_written_during_burst <= (others => '0');
-          rdcount <= (others => '0');
-        else
-          if words_written_during_burst = BURST-1 then
-            words_written_during_burst <= (others => '0');
-            s_address <= std_logic_vector(unsigned(s_address) + BURST);
-          else
-            words_written_during_burst <= words_written_during_burst + 1;
-          end if;
-          rdcount <= rdcount + 1;          
-        end if;
-      else
-        rdcount <= rdcount;
-        s_address <= s_address;
-      end if; 
-      
-    end if;
-  end process waitreq_proc;
-
   
 end architecture bhv;
