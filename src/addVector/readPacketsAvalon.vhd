@@ -30,9 +30,9 @@ entity readPacketsAvalon is
     enable_read : in std_logic;    
     packets_to_read : in std_logic_vector(NBITS_PACKETS-1 downto 0);
     address_init : in std_logic_vector(NBITS_ADDR-1 downto 0);
-
-    -- data request signals
-    get_read_data : out std_logic;
+    get_read_data : in std_logic;
+    
+    -- data request signals    
     data_ready : out std_logic;
     data_out : out std_logic_vector(NBITS_DATA-1 downto 0);
     burst_en : out std_logic
@@ -68,6 +68,7 @@ architecture bhv of readPacketsAvalon is
   --CONTROL SIGNAL
   signal start_op, start_op_f : std_logic := '0';
   signal req_read, running : std_logic := '0';
+  signal enable_mread, enable_mreadvalid : std_logic := '0';
 
   --READ PARAMETER STATE MACHINE
   type read_control_st is (st_idle, st_setup, st_reading, st_finish);
@@ -136,40 +137,28 @@ begin  -- architecture bhv
 
 
   fifoDataIn <= masterrd_readdata;
-  s_masterread <= '1' when almost_full = '0' and (state = st_reading) else '0';
+  s_masterread <= '1' when fifoFull = '0' and (state = st_reading) else '0';
   masterrd_read <= s_masterread;
-  masterrd_address <= std_logic_vector(UNSIGNED(rdcount) + UNSIGNED(address_init_flop));
-  wrreq <= masterrd_readdatavalid; 
+  masterrd_address <= std_logic_vector((rdcount sll 2) + UNSIGNED(address_init_flop));
+  wrreq <= '1' when (masterrd_readdatavalid = '1') else '0';
 
 
   data_out <= fifoDataOut;
-  get_read_data <= rdreq;
+  rdreq <= get_read_data;
   data_ready <= not fifoEmpty;
   half_full <= usedw(7);
-
-fifoCount: process (clk, rst_n) is
-begin  -- process fifoCount
-  if rst_n = '0' then                   -- asynchronous reset (active low)
-    fifo_count <= (others => '0');
-  elsif clk'event and clk = '1' then    -- rising clock edge
-    if wrreq = '1' then
-      fifo_count <= fifo_count + 1;
-    elsif rdreq = '1' and fifo_count > 0 then
-      fifo_count <= fifo_count - 1;
-    end if;
-    
-  end if;
-end process fifoCount;
   
 countProc: process (clk, rst_n) is
   begin  -- process countProc
     if rst_n = '0' then                 -- asynchronous reset (active low)
       rdcount <= (others => '0');
       packets_to_read_flop <= (others => '0');
+      rdcount <= (others => '0');
+      s_address <= ADDR_BASE_READ_INIT;
     elsif clk'event and clk = '1' then  -- rising clock edge
       enable_read_f <= enable_read;
       
-      if UNSIGNED(fifo_count) >= BURST then
+      if UNSIGNED(usedw) >= BURST then
         burst_en <= '1';
       else
         burst_en <= '0';
@@ -193,18 +182,17 @@ countProc: process (clk, rst_n) is
           state <= st_reading;
 
         when st_reading =>
-          if wrreq = '1' then
+          if rdcount = packets_to_read_flop then
+            state <= st_finish;
+            rdcount <= (others => '0');
+          elsif masterrd_waitrequest = '0' and s_masterread = '1' then
             rdcount <= rdcount + 1;
-            if rdcount = packets_to_read_flop-1 then
-              state <= st_finish;
-            else              
-              state <= st_reading;
-            end if;
-          else
-            rdcount <= rdcount;
             state <= st_reading;
+          else
+            state <= st_reading;
+            rdcount <= rdcount;
           end if;
-
+                  
         when st_finish =>
           state <= st_idle;
            
