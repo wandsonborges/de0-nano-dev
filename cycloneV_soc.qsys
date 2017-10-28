@@ -185,6 +185,46 @@
          type = "String";
       }
    }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element d5m_camera_0
    {
       datum _sortIndex
@@ -511,7 +551,7 @@
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
   <parameter name="F2SDRAM_Type">Avalon-MM Read-Only,Avalon-MM Read-Only,Avalon-MM Write-Only</parameter>
-  <parameter name="F2SDRAM_Width" value="64,64,64" />
+  <parameter name="F2SDRAM_Width" value="32,32,32" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="0" />
   <parameter name="FIX_READ_LATENCY" value="8" />
@@ -1212,7 +1252,7 @@
    kind="avalon"
    version="16.1"
    start="addVector_0.avalon_rd1"
-   end="hps_0.f2h_sdram1_data">
+   end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />

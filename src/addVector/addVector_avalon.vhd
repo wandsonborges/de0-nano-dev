@@ -46,7 +46,7 @@ entity addVector_avalon is
     slave_chipselect    : in std_logic;
     slave_read          : in std_logic;
     slave_write         : in std_logic;
-    slave_address       : in std_logic_vector(1 downto 0);
+    slave_address       : in std_logic_vector(2 downto 0);
     slave_byteenable    : in std_logic_vector(NBITS_BYTEEN-1 downto 0);
     slave_writedata     : in std_logic_vector(31 downto 0);
     slave_waitrequest   : out std_logic;
@@ -103,11 +103,14 @@ architecture bhv of addVector_avalon is
   signal vectorSize : std_logic_vector(31 downto 0);
   
   -- CONFIGURE ADD VECTOR HW SIGNALS
-  type reg_type is array (0 to 3) of std_logic_vector(31 downto 0);
+  type reg_type is array (0 to 6) of std_logic_vector(31 downto 0);
   constant init_registers : reg_type := (
     x"11223344", --id
     x"00000000", --vectorSize
     x"00000000", --start
+    ADDR_BASE_READ, --addr vector 1
+    ADDR_BASE_READ, --addr vector 2
+    ADDR_BASE_WRITE, -- addr vector result
     x"00000000" --busy
     );
   signal registers : reg_type := init_registers;
@@ -123,7 +126,8 @@ begin  -- architecture bhv
   begin  -- process rd_wr_slave_proc
     if rst_n = '0' then                 -- asynchronous reset (active low)
       slave_readdata <= (others => '0');
-      slave_readdatavalid <= '0';      
+      slave_readdatavalid <= '0';
+      registers <= init_registers;
     elsif clk'event and clk = '1' then  -- rising clock edge     
       --LEITURA DO SLAVE  ---- READ PROC
       if slave_read = '1' then
@@ -142,9 +146,9 @@ begin  -- architecture bhv
       end if;
 
       if wrcount > 0 then
-        registers(3)(0) <= '1';
+        registers(6)(0) <= '1';
       else
-        registers(3)(0) <= '0';
+        registers(6)(0) <= '0';
       end if;
       
     end if;
@@ -183,7 +187,7 @@ begin  -- architecture bhv
       masterrd1_read <= v1_masterrd_read; 
       v1_enable_read <= start_op; 
       v1_packets_to_read <= vectorSize;
-      v1_address_init <= std_logic_vector(unsigned(ADDR_BASE_READ));
+      v1_address_init <= registers(3); --std_logic_vector(unsigned(ADDR_BASE_READ));
   
 
   readPacketsAvalon_2: entity work.readPacketsAvalon
@@ -215,14 +219,14 @@ begin  -- architecture bhv
       masterrd2_read <= v2_masterrd_read;
       v2_enable_read <= start_op; 
       v2_packets_to_read <= vectorSize;
-      v2_address_init <= std_logic_vector(unsigned(ADDR_BASE_READ)+(unsigned(vectorSize) sll 2));
+      v2_address_init <= registers(4); --std_logic_vector(unsigned(ADDR_BASE_READ)+(unsigned(vectorSize) sll 2));
 
 
 
 ------ RESULT WRITE PROCESS  
   s_masterwrite <= v1_data_ready and v2_data_ready;
   masterwr_write <= s_masterwrite;
-  masterwr_address <= std_logic_vector(unsigned(ADDR_BASE_WRITE) + (wrcount sll 2));
+  masterwr_address <= std_logic_vector(unsigned(registers(5)) + (wrcount sll 2));
   masterwr_writedata <= std_logic_vector(unsigned(v1_data_out) + unsigned(v2_data_out));
   rdreq <= (not masterwr_waitrequest) and s_masterwrite;
   v1_get_read_data <= rdreq;
