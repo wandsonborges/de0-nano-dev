@@ -32,6 +32,7 @@ entity addVector_avalon is
     masterrd1_waitrequest : in std_logic;
     masterrd1_readdatavalid : in std_logic;
     masterrd1_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
+    masterrd1_burstcount   : out std_logic_vector(3 downto 0);
     masterrd1_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
     masterrd1_read       : out std_logic;
 
@@ -39,6 +40,7 @@ entity addVector_avalon is
     masterrd2_waitrequest : in std_logic;
     masterrd2_readdatavalid : in std_logic;
     masterrd2_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
+    masterrd2_burstcount   : out std_logic_vector(3 downto 0);
     masterrd2_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
     masterrd2_read       : out std_logic;
     
@@ -72,6 +74,7 @@ architecture bhv of addVector_avalon is
   signal v1_data_ready             : std_logic;
   signal v1_data_out               : std_logic_vector(NBITS_DATA-1 downto 0);
   signal v1_burst_en               : std_logic;
+  signal v1_masterrd_burstcount    : std_logic_vector(3 downto 0);
 
 
   signal v2_masterrd_waitrequest   : std_logic;
@@ -86,6 +89,7 @@ architecture bhv of addVector_avalon is
   signal v2_data_ready             : std_logic;
   signal v2_data_out               : std_logic_vector(NBITS_DATA-1 downto 0);
   signal v2_burst_en               : std_logic;
+  signal v2_masterrd_burstcount    : std_logic_vector(3 downto 0);
 
   
   -- BUFFER ADDR:
@@ -171,6 +175,7 @@ begin  -- architecture bhv
       masterrd_readdata      => v1_masterrd_readdata,
       masterrd_address       => v1_masterrd_address,
       masterrd_read          => v1_masterrd_read,
+      masterrd_burstcount    => v1_masterrd_burstcount,
       enable_read            => v1_enable_read,
       packets_to_read        => v1_packets_to_read,
       address_init           => v1_address_init,
@@ -179,7 +184,8 @@ begin  -- architecture bhv
       burst_en               => v1_burst_en,
       data_out               => v1_data_out);
 
-  
+
+      masterrd1_burstcount <= v1_masterrd_burstcount; 
       v1_masterrd_waitrequest <= masterrd1_waitrequest;
       v1_masterrd_readdatavalid <= masterrd1_readdatavalid;
       v1_masterrd_readdata <= masterrd1_readdata; 
@@ -204,6 +210,7 @@ begin  -- architecture bhv
       masterrd_readdata      => v2_masterrd_readdata,
       masterrd_address       => v2_masterrd_address,
       masterrd_read          => v2_masterrd_read,
+      masterrd_burstcount    => v2_masterrd_burstcount,
       enable_read            => v2_enable_read,
       packets_to_read        => v2_packets_to_read,
       address_init           => v2_address_init,
@@ -212,6 +219,7 @@ begin  -- architecture bhv
       burst_en               => v2_burst_en,
       data_out               => v2_data_out);
 
+      masterrd2_burstcount <= v2_masterrd_burstcount; 
       v2_masterrd_waitrequest <= masterrd2_waitrequest;
       v2_masterrd_readdatavalid <= masterrd2_readdatavalid;
       v2_masterrd_readdata <= masterrd2_readdata; 
