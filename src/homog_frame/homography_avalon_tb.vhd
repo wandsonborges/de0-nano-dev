@@ -1,0 +1,114 @@
+-------------------------------------------------------------------------------
+-- Title      : Testbench for design "homography_avalon"
+-- Project    : 
+-------------------------------------------------------------------------------
+-- File       : homography_avalon_tb.vhd
+-- Author     :   <rodrigo@thomson>
+-- Company    : 
+-- Created    : 2017-06-07
+-- Last update: 2017-06-07
+-- Platform   : 
+-- Standard   : VHDL'93/02
+-------------------------------------------------------------------------------
+-- Description: 
+-------------------------------------------------------------------------------
+-- Copyright (c) 2017 
+-------------------------------------------------------------------------------
+-- Revisions  :
+-- Date        Version  Author  Description
+-- 2017-06-07  1.0      rodrigo	Created
+-------------------------------------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+-------------------------------------------------------------------------------
+
+entity homography_avalon_tb is
+
+end entity homography_avalon_tb;
+
+-------------------------------------------------------------------------------
+
+architecture tb of homography_avalon_tb is
+
+  -- component generics
+  constant COLS            : integer := 4;
+  constant LINES           : integer := 2;
+  constant HOMOG_BITS_INT  : integer := 12;
+  constant HOMOG_BITS_FRAC : integer := 20;
+  constant NBITS_ADDR      : integer := 32;
+  constant NBITS_DATA      : integer := 8;
+  constant NBITS_COLS      : integer := 12;
+  constant NBITS_LINES     : integer := 12;
+  constant NBITS_BURST     : integer := 4;
+  constant NBITS_BYTEEN    : integer := 4;
+  constant BURST           : integer := 8;
+
+  -- component ports
+  signal clk, rst_n             : std_logic := '0';
+  signal masterwr_waitrequest   : std_logic ;
+  signal masterwr_address       : std_logic_vector(NBITS_ADDR-1 downto 0);
+  signal masterwr_write         : std_logic;
+  signal masterwr_writedata     : std_logic_vector(NBITS_DATA-1 downto 0);
+  signal masterrd_waitrequest   : std_logic := '1';
+  signal masterrd_readdatavalid : std_logic := '1';
+  signal masterrd_readdata      : std_logic_vector(NBITS_DATA-1 downto 0);
+  signal masterrd_address       : std_logic_vector(NBITS_ADDR-1 downto 0);
+  signal masterrd_read          : std_logic := '0';
+
+
+begin  -- architecture tb
+
+  -- component instantiation
+  DUT: entity work.homography_avalon
+    generic map (
+      COLS            => COLS,
+      LINES           => LINES,
+      HOMOG_BITS_INT  => HOMOG_BITS_INT,
+      HOMOG_BITS_FRAC => HOMOG_BITS_FRAC,
+      NBITS_ADDR      => NBITS_ADDR,
+      NBITS_DATA      => NBITS_DATA,
+      NBITS_COLS      => NBITS_COLS,
+      NBITS_LINES     => NBITS_LINES,
+      NBITS_BURST     => NBITS_BURST,
+      NBITS_BYTEEN    => NBITS_BYTEEN,
+      BURST           => BURST)
+    port map (
+      clk                    => clk,
+      rst_n                  => rst_n,
+      masterwr_waitrequest   => masterwr_waitrequest,
+      masterwr_address       => masterwr_address,
+      masterwr_write         => masterwr_write,
+      masterwr_writedata     => masterwr_writedata,
+      masterrd_waitrequest   => masterrd_waitrequest,
+      masterrd_readdatavalid => masterrd_readdatavalid,
+      masterrd_readdata      => masterrd_readdata,
+      masterrd_address       => masterrd_address,
+      masterrd_read          => masterrd_read);
+
+  -- clock generation
+  Clk <= not Clk after 10 ns;
+  rst_n <= '1' after 60 ns;
+  masterrd_waitrequest <= not masterrd_waitrequest after 120 ns;
+  masterrd_readdatavalid <= not masterrd_readdatavalid after 100 ns;
+  -- waveform generation
+  WaveGen_Proc: process
+  begin
+    -- insert signal assignments here
+
+    wait until Clk = '1';
+  end process WaveGen_Proc;
+
+  
+
+end architecture tb;
+
+-------------------------------------------------------------------------------
+
+configuration homography_avalon_tb_tb_cfg of homography_avalon_tb is
+  for tb
+  end for;
+end homography_avalon_tb_tb_cfg;
+
+-------------------------------------------------------------------------------

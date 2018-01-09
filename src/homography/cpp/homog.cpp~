@@ -1,0 +1,8 @@
+#include<opencv2/opencv.hpp>
+
+int main(int argc, char* argv[])
+{
+
+  cv2::imread("2001.jpg", CV_LOADIMAGE_GRAYSCALE);
+
+}
