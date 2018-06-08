@@ -9,22 +9,6 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element addVector_0
-   {
-      datum _sortIndex
-      {
-         value = "5";
-         type = "int";
-      }
-   }
-   element addVector_0.slave_1
-   {
-      datum baseAddress
-      {
-         value = "4096";
-         type = "String";
-      }
-   }
    element clk_0
    {
       datum _sortIndex
@@ -33,211 +17,115 @@
          type = "int";
       }
    }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element cycloneV_soc
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element homog_frame_0
+   element convolution_0
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "5";
          type = "int";
       }
    }
-   element homog_frame_0.slave
-   {
-      datum baseAddress
-      {
-         value = "0";
-         type = "String";
-      }
-   }
-   element homography_dma_0
-   {
-      datum _sortIndex
-      {
-         value = "7";
-         type = "int";
-      }
-   }
-   element homography_dma_0.slave
+   element convolution_0.slave
    {
       datum baseAddress
       {
          value = "65536";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
          type = "String";
       }
    }
@@ -250,14 +138,6 @@
       }
    }
    element hps_0.f2h_sdram0_data
-   {
-      datum baseAddress
-      {
-         value = "0";
-         type = "String";
-      }
-   }
-   element hps_0.f2h_sdram1_data
    {
       datum baseAddress
       {
@@ -282,7 +162,7 @@
       }
       datum baseAddress
       {
-         value = "80";
+         value = "16";
          type = "String";
       }
    }
@@ -319,7 +199,7 @@
       }
       datum baseAddress
       {
-         value = "64";
+         value = "0";
          type = "String";
       }
    }
@@ -358,52 +238,17 @@
    internal="sw.external_connection"
    type="conduit"
    dir="end" />
- <module name="addVector_0" kind="addVector" version="1.0" enabled="0">
-  <parameter name="BURST" value="8" />
-  <parameter name="FIFO_SIZE" value="256" />
-  <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
-  <parameter name="NBITS_BYTEEN" value="4" />
-  <parameter name="NBITS_DATA" value="32" />
-  <parameter name="NBITS_PACKETS" value="32" />
- </module>
  <module name="clk_0" kind="clock_source" version="16.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
- <module name="homog_frame_0" kind="homog_frame" version="1.0" enabled="1">
-  <parameter name="BURST" value="8" />
-  <parameter name="CICLOS_LATENCIA" value="8" />
+ <module name="convolution_0" kind="convolution" version="1.0" enabled="1">
   <parameter name="COLS" value="640" />
-  <parameter name="FIFO_SIZE" value="256" />
-  <parameter name="HOMOG_BITS_FRAC" value="20" />
-  <parameter name="HOMOG_BITS_INT" value="12" />
   <parameter name="LINES" value="480" />
   <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
-  <parameter name="NBITS_BYTEEN" value="4" />
   <parameter name="NBITS_COLS" value="12" />
-  <parameter name="NBITS_DATA" value="8" />
-  <parameter name="NBITS_LINES" value="12" />
-  <parameter name="NBITS_PACKETS" value="32" />
- </module>
- <module
-   name="homography_dma_0"
-   kind="homography_dma"
-   version="1.0"
-   enabled="0">
-  <parameter name="BURST" value="8" />
-  <parameter name="COLS" value="640" />
-  <parameter name="HOMOG_BITS_FRAC" value="20" />
-  <parameter name="HOMOG_BITS_INT" value="12" />
-  <parameter name="LINES" value="480" />
-  <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
-  <parameter name="NBITS_BYTEEN" value="4" />
-  <parameter name="NBITS_COLS" value="12" />
-  <parameter name="NBITS_DATA" value="8" />
   <parameter name="NBITS_LINES" value="12" />
  </module>
  <module name="hps_0" kind="altera_hps" version="16.1" enabled="1">
@@ -504,7 +349,7 @@
   <parameter name="EXTRA_SETTINGS" value="" />
   <parameter name="F2H_AXI_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM0_CLOCK_FREQ" value="50000000" />
-  <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="50000000" />
+  <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM2_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM3_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM4_CLOCK_FREQ" value="100" />
@@ -516,9 +361,9 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Bidirectional</parameter>
-  <parameter name="F2SDRAM_Width" value="64,64" />
-  <parameter name="F2SINTERRUPT_Enable" value="true" />
+  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional</parameter>
+  <parameter name="F2SDRAM_Width" value="32" />
+  <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="0" />
   <parameter name="FIX_READ_LATENCY" value="8" />
   <parameter name="FORCED_NON_LDC_ADDR_CMD_MEM_CK_INVERT" value="false" />
@@ -985,12 +830,12 @@
  <module name="sw" kind="altera_avalon_pio" version="16.1" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
-  <parameter name="captureEdge" value="true" />
+  <parameter name="captureEdge" value="false" />
   <parameter name="clockRate" value="50000000" />
   <parameter name="direction" value="Input" />
   <parameter name="edgeType" value="RISING" />
-  <parameter name="generateIRQ" value="true" />
-  <parameter name="irqType" value="EDGE" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
   <parameter name="resetValue" value="0" />
   <parameter name="simDoTestBenchWiring" value="false" />
   <parameter name="simDrivenValue" value="0" />
@@ -999,7 +844,7 @@
  <connection
    kind="avalon"
    version="16.1"
-   start="homography_dma_0.avalon_master"
+   start="convolution_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
@@ -1008,44 +853,8 @@
  <connection
    kind="avalon"
    version="16.1"
-   start="homography_dma_0.avalon_master_1"
-   end="hps_0.f2h_sdram1_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="homog_frame_0.avalon_rd"
+   start="convolution_0.avalon_master_1"
    end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_0.avalon_rd1"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_0.avalon_rd2"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="homog_frame_0.avalon_write"
-   end="hps_0.f2h_sdram1_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -1062,19 +871,10 @@
  <connection
    kind="avalon"
    version="16.1"
-   start="hps_0.h2f_axi_master"
-   end="homography_dma_0.slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00010000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
    start="hps_0.h2f_lw_axi_master"
    end="led.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0050" />
+  <parameter name="baseAddress" value="0x0010" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1083,15 +883,6 @@
    start="hps_0.h2f_lw_axi_master"
    end="sw.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0040" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="hps_0.h2f_lw_axi_master"
-   end="homog_frame_0.slave">
-  <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
@@ -1099,48 +890,28 @@
    kind="avalon"
    version="16.1"
    start="hps_0.h2f_lw_axi_master"
-   end="homography_dma_0.slave">
+   end="convolution_0.slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00010000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="hps_0.h2f_lw_axi_master"
-   end="addVector_0.slave_1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x1000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="led.clk" />
+ <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
  <connection
    kind="clock"
    version="16.1"
    start="clk_0.clk"
    end="onchip_memory2_0.clk1" />
- <connection kind="clock" version="16.1" start="clk_0.clk" end="addVector_0.clock" />
  <connection
    kind="clock"
    version="16.1"
    start="clk_0.clk"
-   end="homog_frame_0.clock" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="clk_0.clk"
-   end="homography_dma_0.clock" />
+   end="convolution_0.clock" />
  <connection
    kind="clock"
    version="16.1"
    start="clk_0.clk"
    end="hps_0.f2h_sdram0_clock" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="clk_0.clk"
-   end="hps_0.f2h_sdram1_clock" />
  <connection
    kind="clock"
    version="16.1"
@@ -1151,11 +922,8 @@
    version="16.1"
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
- <connection kind="interrupt" version="16.1" start="hps_0.f2h_irq0" end="sw.irq">
-  <parameter name="irqNumber" value="0" />
- </connection>
- <connection kind="reset" version="16.1" start="clk_0.clk_reset" end="sw.reset" />
  <connection kind="reset" version="16.1" start="clk_0.clk_reset" end="led.reset" />
+ <connection kind="reset" version="16.1" start="clk_0.clk_reset" end="sw.reset" />
  <connection
    kind="reset"
    version="16.1"
@@ -1165,17 +933,7 @@
    kind="reset"
    version="16.1"
    start="clk_0.clk_reset"
-   end="addVector_0.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
-   end="homog_frame_0.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
-   end="homography_dma_0.reset_sink" />
+   end="convolution_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />

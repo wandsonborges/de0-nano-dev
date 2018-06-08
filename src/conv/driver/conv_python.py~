@@ -1,0 +1,10 @@
+import os
+
+pxls = []
+
+with open(sys.argv[1]) as f:
+    for line in f:
+        pxls.append(int(f.readline()))
+
+print pxls
+                    

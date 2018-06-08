@@ -25,6 +25,7 @@ entity readPacketsAvalon is
     masterrd_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
     masterrd_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
     masterrd_read       : out std_logic;
+    masterrd_burstcount : out std_logic_vector(3 downto 0);
 
     -- controller input signals
     enable_read : in std_logic;    
@@ -56,7 +57,8 @@ architecture bhv of readPacketsAvalon is
   -- AVALON SIGNALS
 
   constant ADDR_BASE_READ_INIT : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
-
+  constant AVALON_MAXIMUM_PENDING_READS : integer := 64;
+  
   signal s_address, address_init_flop : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_READ_INIT;
   signal s_masterwrite, s_masterread, s_masterread_f : std_logic := '0';
 
@@ -69,6 +71,8 @@ architecture bhv of readPacketsAvalon is
   signal start_op, start_op_f : std_logic := '0';
   signal req_read, running : std_logic := '0';
   signal enable_mread, enable_mreadvalid : std_logic := '0';
+
+  
 
   --READ PARAMETER STATE MACHINE
   type read_control_st is (st_idle, st_setup, st_reading, st_finish);
@@ -137,9 +141,10 @@ begin  -- architecture bhv
 
 
   fifoDataIn <= masterrd_readdata;
-  s_masterread <= '1' when fifoFull = '0' and (state = st_reading) else '0';
+  s_masterread <= '1' when (UNSIGNED(usedw) < AVALON_MAXIMUM_PENDING_READS-10) and (state = st_reading) else '0';
   masterrd_read <= s_masterread;
   masterrd_address <= std_logic_vector((rdcount sll 2) + UNSIGNED(address_init_flop));
+  masterrd_burstcount <= std_logic_vector(to_unsigned(BURST, masterrd_burstcount'length));
   wrreq <= '1' when (masterrd_readdatavalid = '1') else '0';
 
 
@@ -182,11 +187,11 @@ countProc: process (clk, rst_n) is
           state <= st_reading;
 
         when st_reading =>
-          if rdcount = packets_to_read_flop then
+          if rdcount >= packets_to_read_flop then
             state <= st_finish;
             rdcount <= (others => '0');
           elsif masterrd_waitrequest = '0' and s_masterread = '1' then
-            rdcount <= rdcount + 1;
+            rdcount <= rdcount + BURST;
             state <= st_reading;
           else
             state <= st_reading;
