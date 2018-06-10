@@ -72,7 +72,11 @@ begin
         
         when st_idle =>
           col_counter <= (others => '0');
-          line_counter <= (others => '0');          
+          line_counter <= (others => '0');
+          index_firstLine <= x"0";
+          index_secondLine <= x"1";
+          index_thirdLine <= x"2";
+          
           if (start_conv = '1') then
             wg_state <= st_gettingFirstLine;
           else
@@ -176,26 +180,32 @@ begin
     if rst_n = '0' then                 -- asynchronous reset (active low)
       window_valid <= '0';
       window_data_reg <= (others => (others => (others => '0')));
+      col_counter_f <= (others => '0');
+      line_counter_f <= (others => '0');
     elsif clk'event and clk = '1' then  -- rising clock edge
 
       
       --flops com saidas das memorias
       if (pxl_valid = '1') then
-        col_counter_f <= col_counter;
-        line_counter_f <= line_counter;
-
+          mem0_f <= line_mem0(to_integer(col_counter_f));
+          mem0_ff <= mem0_f;
+          mem0_fff <= mem0_ff;
         
-        mem0_f <= line_mem0(to_integer(col_counter_f));
-        mem0_ff <= mem0_f;
-        mem0_fff <= mem0_ff;
-      
-        mem1_f <= line_mem1(to_integer(col_counter_f));
-        mem1_ff <= mem1_f;
-        mem1_fff <= mem1_ff;
+          mem1_f <= line_mem1(to_integer(col_counter_f));
+          mem1_ff <= mem1_f;
+          mem1_fff <= mem1_ff;
+  
+          mem2_f <= line_mem2(to_integer(col_counter_f));
+          mem2_ff <= mem2_f;
+          mem2_fff <= mem2_ff;
 
-        mem2_f <= line_mem2(to_integer(col_counter_f));
-        mem2_ff <= mem2_f;
-        mem2_fff <= mem2_ff;
+        if (line_counter = LINES-1 and col_counter = COLS-1) then
+          col_counter_f <= (others => '0');
+          line_counter_f <= (others => '0');
+        else
+          col_counter_f <= col_counter;
+          line_counter_f <= line_counter;
+        end if;        
       else
         col_counter_f <= col_counter_f;
         line_counter_f <= line_counter_f;

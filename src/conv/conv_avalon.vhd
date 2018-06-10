@@ -62,7 +62,11 @@ architecture bhv of conv_avalon is
   
 -- BUFFER ADDR:
   constant ADDR_BASE_READ : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
-  constant ADDR_BASE_WRITE : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38C00000"; 
+  constant ADDR_BASE_WRITE : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38C00000";
+
+  signal addr_init_rd  : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_READ;
+  signal addr_init_wr  : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_WRITE;
+  
 
        -- AVALON SIGNALS
   signal s_masterwrite, s_masterread : std_logic := '0';
@@ -95,7 +99,7 @@ architecture bhv of conv_avalon is
   signal wr_fifoFull  : STD_LOGIC := '0';
   signal wr_fifoDataOut     : STD_LOGIC_VECTOR (NBITS_DATA-1 DOWNTO 0);
   
-  type read_control_st is (st_idle, st_reading, st_finish);
+  type read_control_st is (st_idle, st_setup, st_reading, st_finish);
   signal rd_state : read_control_st := st_idle;
 	COMPONENT scfifo
 	GENERIC (
@@ -129,33 +133,34 @@ architecture bhv of conv_avalon is
    --GENERAL SIGNALS
   signal rdcount, wrcount : UNSIGNED(NBITS_COLS + NBITS_LINES-1 downto 0) := (others => '0');
   constant IMG_SIZE : integer := COLS*LINES;
+  signal array_size_in, array_size_out : UNSIGNED(31 downto 0) := (others => '0');
 
   signal kernel           : kernel_type;
 
 
   -- SLAVE AVALON
-  constant NREGS : integer := 2;
-  type reg_type is array (0 to 1) of std_logic_vector(31 downto 0);
+  constant NREGS : integer := 15;
+  type reg_type is array (0 to NREGS-1) of std_logic_vector(31 downto 0);
    constant init_registers : reg_type := (
      x"33221100", --id
-     x"ffeeddcc" --vectorSize
+     x"00000000", --vectorSizeIn
+     x"00000000", --vectorSizeOut
+     ADDR_BASE_READ, --input pointer
+     ADDR_BASE_WRITE, --output pointer,
+     x"00000000", -- k[0][0]
+     x"00000000", -- k[0][1]
+     x"00000000", -- k[0][2]
+     x"00000000", -- k[1][0]
+     x"00000001", -- k[1][1]
+     x"00000000", -- k[1][2]
+     x"00000000", -- k[2][0]
+     x"00000000", -- k[2][1]
+     x"00000000", -- k[2][2]     
+     x"00000000" --busy
      );
   signal registers : reg_type := init_registers;
   
 begin
-
-  --kernel values
-  kernel(0)(0) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
-  kernel(0)(1) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
-  kernel(0)(2) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
-
-  kernel(1)(0) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
-  kernel(1)(1) <= std_logic_vector(to_signed(1, NBITS_KERNEL_DATA));
-  kernel(1)(2) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
-
-  kernel(2)(0) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
-  kernel(2)(1) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
-  kernel(2)(2) <= std_logic_vector(to_signed(0, NBITS_KERNEL_DATA));
 
 
 -- SLAVE RD/WR
@@ -176,7 +181,7 @@ begin
         if unsigned(slave_address) = 0 then
           start_conv <= slave_writedata(0);
           slave_readdatavalid <= '0';
-        elsif unsigned(slave_address) < NREGS then
+        elsif unsigned(slave_address) < NREGS-1 then
           registers(to_integer(unsigned(slave_address))) <= slave_writedata;
           slave_readdatavalid <= '0';
         else
@@ -184,7 +189,15 @@ begin
         end if;        
       else
         slave_readdatavalid <= '0';
-      end if;      
+      end if;
+
+      if (wrcount = array_size_out-1) then
+        registers(NREGS-1)(0) <= '1';
+      else
+        registers(NREGS-1)(0) <= '0';
+      end if;
+
+      
     end if;
   end process rd_wr_slave_proc;
 
@@ -202,17 +215,42 @@ begin  -- process read_proc
       when st_idle =>
         rdcount <= (others => '0');
         if ((start_conv = '1' and start_conv_f = '0')) then
-          rd_state <= st_reading;
+          rd_state <= st_setup;
         else
           rd_state <= st_idle;
         end if;
 
+      when st_setup =>
+        array_size_in <= unsigned(registers(1));
+        array_size_out <= unsigned(registers(2));
+        addr_init_rd <= registers(3);
+        addr_init_wr <= registers(4);
+        
+        --kernel values
+        kernel(0)(0) <= std_logic_vector(signed(registers(5)(NBITS_KERNEL_DATA-1 downto 0)));
+        kernel(0)(1) <= std_logic_vector(signed(registers(6)(NBITS_KERNEL_DATA-1 downto 0)));
+        kernel(0)(2) <= std_logic_vector(signed(registers(7)(NBITS_KERNEL_DATA-1 downto 0)));
+
+        kernel(1)(0) <= std_logic_vector(signed(registers(8)(NBITS_KERNEL_DATA-1 downto 0)));
+        kernel(1)(1) <= std_logic_vector(signed(registers(9)(NBITS_KERNEL_DATA-1 downto 0)));
+        kernel(1)(2) <= std_logic_vector(signed(registers(10)(NBITS_KERNEL_DATA-1 downto 0)));
+
+        kernel(2)(0) <= std_logic_vector(signed(registers(11)(NBITS_KERNEL_DATA-1 downto 0)));
+        kernel(2)(1) <= std_logic_vector(signed(registers(12)(NBITS_KERNEL_DATA-1 downto 0)));
+        kernel(2)(2) <= std_logic_vector(signed(registers(13)(NBITS_KERNEL_DATA-1 downto 0)));
+
+        rd_state <= st_reading;
+        
+
       when st_reading =>
-        if rdcount = IMG_SIZE-1 then
-          rd_state <= st_finish;
-        elsif masterrd_waitrequest = '0' and s_masterread = '1' then
-          rdcount <= rdcount + 1;
-          rd_state <= st_reading;
+        if masterrd_waitrequest = '0' and s_masterread = '1' then
+          if rdcount = array_size_in-1 then
+            rd_state <= st_finish;
+            rdcount <= (others => '0');
+          else
+            rdcount <= rdcount + 1;
+            rd_state <= st_reading;
+          end if;
         else
           rdcount <= rdcount;
           rd_state <= rd_state;
@@ -260,7 +298,7 @@ end process read_proc;
 fifoDataIn <= masterrd_readdata;
 s_masterread <= '1' when (rd_state = st_reading) and (UNSIGNED(rd_usedw) < AVALON_MAXIMUM_PENDING_READS-10) else '0';
 masterrd_read <= s_masterread;
-masterrd_address <= std_logic_vector(rdcount + unsigned(ADDR_BASE_READ));
+masterrd_address <= std_logic_vector(rdcount + UNSIGNED(addr_init_rd));
 wrreq <= '1' when masterrd_readdatavalid = '1' else '0';
 rdreq <= not fifoEmpty and (not wr_fifoFull);
 
@@ -302,7 +340,7 @@ masterwr_writedata <= wr_fifoDataOut;
 s_masterwrite <= '1' when (wr_fifoEmpty = '0') else '0';
 masterwr_write <= s_masterwrite;
 wr_rdreq <= (not masterwr_waitrequest) and s_masterwrite;
-masterwr_address <= std_logic_vector(unsigned(ADDR_BASE_WRITE) + wrcount);
+masterwr_address <= std_logic_vector(UNSIGNED(addr_init_wr) + wrcount);
 
 wr_proc: process (clk, rst_n) is
 begin  -- process wr_proc
