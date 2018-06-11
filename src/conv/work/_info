@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 d/home/rodrigo/de0-nano/de0-nano-dev/src/conv
 Econv_avalon
-Z1 w1528673230
+Z1 w1528748572
 Z2 DPx9 altera_mf 20 altera_mf_components 0 22 m2K6F5NmQKkFhQa^^]15g3
 Z3 DPx3 lpm 14 lpm_components 0 22 0DgdZ0FA1O:[J5aQOXi891
 Z4 DPx4 work 12 conv_package 0 22 Ic0SH3USel2?WI^YNT@jU2
@@ -27,9 +27,9 @@ VL18;Igh[<k5Pnk6OJ:AM60
 !s100 m7ze99cb[j66fG1;d3A[<2
 Z12 OV;C;10.5b;63
 32
-Z13 !s110 1528673233
+Z13 !s110 1528748994
 !i10b 1
-Z14 !s108 1528673233.000000
+Z14 !s108 1528748994.000000
 Z15 !s90 conv_avalon.vhd|
 Z16 !s107 conv_avalon.vhd|
 !i113 1
@@ -48,8 +48,8 @@ R9
 Z20 DEx4 work 11 conv_avalon 0 22 L18;Igh[<k5Pnk6OJ:AM60
 l163
 L56
-V0d1;ZfDH`oT76?<jVkikU0
-!s100 J:IERl1?kOX6NC@5[hfnT3
+VHOlBjBQYZmD>I`4lc3j:X2
+!s100 `P?EVHVhcj0e<WAZ<7Qk63
 R12
 32
 R13

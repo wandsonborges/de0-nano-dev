@@ -191,10 +191,10 @@ begin
         slave_readdatavalid <= '0';
       end if;
 
-      if (wrcount = array_size_out-1) then
-        registers(NREGS-1)(0) <= '1';
-      else
+      if ((wrcount = array_size_out-1 or wrcount = 0) and (rd_state = st_idle)) then
         registers(NREGS-1)(0) <= '0';
+      else
+        registers(NREGS-1)(0) <= '1';
       end if;
 
       

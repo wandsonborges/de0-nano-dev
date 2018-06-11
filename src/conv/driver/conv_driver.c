@@ -27,6 +27,7 @@
 #define NUMBER_OF_CONFIG_REGS 15
 
 #define NUM_KERNEL_ELEMENTS 9
+
 uint32_t* getRegisters(void* mem)
 {
   uint32_t *addVectorConfigRegs = (uint32_t*) (mem);
@@ -52,9 +53,8 @@ void turnOnConv(void* mem)
 	turnOffConv(mem);
 }
 
-int checkConvHardware(int memFd)
+int checkConvHardware(void* mem)
 {
-        void* mem = mmap(NULL,LW_SPAN,(PROT_READ|PROT_WRITE),MAP_SHARED,memFd,LW_ADDR_BASE) + CONV_CONFIG_OFFSET;
 	uint32_t* regs = getRegisters(mem);
 	if (regs[0] == SIGNATURE) return 1;
 	else return 0;
@@ -69,7 +69,6 @@ void setArrayOutputSize(void* mem, uint32_t arraySize)
 {
   *((uint32_t*)(mem)+ARRAY_SIZE_OUT_REG) = arraySize;
 }
-
 
 void setInputPointer(void* mem, uint32_t inputPointer)
 {
@@ -94,28 +93,10 @@ int isBusy(void* mem)
   return *((uint32_t*)(mem)+BUSY_REG);
 }
 
-int main(int argc, char* argv[])
-{
-  
-  int fd = open("/dev/mem", (O_RDWR|O_SYNC));
-  printf("fd -> %i\n", fd);
-  if (fd == -1) {
-	perror("Error opening file for writing");
-	exit(EXIT_FAILURE);
-    }
-
-  void* convConfigBase = mmap(NULL,LW_SPAN,(PROT_READ|PROT_WRITE),MAP_SHARED,fd,LW_ADDR_BASE) + CONV_CONFIG_OFFSET;
-
-  uint32_t kernelValues[9] = {0, 0, 0, 0, 1, 0, 0, 0, 0};
-
-  setArrayInputSize(convConfigBase, 480*640);
-  setArrayOutputSize(convConfigBase, 478*638);
-  setInputPointer(convConfigBase, 0x38000000);
-  setOutputPointer(convConfigBase, 0x38C00000);
-  setConvKernel(convConfigBase, kernelValues);
-  printConfigPointers(convConfigBase);
-  turnOnConv(convConfigBase);
-  while(isBusy(convConfigBase))
-    printf("Busyyyyy\n");  
-  
+void setupConvHw(void* configMem, int lines, int cols, uint32_t addrIn, uint32_t addrOut, uint32_t kernel[]) {
+  setArrayInputSize(configMem, lines*cols);
+  setArrayOutputSize(configMem, (lines-2)*(cols-2));
+  setInputPointer(configMem, addrIn);
+  setOutputPointer(configMem, addrOut);
+  setConvKernel(configMem, kernel);
 }

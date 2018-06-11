@@ -1,0 +1,28 @@
+#include "conv_driver.c"
+
+
+int main(int argc, char* argv[])
+{
+  
+  int fd = open("/dev/mem", (O_RDWR|O_SYNC));
+  printf("fd -> %i\n", fd);
+  if (fd == -1) {
+	perror("Error opening file for writing");
+	exit(EXIT_FAILURE);
+    }
+
+  void* convConfigBase = mmap(NULL,LW_SPAN,(PROT_READ|PROT_WRITE),MAP_SHARED,fd,LW_ADDR_BASE) + CONV_CONFIG_OFFSET;
+
+  uint32_t kernelValues[9] = {0, 0, 0, 0, 1, 0, 0, 0, 0};
+
+  setArrayInputSize(convConfigBase, 480*640);
+  setArrayOutputSize(convConfigBase, 478*638);
+  setInputPointer(convConfigBase, 0x38000000);
+  setOutputPointer(convConfigBase, 0x38C00000);
+  setConvKernel(convConfigBase, kernelValues);
+  printConfigPointers(convConfigBase);
+  turnOnConv(convConfigBase);
+  while(isBusy(convConfigBase))
+    printf("Busyyyyy\n");  
+  
+}
