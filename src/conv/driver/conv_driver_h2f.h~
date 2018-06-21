@@ -22,13 +22,9 @@
 #define ADDR_BASE_RD 3
 #define ADDR_BASE_WR 4
 #define INIT_KERNEL_CONFIG_REG 5
+#define BUSY_REG 14
 
-#define REG_COL_OFFSET 14
-#define REG_LINE_OFFSET 15
-
-#define BUSY_REG 16
-
-#define NUMBER_OF_CONFIG_REGS 17
+#define NUMBER_OF_CONFIG_REGS 15
 
 #define NUM_KERNEL_ELEMENTS 9
 
@@ -92,12 +88,6 @@ void setConvKernel(void* mem, uint32_t kernel[])
     
 }
 
-void setImgResolution(void* mem, uint32_t lines, uint32_t cols)
-{
-  *((uint32_t*)(mem)+REG_LINE_OFFSET) = lines;
-  *((uint32_t*)(mem)+REG_COL_OFFSET) = cols;
-  
-}
 int isBusy(void* mem)
 {
   return *((uint32_t*)(mem)+BUSY_REG);
@@ -109,5 +99,4 @@ void setupConvHw(void* configMem, int lines, int cols, uint32_t addrIn, uint32_t
   setInputPointer(configMem, addrIn);
   setOutputPointer(configMem, addrOut);
   setConvKernel(configMem, kernel);
-  setImgResolution(configMem, lines, cols);
 }

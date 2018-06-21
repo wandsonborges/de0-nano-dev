@@ -14,9 +14,7 @@ USE altera_mf.altera_mf_components.all;
 entity conv_avalon is
   
   generic (
-    DEBUG_MODE : boolean := false;
-    COLS : integer := 640;
-    LINES : integer := 480;
+    MAX_COLS : integer := 2592;
     NBITS_ADDR : integer := 32;
     NBITS_COLS : integer := 12;
     NBITS_LINES : integer := 12
@@ -44,7 +42,7 @@ entity conv_avalon is
     slave_chipselect    : in std_logic;
     slave_read          : in std_logic;
     slave_write         : in std_logic;
-    slave_address       : in std_logic_vector(3 downto 0);
+    slave_address       : in std_logic_vector(4 downto 0);
     slave_writedata     : in std_logic_vector(31 downto 0);
     slave_waitrequest   : out std_logic;
     slave_readdatavalid : out std_logic;
@@ -132,14 +130,17 @@ architecture bhv of conv_avalon is
 
    --GENERAL SIGNALS
   signal rdcount, wrcount : UNSIGNED(NBITS_COLS + NBITS_LINES-1 downto 0) := (others => '0');
-  constant IMG_SIZE : integer := COLS*LINES;
   signal array_size_in, array_size_out : UNSIGNED(31 downto 0) := (others => '0');
+  
+  signal img_col_size : STD_LOGIC_VECTOR(NBITS_COLS-1 downto 0) := (others => '0');
+  signal img_line_size : STD_LOGIC_VECTOR(NBITS_LINES-1 downto 0) := (others => '0');
+  
 
   signal kernel           : kernel_type;
 
 
   -- SLAVE AVALON
-  constant NREGS : integer := 15;
+  constant NREGS : integer := 17;
   type reg_type is array (0 to NREGS-1) of std_logic_vector(31 downto 0);
    constant init_registers : reg_type := (
      x"33221100", --id
@@ -155,7 +156,9 @@ architecture bhv of conv_avalon is
      x"00000000", -- k[1][2]
      x"00000000", -- k[2][0]
      x"00000000", -- k[2][1]
-     x"00000000", -- k[2][2]     
+     x"00000000", -- k[2][2]
+     x"00000280", -- img_col_size
+     x"000001e0", -- img_line_size
      x"00000000" --busy
      );
   signal registers : reg_type := init_registers;
@@ -239,6 +242,9 @@ begin  -- process read_proc
         kernel(2)(1) <= std_logic_vector(signed(registers(12)(NBITS_KERNEL_DATA-1 downto 0)));
         kernel(2)(2) <= std_logic_vector(signed(registers(13)(NBITS_KERNEL_DATA-1 downto 0)));
 
+        img_col_size <= registers(14)(NBITS_COLS-1 downto 0);
+        img_line_size <= registers(15)(NBITS_LINES-1 downto 0);
+        
         rd_state <= st_reading;
         
 
@@ -307,8 +313,7 @@ pxl_valid <= rdreq;
 
 window_gen_1: entity work.window_gen
   generic map (
-    COLS        => COLS,
-    LINES       => LINES,
+    MAX_COLS    => MAX_COLS,
     NBITS_COLS  => NBITS_COLS,
     NBITS_LINES => NBITS_LINES)
   port map (
@@ -317,6 +322,8 @@ window_gen_1: entity work.window_gen
     start_conv   => start_conv,
     pxl_valid    => pxl_valid,
     pxl_data     => fifoDataOut,
+    img_col_size => img_col_size,
+    img_line_size => img_line_size,
     window_valid => window_valid,
     window_data  => window_data);
 

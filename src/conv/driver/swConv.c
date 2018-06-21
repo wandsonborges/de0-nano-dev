@@ -7,9 +7,6 @@
 #include <string.h>
 
 
-#define LINES 480
-#define COLS 640
-#define FRAME_SIZE COLS*LINES
 #define KERNEL_SIZE 3
 
 #define NBITS_FRAC 0
@@ -22,46 +19,57 @@ uint8_t filter(int value)
     return value;
 }
 
-void convImg(uint8_t imgOut[LINES-2][COLS-2], uint8_t imgIn[LINES][COLS], uint32_t kernel[])
+void convImg(uint8_t *imgOut, uint8_t *imgIn, uint32_t kernel[], int lines, int cols)
 {
   int i, j, x, y, k = 0;
   int sum = 0;
-  for (i = 0; i < LINES-2; i++) {
-    for (j = 0; j < COLS-2; j++) {
+  for (i = 0; i < lines-2; i++) {
+    for (j = 0; j < cols-2; j++) {
       for (y = 0; y < KERNEL_SIZE; y++) {
 	for (x = 0; x < KERNEL_SIZE; x++) {
-	  //if (i == 0 && j ==0) printf("SOMANDO: %i %i\n", imgIn[y+i][x+j], kernel[y*KERNEL_SIZE + x]);  
-	  sum = sum + imgIn[y+i][x+j]*kernel[y*KERNEL_SIZE + x];
+	  //sum = sum + imgIn[y+i][x+j]*kernel[y*KERNEL_SIZE + x];	  
+	  sum = sum + imgIn[(y+i)*cols + x+j]*kernel[y*KERNEL_SIZE + x];
+	  if (i ==0 && j ==0) printf("s = %i %i %i\n", sum, imgIn[(y+i)*cols + x+j], kernel[y*KERNEL_SIZE + x]);
 	}
       }
-      imgOut[i][j] = filter(sum);
+      imgOut[i*cols + j] = filter(sum);
       sum = 0;
     }
   }
 }
 
-void feedInputImg(FILE *file, uint8_t imgIn[LINES][COLS])
+void feedInputImg(FILE *file, uint8_t *imgIn, int lines, int cols)
 {
   static uint8_t pxl;
   static int i = 0;
   static int j = 0;
-  for (i = 0; i < LINES; i++) {
-    for (j = 0; j < COLS; j++) {
+  for (i = 0; i < lines; i++) {
+    for (j = 0; j < cols; j++) {
       fscanf(file, "%hu", &pxl);
-      imgIn[i][j] = pxl;
+      imgIn[i*cols + j] = pxl;
     }
   }
 }
 
-void writeConvImg(FILE *file, uint8_t imgIn[LINES-2][COLS-2])
+void getImgRes(FILE *file, int* lines, int *cols)
+{
+  char header[10];
+  int max;
+  fgets(header, 10, file);
+  fscanf(file, "%i", cols);
+  fscanf(file, "%i", lines);
+  fscanf(file, "%i", &max);
+  
+}
+void writeConvImg(FILE *file, uint8_t *imgIn, int lines, int cols)
 {
   static uint8_t pxl;
   static int i = 0;
   static int j = 0;
-  fprintf(file, "P2\n%i %i\n255\n", COLS-2, LINES-2);
-  for (i = 0; i < LINES-2; i++) {
-    for (j = 0; j < COLS-2; j++) {
-      fprintf(file, "%hu\n", imgIn[i][j]);
+  fprintf(file, "P2\n%i %i\n255\n", cols-2, lines-2);
+  for (i = 0; i < lines-2; i++) {
+    for (j = 0; j < cols-2; j++) {
+      fprintf(file, "%hu\n", imgIn[i*cols + j]);
     }
   }
 }
@@ -70,10 +78,8 @@ void writeConvImg(FILE *file, uint8_t imgIn[LINES-2][COLS-2])
 int main(int argc, char* argv[])
 {
 
-  uint32_t kernelValues[9] = {0, 0, 0, 0, 2, 0, 0, 0, 0};
+  uint32_t kernelValues[9] = {0, 0, 0, 0, 1, 0, 0, 0, 0};
     
-  uint8_t img[LINES][COLS];
-  uint8_t imgConv[LINES-2][COLS-2];
   
   FILE  *fp = fopen(argv[1], "r");  
   if(!fp){
@@ -87,12 +93,19 @@ int main(int argc, char* argv[])
     exit(EXIT_FAILURE);
   }
 
-  
-  feedInputImg(fp, img);
-  printf("pxl[0][0] = %hu", img[0][0]);
-  convImg(imgConv, img, kernelValues);
-  printf("pxl[0][0] = %hu", imgConv[0][0]);
+  int lines, cols;
+  getImgRes(fp, &lines, &cols);
 
-  writeConvImg(fout, imgConv);
+
+  uint8_t *img = malloc(lines*cols);
+  uint8_t *imgConv = malloc((lines-2)*(cols-2));
+
+  printf("%i %i\n", lines, cols);
+  feedInputImg(fp, img, lines, cols);
+  printf("pxl[0][0] = %hu", img[cols+1]);
+  convImg(imgConv, img, kernelValues, lines, cols);
+  printf("pxl[0][0] = %hu", imgConv[0]);
+
+  writeConvImg(fout, imgConv, lines, cols);
 	  
   }

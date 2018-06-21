@@ -6,7 +6,7 @@
 -- Author     :   <rodrigo@shannon>
 -- Company    : 
 -- Created    : 2018-05-10
--- Last update: 2018-05-10
+-- Last update: 2018-06-13
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -41,8 +41,6 @@ end entity window_gen_tb;
 architecture tb of window_gen_tb is
 
   -- component generics
-  constant COLS        : integer := 64;
-  constant LINES       : integer := 6;
   constant NBITS_COLS  : integer := 12;
   constant NBITS_LINES : integer := 12;
 
@@ -53,7 +51,9 @@ architecture tb of window_gen_tb is
   signal pxl_data     : STD_LOGIC_VECTOR(NBITS_DATA-1 downto 0) := (others => '0');
   signal window_valid : std_logic;
   signal window_data  : window_type;
-
+  signal img_col_size : STD_LOGIC_VECTOR(NBITS_COLS-1 downto 0);
+  signal img_line_size : STD_LOGIC_VECTOR(NBITS_LINES-1 downto 0);    
+    
 
 
 begin  -- architecture tb
@@ -61,8 +61,6 @@ begin  -- architecture tb
   -- component instantiation
   DUT: entity work.window_gen
     generic map (
-      COLS        => COLS,
-      LINES       => LINES,
       NBITS_COLS  => NBITS_COLS,
       NBITS_LINES => NBITS_LINES)
     port map (
@@ -71,6 +69,8 @@ begin  -- architecture tb
       start_conv   => start_conv,
       pxl_valid    => pxl_valid,
       pxl_data     => pxl_data,
+      img_line_size => img_line_size,
+      img_col_size  => img_col_size,
       window_valid => window_valid,
       window_data  => window_data);
 
@@ -79,6 +79,9 @@ begin  -- architecture tb
   rst_n <= '1' after 60 ns;
   pxl_valid <= '1' after 120 ns;
   start_conv <= '1' after 100 ns;
+
+  img_line_size <= x"1e0";
+  img_col_size <= x"280";
 
   -- waveform generation
   WaveGen_Proc: process

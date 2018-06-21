@@ -6,7 +6,7 @@
 -- Author     :   <rodrigo@shannon>
 -- Company    : 
 -- Created    : 2018-05-17
--- Last update: 2018-06-06
+-- Last update: 2018-06-13
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -43,12 +43,11 @@ end entity conv_avalon_tb;
 architecture tb of conv_avalon_tb is
 
   -- component generics
-  constant COLS        : integer := 64;
-  constant LINES       : integer := 48;
+  constant MAX_COLS    : integer := 48;
   constant NBITS_ADDR  : integer := 32;
   constant NBITS_COLS  : integer := 12;
   constant NBITS_LINES : integer := 12;
-  constant DEBUG_MODE : boolean := true;
+
 
   -- component ports
   signal clk, rst_n             : std_logic := '0';
@@ -64,7 +63,7 @@ architecture tb of conv_avalon_tb is
   signal slave_chipselect       : std_logic;
   signal slave_read             : std_logic;
   signal slave_write            : std_logic;
-  signal slave_address          : std_logic_vector(3 downto 0);
+  signal slave_address          : std_logic_vector(4 downto 0);
   signal slave_writedata        : std_logic_vector(31 downto 0);
   signal slave_waitrequest      : std_logic;
   signal slave_readdatavalid    : std_logic;
@@ -78,9 +77,6 @@ begin  -- architecture tb
   -- component instantiation
   DUT: entity work.conv_avalon
     generic map (
-      DEBUG_MODE  => DEBUG_MODE,
-      COLS        => COLS,
-      LINES       => LINES,
       NBITS_ADDR  => NBITS_ADDR,
       NBITS_COLS  => NBITS_COLS,
       NBITS_LINES => NBITS_LINES)

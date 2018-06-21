@@ -12,8 +12,7 @@ USE lpm.lpm_components.all;
 entity window_gen is
   
   generic (
-    COLS : integer := 640;
-    LINES : integer := 480;
+    MAX_COLS : integer := 2592;
     NBITS_COLS : integer := 12;
     NBITS_LINES : integer := 12
     );
@@ -24,6 +23,8 @@ entity window_gen is
     start_conv : in std_logic;
     pxl_valid : in std_logic;
     pxl_data : in STD_LOGIC_VECTOR(NBITS_DATA-1 downto 0);
+    img_col_size : in STD_LOGIC_VECTOR(NBITS_COLS-1 downto 0);
+    img_line_size : in STD_LOGIC_VECTOR(NBITS_LINES-1 downto 0);    
     window_valid : out std_logic;
     window_data : out window_type
     );               
@@ -33,12 +34,12 @@ end entity window_gen;
 architecture bhv of window_gen is
 
 
-  signal col_counter, col_counter_f : unsigned(NBITS_COLS-1 downto 0) := (others => '0');
-  signal line_counter, line_counter_f : unsigned(NBITS_LINES-1 downto 0) := (others => '0');
+  signal col_counter, col_counter_f, COLS : unsigned(NBITS_COLS-1 downto 0) := (others => '0');
+  signal line_counter, line_counter_f, LINES : unsigned(NBITS_LINES-1 downto 0) := (others => '0');
 
   signal index_firstLine, index_secondLine, index_thirdLine, index_thirdLine_f, index_thirdLine_ff : unsigned(3 downto 0) := (others => '0');
 
-  type line_mem_type is array (0  to COLS-1) of STD_LOGIC_VECTOR(NBITS_DATA-1 downto 0);
+  type line_mem_type is array (0  to MAX_COLS-1) of STD_LOGIC_VECTOR(NBITS_DATA-1 downto 0);
   signal line_mem0, line_mem1, line_mem2 : line_mem_type := (others => (others => '0'));
 
   signal mem0_f, mem0_ff, mem0_fff, mem1_f, mem1_ff, mem1_fff, mem2_f, mem2_ff, mem2_fff : STD_LOGIC_VECTOR(NBITS_DATA-1 downto 0) := (others => '0');
@@ -56,6 +57,9 @@ architecture bhv of window_gen is
 
 begin
 
+  COLS <= unsigned(img_col_size);
+  LINES <= unsigned(img_line_size);
+  
   data_proc: process (clk, rst_n) is
   begin  -- process data_proc
     if rst_n = '0' then                 -- asynchronous reset (active low)

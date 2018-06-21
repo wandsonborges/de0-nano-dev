@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 d/home/rodrigo/de0-nano/de0-nano-dev/src/conv
 Econv_avalon
-Z1 w1528748572
+Z1 w1528932549
 Z2 DPx9 altera_mf 20 altera_mf_components 0 22 m2K6F5NmQKkFhQa^^]15g3
 Z3 DPx3 lpm 14 lpm_components 0 22 0DgdZ0FA1O:[J5aQOXi891
 Z4 DPx4 work 12 conv_package 0 22 Ic0SH3USel2?WI^YNT@jU2
@@ -23,20 +23,20 @@ Z10 8conv_avalon.vhd
 Z11 Fconv_avalon.vhd
 l0
 L14
-VL18;Igh[<k5Pnk6OJ:AM60
-!s100 m7ze99cb[j66fG1;d3A[<2
+VdXgeQa:n[7UMW7AlS<_mN3
+!s100 Zi7FX6Hz>Zm3@T6G=AinP2
 Z12 OV;C;10.5b;63
 32
-Z13 !s110 1528748994
+Z13 !s110 1528932570
 !i10b 1
-Z14 !s108 1528748994.000000
+Z14 !s108 1528932570.000000
 Z15 !s90 conv_avalon.vhd|
 Z16 !s107 conv_avalon.vhd|
 !i113 1
 Z17 tExplicit 1 CvgOpt 0
 Abhv
 Z18 DEx4 work 9 conv_core 0 22 nmhLlJM<PJHWH?6]7<6Aj1
-Z19 DEx4 work 10 window_gen 0 22 TaHWMF5_=O5A@3DjjXW462
+Z19 DEx4 work 10 window_gen 0 22 HkH@CCD9R35BiB1a4>ZZZ3
 R2
 R3
 R4
@@ -45,11 +45,11 @@ R6
 R7
 R8
 R9
-Z20 DEx4 work 11 conv_avalon 0 22 L18;Igh[<k5Pnk6OJ:AM60
-l163
-L56
-VHOlBjBQYZmD>I`4lc3j:X2
-!s100 `P?EVHVhcj0e<WAZ<7Qk63
+Z20 DEx4 work 11 conv_avalon 0 22 dXgeQa:n[7UMW7AlS<_mN3
+l166
+L54
+V@^=K:6J7_kKg3FYz2TQ5I1
+!s100 P4U_;J6]S5j^g8ONXTQhQ0
 R12
 32
 R13
@@ -60,7 +60,7 @@ R16
 !i113 1
 R17
 Econv_avalon_tb
-Z21 w1528399642
+Z21 w1528932569
 R4
 R2
 R3
@@ -96,10 +96,10 @@ R7
 R8
 R9
 Z26 DEx4 work 14 conv_avalon_tb 0 22 KKEWLfhNo4ZQi4ZacGniX0
-l76
+l75
 L43
-Z27 Va]LgE2WGd?4D6WzbLIZ<E3
-Z28 !s100 bN[PlPF2;R>H]KPcTSj8k3
+V<La:g209S^5a98>?=jOfM3
+!s100 ^OH8<4kB56Z^17fmzk[4H3
 R12
 32
 R13
@@ -113,7 +113,7 @@ Cconv_avalon_tb_tb_cfg
 econv_avalon_tb
 atb
 R20
-DAx4 work 14 conv_avalon_tb 2 tb 22 a]LgE2WGd?4D6WzbLIZ<E3
+DAx4 work 14 conv_avalon_tb 2 tb 22 <La:g209S^5a98>?=jOfM3
 R4
 R2
 R3
@@ -128,9 +128,9 @@ R0
 R22
 R23
 l0
-L135
-VkT5k=EIfW`KY^Zl]IR4;`3
-!s100 XG9hT:gUdXkd4]Rf9P0Ad1
+L131
+VIWD<0J53YAMa68Vad3bVD3
+!s100 TQRnfY9;V:CK`T2OegRfV2
 R12
 32
 R13
@@ -141,7 +141,7 @@ R25
 !i113 1
 R17
 Econv_core
-R21
+Z27 w1528399642
 R3
 R4
 R5
@@ -150,8 +150,8 @@ R7
 R8
 R9
 R0
-Z29 8conv_core.vhd
-Z30 Fconv_core.vhd
+Z28 8conv_core.vhd
+Z29 Fconv_core.vhd
 l0
 L12
 VnmhLlJM<PJHWH?6]7<6Aj1
@@ -161,8 +161,8 @@ R12
 R13
 !i10b 1
 R14
-Z31 !s90 conv_core.vhd|
-Z32 !s107 conv_core.vhd|
+Z30 !s90 conv_core.vhd|
+Z31 !s107 conv_core.vhd|
 !i113 1
 R17
 Abhv
@@ -183,12 +183,12 @@ R12
 R13
 !i10b 1
 R14
+R30
 R31
-R32
 !i113 1
 R17
 Econv_core_tb
-R21
+R27
 R4
 R5
 R6
@@ -196,8 +196,8 @@ R7
 R8
 R9
 R0
-Z33 8conv_core_tb.vhd
-Z34 Fconv_core_tb.vhd
+Z32 8conv_core_tb.vhd
+Z33 Fconv_core_tb.vhd
 l0
 L31
 V0X`oQmDamCLdnH2gb815G2
@@ -207,8 +207,8 @@ R12
 R13
 !i10b 1
 R14
-Z35 !s90 conv_core_tb.vhd|
-Z36 !s107 conv_core_tb.vhd|
+Z34 !s90 conv_core_tb.vhd|
+Z35 !s107 conv_core_tb.vhd|
 !i113 1
 R17
 Atb
@@ -220,7 +220,7 @@ R6
 R7
 R8
 R9
-Z37 DEx4 work 12 conv_core_tb 0 22 0X`oQmDamCLdnH2gb815G2
+Z36 DEx4 work 12 conv_core_tb 0 22 0X`oQmDamCLdnH2gb815G2
 l49
 L37
 VbJ:^KIPP[U?cYO;>767hC3
@@ -230,8 +230,8 @@ R12
 R13
 !i10b 1
 R14
+R34
 R35
-R36
 !i113 1
 R17
 Cconv_core_tb_tb_cfg
@@ -246,11 +246,11 @@ R6
 R7
 R8
 R9
-R37
-R21
+R36
+R27
 R0
+R32
 R33
-R34
 l0
 L110
 V10CNodZFEKIzW=4I12:UJ1
@@ -260,8 +260,8 @@ R12
 R13
 !i10b 0
 R14
+R34
 R35
-R36
 !i113 1
 R17
 Pconv_package
@@ -269,7 +269,7 @@ R6
 R7
 R8
 R9
-R21
+R27
 R0
 8conv_package.vhd
 Fconv_package.vhd
@@ -287,7 +287,7 @@ R14
 !i113 1
 R17
 Ewindow_gen
-Z38 w1528495023
+Z37 w1528932274
 R3
 R4
 R5
@@ -296,19 +296,19 @@ R7
 R8
 R9
 R0
-Z39 8window_gen.vhd
-Z40 Fwindow_gen.vhd
+Z38 8window_gen.vhd
+Z39 Fwindow_gen.vhd
 l0
 L12
-VTaHWMF5_=O5A@3DjjXW462
-!s100 DQ<VN:UPjHgIgzUM]^TkH2
+VHkH@CCD9R35BiB1a4>ZZZ3
+!s100 DT0lCo3UD3Bhe<zeF9g600
 R12
 32
 R13
 !i10b 1
 R14
-Z41 !s90 window_gen.vhd|
-Z42 !s107 window_gen.vhd|
+Z40 !s90 window_gen.vhd|
+Z41 !s107 window_gen.vhd|
 !i113 1
 R17
 Abhv
@@ -320,21 +320,21 @@ R7
 R8
 R9
 R19
-l57
-L33
-VK?MLOIJ5aK[6LX2e2`97A1
-!s100 ]2mICOo8]7KX[YZz_7TAR2
+l58
+L34
+V3TGcB@P>RaUAMMMoYYF^:2
+!s100 ONZ1B^`b^I[G3C_G4>Md30
 R12
 32
 R13
 !i10b 1
 R14
+R40
 R41
-R42
 !i113 1
 R17
 Ewindow_gen_tb
-R21
+Z42 w1528932115
 R3
 R4
 R5
@@ -370,8 +370,8 @@ R9
 Z47 DEx4 work 13 window_gen_tb 0 22 `h[JRY=RWfDiB_Fzi8CTP3
 l59
 L41
-VIi5OJE8J:Beb;9A_E4n0C0
-!s100 [e]G?kWPG`dWCH;Rh@PhY2
+VL0g;AhgBj@FW43ZTVh=682
+!s100 i?;0Uh56fTkk[F9COgD;U1
 R12
 32
 R13
@@ -385,7 +385,7 @@ Cwindow_gen_tb_tb_cfg
 ewindow_gen_tb
 atb
 R19
-DAx4 work 13 window_gen_tb 2 tb 22 Ii5OJE8J:Beb;9A_E4n0C0
+DAx4 work 13 window_gen_tb 2 tb 22 L0g;AhgBj@FW43ZTVh=682
 R3
 R4
 R5
@@ -394,14 +394,14 @@ R7
 R8
 R9
 R47
-R21
+R42
 R0
 R43
 R44
 l0
-L103
-V9LKJ`HeWzAR=?GPd4=[c12
-!s100 k0ESU9KBUMBHh7G8hgALH1
+L106
+V4[YX5[mj3EZ0M_WDBlFVR1
+!s100 FB`O^az7fUkJMGjfc8KLf3
 R12
 32
 R13
