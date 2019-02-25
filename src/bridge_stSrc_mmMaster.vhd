@@ -8,13 +8,12 @@ USE altera_mf.all;
 entity bridge_stSrc_mmMaster is
   
   generic (
-    COLS : integer := 640;
-    LINES : integer := 480;
     NBITS_ADDR : integer := 32;
     NBITS_DATA : integer := 8;
     NBITS_BURST : integer := 4;
     NBITS_BYTEEN : integer := 4;
-    BURST : integer := 8
+    BURST : integer := 8;
+    ADDR_BASE_BUF : std_logic_vector(31 downto 0) := x"38000000"    
     );
 
   port (
@@ -75,8 +74,8 @@ architecture bhv of bridge_stSrc_mmMaster is
   --   x"0000000A"
   --   );
 
-  constant ADDR_BASE_BUF0 : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
-  constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
+  constant ADDR_BASE_BUF0 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF;
+  constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF;
   --constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) :=
   --x"38500000"; --TROCAR!!
   

@@ -1,0 +1,89 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/rodrigo/de0-nano/de0-nano-dev/src/lwir_ul0304
+Elwir_ul0304_avalon
+Z1 w1550590888
+Z2 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z5 8lwir_ul0304_avalon.vhd
+Z6 Flwir_ul0304_avalon.vhd
+l0
+L5
+V=o_5C1DiFI9?<`GaIl20V0
+!s100 ^inmjAF7S@nJ7<h<Uz<bl0
+Z7 OV;C;10.5b;63
+32
+Z8 !s110 1550590889
+!i10b 1
+Z9 !s108 1550590889.000000
+Z10 !s90 lwir_ul0304_avalon.vhd|
+Z11 !s107 lwir_ul0304_avalon.vhd|
+!i113 1
+Z12 tExplicit 1 CvgOpt 0
+Abhv
+Z13 DEx4 work 24 lwir_ul_03_04_controller 0 22 BV6cSm59M]c@e1jl?idzn0
+R2
+R3
+R4
+DEx4 work 18 lwir_ul0304_avalon 0 22 =o_5C1DiFI9?<`GaIl20V0
+l58
+L41
+V[XXZnE:L>Ld`nTdc1SeR02
+!s100 0>zWYZ^?QhVR67CUz:FOa3
+R7
+32
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+Elwir_ul_03_04_controller
+Z14 w1550589510
+R2
+R3
+R4
+R0
+Z15 8lwir_ul0304_core.vhd
+Z16 Flwir_ul0304_core.vhd
+l0
+L28
+VBV6cSm59M]c@e1jl?idzn0
+!s100 P9RUkgV>RCRBNQB]^]VJ:3
+R7
+32
+Z17 !s110 1550590749
+!i10b 1
+Z18 !s108 1550590748.000000
+Z19 !s90 lwir_ul0304_core.vhd|
+Z20 !s107 lwir_ul0304_core.vhd|
+!i113 1
+R12
+Abhv
+R2
+R3
+R4
+R13
+l120
+L54
+VFC6gh:C<mAkhC8g:4Q>WG0
+!s100 njcIAY[`Y^U>hiOilHRJG3
+R7
+32
+R17
+!i10b 1
+R18
+R19
+R20
+!i113 1
+R12

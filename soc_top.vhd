@@ -114,7 +114,21 @@ architecture bhv of soc_top is
 			-- autocorrelation_0_conduit_end_databeingwrittentoexternalmemory : in    std_logic                     := 'X';             -- databeingwrittentoexternalmemory
 			-- autocorrelation_0_conduit_end_enablesensordatatoexternalmemory : out   std_logic;                                        -- enablesensordatatoexternalmemory
 			-- autocorrelation_0_conduit_end_memorycontrollerbusy             : in    std_logic                     := 'X';              -- memorycontrollerbusy
-    
+
+            
+            lwir_ul0304_datain              : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- datain
+            lwir_ul0304_syt                 : out   std_logic;                                        -- syt
+            lwir_ul0304_syl                 : out   std_logic;                                        -- syl
+            lwir_ul0304_syp                 : out   std_logic;
+            --lwir_emu_clk_clk                : out   std_logic;
+
+
+            swir_v400_sensor_clk            : out   std_logic;                                        -- sensor_clk
+            swir_v400_datain                : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- datain
+            swir_v400_fsync                 : out   std_logic;                                        -- fsync
+            swir_v400_lsync                 : out   std_logic;                                        -- lsync
+            swir_v400_swir_pxl_clk_out      : out   std_logic;
+            
 			clk_clk                                  : in    std_logic                     := 'X';             -- clk
 			--hps_0_h2f_reset_reset_n                  : out   std_logic;                                        -- reset_n
 			hps_io_hps_io_emac1_inst_TX_CLK          : out   std_logic;                                        -- hps_io_emac1_inst_TX_CLK
@@ -180,11 +194,42 @@ architecture bhv of soc_top is
 ----			avalon_mm_temp_1_conduit_end_ctrllength  : in    std_logic_vector(31 downto 0) := (others => 'X')  -- ctrllength
 		);
 	end component cycloneV_soc;
-  
-  signal s_LED : std_logic_vector(7 downto 0) := (others => '0');
+  signal lwir_syp, lwir_syt, lwir_syl, lwir_emu_clk : std_logic := '0';
+  signal swir_fsync, swir_lsync, swir_pxl_clk, swir_sensor_clk : std_logic := '0';
+  signal s_LED, lwir_data, swir_dataIn : std_logic_vector(7 downto 0) := (others => '0');
 begin  -- architecture bhv
 
   --D5M_XCLKIN <= CLOCK_50;
+
+  swir_emulator_1: entity work.swir_emulator
+    generic map (
+      NUMERO_COLUNAS    => 320,
+      NUMERO_LINHAS     => 256,
+      SIMULATOR_PATTERN => false)
+    port map (
+      pxl_clock => swir_pxl_clk,
+      s_clock   => swir_sensor_clk,
+      rst_n     => SW(1),
+      lsync     => swir_lsync,
+      fsync     => swir_fsync,
+      data_out  => swir_dataIn);
+  
+  lwir_UL_03_04_emulator_1: entity work.lwir_UL_03_04_emulator
+    generic map (
+      N_BITS_COL => 9,
+      N_BITS_LIN => 9,
+      NUM_COLS   => 384,
+      NUM_LINES  => 288,
+      N_BITS_PXL => 8)
+    port map (
+      clk      => swir_pxl_clk,
+      rst_n    => SW(1),
+      en       => '1',
+      sens_syt => lwir_syt,
+      sens_syl => lwir_syl,
+      sens_syp => lwir_syp,
+      pxl_out  => lwir_data
+      );
   
   cycloneV_soc_2: component cycloneV_soc
     port map (
@@ -201,6 +246,22 @@ begin  -- architecture bhv
       -- d5m_camera_0_conduit_end_sdata  => D5M_SDATA,
       -- d5m_camera_0_conduit_end_trigger => D5M_TRIGGER,
       -- pll_0_outclk0_clk => D5M_XCLKIN,
+      --
+      --
+
+      swir_v400_sensor_clk            => swir_sensor_clk,
+            swir_v400_datain                => swir_dataIn,                --                        .datain
+            swir_v400_fsync                 => swir_fsync,                 --                        .fsync
+            swir_v400_lsync                 => swir_lsync,                 --                        .lsync
+            swir_v400_swir_pxl_clk_out      => swir_pxl_clk,
+
+      lwir_ul0304_datain              => lwir_data,              --             lwir_ul0304.datain
+      lwir_ul0304_syt                 => lwir_syt,
+      lwir_ul0304_syl                 => lwir_syl, 
+      lwir_ul0304_syp                 => lwir_syp,
+
+      --lwir_emu_clk_clk                => lwir_emu_clk,
+
       
       led_external_connection_export =>  s_LED,
       memory_mem_a                    => HPS_DDR3_ADDR,

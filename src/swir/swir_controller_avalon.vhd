@@ -1,0 +1,137 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity swir_controller_avalon is
+  port(
+-- clocks and resets
+    pxl_clk_in       : in std_logic; --10Mhz
+    sensor_clk_in    : in std_logic; --5Mhz
+    rst_n            : in std_logic;
+    
+-- avalon MM Slave - Configure addVector Hardware
+    slave_chipselect    : in std_logic;
+    slave_read          : in std_logic;
+    slave_write         : in std_logic;
+    slave_address       : in std_logic_vector(0 downto 0);
+    slave_byteenable    : in std_logic_vector(3 downto 0);
+    slave_writedata     : in std_logic_vector(31 downto 0);
+    slave_waitrequest   : out std_logic;
+    slave_readdatavalid : out std_logic;
+    slave_readdata      : out std_logic_vector(31 downto 0);
+
+-- avalon ST interface    
+    st_data_valid  : out std_logic;
+    st_data_out    : out std_logic_vector(7 downto 0);
+    st_startofpacket : out std_logic;
+    st_endofpacket : out std_logic;
+    
+-- exclusive swir signals
+    swir_dataIn     : in std_logic_vector(7 downto 0);
+    swir_pclk_out   : out std_logic;
+    swir_clk_out    : out std_logic;
+    swir_fsync      : out std_logic;
+    swir_lsync      : out std_logic
+    
+    );
+end swir_controller_avalon;
+
+architecture bhv of swir_controller_avalon is
+
+    -- CONFIGURE ADD VECTOR HW SIGNALS
+  type reg_type is array (0 to 1) of std_logic_vector(31 downto 0);
+  constant init_registers : reg_type := (
+    x"10000000", --id
+    x"00000000" --busy
+    );
+  signal registers : reg_type := init_registers;
+
+
+  --SWIR_CONTROL SIGNALS
+  constant FRAME_SIZE : integer := 320*256;
+  signal pxl_count : unsigned(31 downto 0) := (others => '0');
+  signal swir_write_en : std_logic := '0';
+  signal swir_dataOut : std_logic_vector(7 downto 0) := (others => '0');
+  
+begin
+
+  -- AVALON SLAVE: ADD VECTOR HW CONF
+ rd_wr_slave_proc: process (pxl_clk_in, rst_n) is
+  begin  -- process rd_wr_slave_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      slave_readdata <= (others => '0');
+      slave_readdatavalid <= '0';
+      registers <= init_registers;
+    elsif pxl_clk_in'event and pxl_clk_in = '1' then  -- rising clock edge     
+      --LEITURA DO SLAVE  ---- READ PROC
+      if slave_read = '1' then
+        slave_readdata <= registers(to_integer(unsigned(slave_address)));
+        slave_readdatavalid <= '1';
+      --ESCRITA NO SLAVE
+      elsif slave_write = '1'  then
+        if unsigned(slave_address) > 0 then 
+          registers(to_integer(unsigned(slave_address))) <= slave_writedata;
+          slave_readdatavalid <= '0';
+        else
+          slave_readdatavalid <= '0';  
+        end if;        
+      else
+        slave_readdatavalid <= '0';
+      end if;
+      
+    end if;
+  end process rd_wr_slave_proc;
+
+  -- Combinational circuit
+  swir_clk_out <= sensor_clk_in; 
+  swir_pclk_out <= pxl_clk_in;
+
+  st_startofpacket <= '1' when pxl_count = 0 and swir_write_en = '1'
+                   else '0';
+  st_endofpacket <= '1' when pxl_count = FRAME_SIZE-1 and swir_write_en = '1'
+                 else '0';
+  st_data_out <= swir_dataOut;
+  st_data_valid <= swir_write_en;
+  
+
+  swir_controller_core_1: entity work.swir_controller_core
+    port map (
+      nInvertPattern => '1',
+      DataIn         => swir_dataIn,
+      swir_registers => x"00000000",     
+      NotReset       => rst_n,
+      WriteMem       => swir_write_en,
+      RST_Sensor     => '0',
+      OE_EN          => '0',
+      AP             => "000",
+      I              => "000",
+      BW             => "00",
+      PW             => "00",
+      OM             => "00",
+      DataOut        => swir_dataOut,
+      FSYNC          => swir_fsync,
+      LSYNC          => swir_lsync,
+      EOF            => open,
+      DataCodeMode   => open,
+      OutSelection   => open,
+      Pixel_Clock    => pxl_clk_in,
+      Sensor_Clock   => sensor_clk_in);
+
+  
+  
+pxl_count_proc: process (pxl_clk_in, rst_n) is
+begin  -- process pxl_count_proc
+  if rst_n = '0' then                   -- asynchronous reset (active low)
+    pxl_count <= (others => '0');
+  elsif pxl_clk_in'event and pxl_clk_in = '1' then  -- rising clock edge
+    if (pxl_count = FRAME_SIZE-1 and swir_write_en = '1') then
+      pxl_count <= (others => '0');
+    elsif (swir_write_en = '1') then
+      pxl_count <= pxl_count + 1;
+    else
+      pxl_count <= pxl_count;
+    end if;
+    
+  end if;
+end process pxl_count_proc;
+end bhv;

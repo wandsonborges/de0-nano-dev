@@ -1,15 +1,15 @@
- -- Copyright (C) 1991-2016 Altera Corporation. All rights reserved.
- -- Your use of Altera Corporation's design tools, logic functions 
+ -- Copyright (C) 2016  Intel Corporation. All rights reserved.
+ -- Your use of Intel Corporation's design tools, logic functions 
  -- and other software and tools, and its AMPP partner logic 
  -- functions, and any output files from any of the foregoing 
  -- (including device programming or simulation files), and any 
  -- associated documentation or information are expressly subject 
- -- to the terms and conditions of the Altera Program License 
- -- Subscription Agreement, the Altera Quartus Prime License Agreement,
- -- the Altera MegaCore Function License Agreement, or other 
+ -- to the terms and conditions of the Intel Program License 
+ -- Subscription Agreement, the Intel Quartus Prime License Agreement,
+ -- the Intel MegaCore Function License Agreement, or other 
  -- applicable license agreement, including, without limitation, 
  -- that your use is for the sole purpose of programming logic 
- -- devices manufactured by Altera and sold by Altera or its 
+ -- devices manufactured by Intel and sold by Intel or its 
  -- authorized distributors.  Please refer to the applicable 
  -- agreement for further details.
  -- 
@@ -28,7 +28,7 @@
  -- VCCINT        : Dedicated power pin, which MUST be connected to VCC  (1.1V).
  -- VCCIO         : Dedicated power pin, which MUST be connected to VCC
  --                 of its bank.
- --                  Bank 3A:       3.3V
+ --                  Bank 3A:       2.5V
  --                  Bank 3B:       2.5V
  --                  Bank 4A:       2.5V
  --                  Bank 5A:       3.3V
@@ -39,6 +39,7 @@
  --                  Bank 7C:  3.3V
  --                  Bank 7D:  3.3V
  --                  Bank 8A:  3.3V
+ --                  Bank 9A:  Dedicated configuration pins only, no VCCIO required.
  -- RREF          : External reference resistor for the quad, MUST be connected to
  --                 GND via a 2k Ohm resistor.
  -- GND           : Dedicated ground pin. Dedicated GND pins MUST be connected to GND.
@@ -72,7 +73,7 @@
  -- Pin directions (input, output or bidir) are based on device operating in user mode.
  ---------------------------------------------------------------------------------
 
-Quartus Prime Version 16.0.0 Build 211 04/27/2016 SJ Lite Edition
+Quartus Prime Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
 CHIP  "cycloneV_soc"  ASSIGNED TO AN: 5CSEMA4U23C6
 
 Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
@@ -107,11 +108,11 @@ GND                          : AA1       : gnd    :                   :         
 GND                          : AA2       : gnd    :                   :         :           :                
 GND                          : AA3       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA4       :        :                   :         : 3A        :                
-VCCIO3A                      : AA5       : power  :                   : 3.3V    : 3A        :                
+VCCIO3A                      : AA5       : power  :                   : 2.5V    : 3A        :                
 nCSO, DATA4                  : AA6       :        :                   :         : 3A        :                
 DCLK                         : AA8       :        :                   :         : 3A        :                
 GND                          : AA9       : gnd    :                   :         :           :                
-VCCPD3A                      : AA10      : power  :                   : 3.3V    : 3A        :                
+VCCPD3A                      : AA10      : power  :                   : 2.5V    : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA11      :        :                   :         : 3A        :                
 VCCIO3B                      : AA12      : power  :                   : 2.5V    : 3B        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA13      :        :                   :         : 4A        :                
@@ -121,7 +122,7 @@ VCCIO4A                      : AA16      : power  :                   : 2.5V    
 GND                          : AA17      : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA18      :        :                   :         : 4A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AA19      :        :                   :         : 4A        :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : AA20      :        :                   :         : 5A        :                
+HPS_KEY                      : AA20      : bidir  : 3.3-V LVTTL       :         : 5A        : N              
 VCCA_FPLL                    : AA21      : power  :                   : 2.5V    :           :                
 LED[7]                       : AA23      : output : 3.3-V LVTTL       :         : 5A        : Y              
 LED[1]                       : AA24      : output : 3.3-V LVTTL       :         : 5A        : Y              
@@ -133,7 +134,7 @@ GND                          : AB1       : gnd    :                   :         
 GND                          : AB2       : gnd    :                   :         :           :                
 GND                          : AB3       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB4       :        :                   :         : 3A        :                
-altera_reserved_tck          : AB5       : input  : 3.3-V LVTTL       :         : 3A        : N              
+altera_reserved_tck          : AB5       : input  : 2.5 V             :         : 3A        : N              
 AS_DATA3, DATA3              : AB6       :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB23      :        :                   :         : 5A        :                
 GND                          : AB24      : gnd    :                   :         :           :                
@@ -147,7 +148,7 @@ GND                          : AC3       : gnd    :                   :         
 RESERVED_INPUT_WITH_WEAK_PULLUP : AC4       :        :                   :         : 3A        :                
 AS_DATA2, DATA2              : AC5       :        :                   :         : 3A        :                
 AS_DATA1, DATA1              : AC6       :        :                   :         : 3A        :                
-altera_reserved_tms          : AC7       : input  : 3.3-V LVTTL       :         : 3A        : N              
+altera_reserved_tms          : AC7       : input  : 2.5 V             :         : 3A        : N              
 VCC_AUX                      : AC8       : power  :                   : 2.5V    :           :                
 VCC_AUX                      : AC21      : power  :                   : 2.5V    :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AC22      :        :                   :         : 4A        :                
@@ -160,7 +161,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : AC28      :        :                   :      
 DNU                          : AD1       :        :                   :         :           :                
 DNU                          : AD2       :        :                   :         :           :                
 GND                          : AD3       : gnd    :                   :         :           :                
-HPS_KEY                      : AD4       : bidir  : 3.3-V LVTTL       :         : 3A        : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : AD4       :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AD5       :        :                   :         : 3A        :                
 GND                          : AD6       : gnd    :                   :         :           :                
 AS_DATA0, ASDO, DATA0        : AD7       :        :                   :         : 3A        :                
@@ -334,7 +335,7 @@ HPS_USB_DATA[4]              : C8        : bidir  : 3.3-V LVTTL       :         
 HPS_USB_DATA[2]              : C9        : bidir  : 3.3-V LVTTL       :         : 7D        : Y              
 HPS_USB_DATA[0]              : C10       : bidir  : 3.3-V LVTTL       :         : 7D        : Y              
 GND                          : C11       : gnd    :                   :         :           :                
-HPS_ENET_INT_N               : C12       : bidir  : 3.3-V LVTTL       :         : 8A        : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : C12       :        :                   :         : 8A        :                
 HPS_SD_DATA[0]               : C13       : bidir  : 3.3-V LVTTL       :         : 7C        : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : C14       :        :                   :         : 7B        :                
 HPS_ENET_RX_DATA[2]          : C15       : input  : 3.3-V LVTTL       :         : 7B        : Y              
@@ -707,8 +708,8 @@ GND                          : W3        : gnd    :                   :         
 GND                          : W4        : gnd    :                   :         :           :                
 VCCA_FPLL                    : W5        : power  :                   : 2.5V    :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W8        :        :                   :         : 3A        :                
-VCCIO3A                      : W9        : power  :                   : 3.3V    : 3A        :                
-altera_reserved_tdi          : W10       : input  : 3.3-V LVTTL       :         : 3A        : N              
+VCCIO3A                      : W9        : power  :                   : 2.5V    : 3A        :                
+altera_reserved_tdi          : W10       : input  : 2.5 V             :         : 3A        : N              
 RESERVED_INPUT_WITH_WEAK_PULLUP : W11       :        :                   :         : 3B        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W12       :        :                   :         : 3B        :                
 VCCIO4A                      : W13       : power  :                   : 2.5V    : 4A        :                
@@ -731,7 +732,7 @@ GND                          : Y3        : gnd    :                   :         
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y4        :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y5        :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y8        :        :                   :         : 3A        :                
-altera_reserved_tdo          : Y9        : output : 3.3-V LVTTL       :         : 3A        : N              
+altera_reserved_tdo          : Y9        : output : 2.5 V             :         : 3A        : N              
 VCCPGM                       : Y10       : power  :                   : 1.8V/2.5V/3.0V/3.3V :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y11       :        :                   :         : 3A        :                
 GND                          : Y12       : gnd    :                   :         :           :                
@@ -741,7 +742,7 @@ D5M_PIXCLK                   : Y15       : input  : 2.5 V             :         
 LED[6]                       : Y16       : output : 3.3-V LVTTL       :         : 5A        : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y17       :        :                   :         : 5A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y18       :        :                   :         : 5A        :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : Y19       :        :                   :         : 5A        :                
+HPS_ENET_INT_N               : Y19       : bidir  : 3.3-V LVTTL       :         : 5A        : N              
 GND                          : Y20       : gnd    :                   :         :           :                
 VCCPD5A                      : Y21       : power  :                   : 3.3V    : 5A        :                
 GND                          : Y24       : gnd    :                   :         :           :                

@@ -1,0 +1,87 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/rodrigo/de0-nano/de0-nano-dev/src/swir
+Eswir_controller_avalon
+Z1 w1550590800
+Z2 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z3 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z4 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z5 8swir_controller_avalon.vhd
+Z6 Fswir_controller_avalon.vhd
+l0
+L5
+VFT^abAK9NRZO@F6Am6`^20
+!s100 81WMG1iW>2XQocMaZP3?e3
+Z7 OV;C;10.5b;63
+32
+Z8 !s110 1550590807
+!i10b 1
+Z9 !s108 1550590807.000000
+Z10 !s90 swir_controller_avalon.vhd|
+Z11 !s107 swir_controller_avalon.vhd|
+!i113 1
+Z12 tExplicit 1 CvgOpt 0
+Abhv
+Z13 DEx4 work 20 swir_controller_core 0 22 NgDZoei7DQ_?`@c`dT`bi3
+R2
+R3
+R4
+Z14 DEx4 work 22 swir_controller_avalon 0 22 FT^abAK9NRZO@F6Am6`^20
+l56
+L39
+V2kSQKHmXOWlThd7G@h:Hz0
+!s100 LmG8?eW[W7X70biiaMU:F0
+R7
+32
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+Eswir_controller_core
+Z15 w1550514932
+R3
+R4
+R0
+Z16 8swir_controller_core.vhd
+Z17 Fswir_controller_core.vhd
+l0
+L14
+VNgDZoei7DQ_?`@c`dT`bi3
+!s100 SAjUI0dZPjT>l2GnSlE4M0
+R7
+32
+Z18 !s110 1550514939
+!i10b 1
+Z19 !s108 1550514939.000000
+Z20 !s90 swir_controller_core.vhd|
+Z21 !s107 swir_controller_core.vhd|
+!i113 1
+R12
+Afsm_sensorinterface
+R3
+R4
+R13
+l226
+L52
+VPmLAhUCJGDGGAi8K7I?@d0
+!s100 =Zh2l65zaA8>>@:Rb21_d0
+R7
+32
+R18
+!i10b 1
+R19
+R20
+R21
+!i113 1
+R12

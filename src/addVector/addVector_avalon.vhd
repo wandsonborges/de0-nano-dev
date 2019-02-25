@@ -14,7 +14,10 @@ entity addVector_avalon is
     NBITS_DATA : integer := 32;
     NBITS_BURST : integer := 4;
     NBITS_BYTEEN : integer := 4;
-    BURST : integer := 8
+    BURST : integer := 8;
+    ADDR_READ1 : std_logic_vector(31 downto 0) := x"38000000";
+    ADDR_READ2 : std_logic_vector(31 downto 0) := x"38100000";
+    ADDR_WRITE : std_logic_vector(31 downto 0) := x"38200000"
     );
 
   port (
@@ -93,8 +96,9 @@ architecture bhv of addVector_avalon is
 
   
   -- BUFFER ADDR:
-  constant ADDR_BASE_READ : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
-  constant ADDR_BASE_WRITE : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38C00000";
+  constant ADDR_BASE_READ : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_READ1;
+  constant ADDR_BASE_READ2 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_READ2;
+  constant ADDR_BASE_WRITE : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_WRITE;
 
 
 
@@ -110,10 +114,10 @@ architecture bhv of addVector_avalon is
   type reg_type is array (0 to 6) of std_logic_vector(31 downto 0);
   constant init_registers : reg_type := (
     x"11223344", --id
-    x"00000000", --vectorSize
-    x"00000000", --start
+    x"00005000", --vectorSize
+    x"00000001", --start
     ADDR_BASE_READ, --addr vector 1
-    ADDR_BASE_READ, --addr vector 2
+    ADDR_BASE_READ2, --addr vector 2
     ADDR_BASE_WRITE, -- addr vector result
     x"00000000" --busy
     );
