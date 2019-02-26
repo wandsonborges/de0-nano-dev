@@ -882,7 +882,7 @@ module cycloneV_soc_mm_interconnect_3 (
 		.in_command_size_data (3'b000)                                                   // (terminated)
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),

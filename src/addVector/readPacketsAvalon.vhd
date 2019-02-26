@@ -11,7 +11,8 @@ entity readPacketsAvalon is
     NBITS_ADDR : integer := 32;
     NBITS_DATA : integer := 32;
     NBITS_PACKETS : integer := 32;
-    FIFO_SIZE : integer := 256;
+    FIFO_SIZE : integer := 1024;
+    FIFO_SIZE_BITS : integer := 10;
     BURST : integer := 8
     );
 
@@ -50,7 +51,7 @@ architecture bhv of readPacketsAvalon is
   signal fifoEmpty : STD_LOGIC;
   signal fifoFull, almost_full  : STD_LOGIC := '0';
   signal fifoDataOut     : STD_LOGIC_VECTOR (NBITS_DATA-1 DOWNTO 0);
-  signal usedw : STD_LOGIC_VECTOR (7 DOWNTO 0);
+  signal usedw : STD_LOGIC_VECTOR (FIFO_SIZE_BITS-1 DOWNTO 0);
   signal fifo_count : UNSIGNED (31 DOWNTO 0);
   signal fifoOverflow : STD_LOGIC := '0';
   signal fifoUnderflow : STD_LOGIC := '0';
@@ -59,7 +60,7 @@ architecture bhv of readPacketsAvalon is
   -- AVALON SIGNALS
 
   constant ADDR_BASE_READ_INIT : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
-  constant AVALON_MAXIMUM_PENDING_READS : integer := 7;
+  constant AVALON_MAXIMUM_PENDING_READS : integer := 16;
   
   signal s_address, address_init_flop : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_READ_INIT;
   signal s_masterwrite, s_masterread, s_masterread_f : std_logic := '0';
@@ -82,7 +83,7 @@ architecture bhv of readPacketsAvalon is
   constant WAIT_CYCLES : integer := 50000000*3;
   signal waitCounter : unsigned(31 downto 0) := (others => '0');
   --READ PARAMETER STATE MACHINE
-  type read_control_st is (st_wait, st_idle, st_setup, st_reading, st_finish);
+  type read_control_st is (st_wait, st_idle, st_setup, st_reading, st_finish, st_waitWr);
   signal state : read_control_st := st_wait;
 	COMPONENT scfifo
 	GENERIC (
@@ -109,7 +110,7 @@ architecture bhv of readPacketsAvalon is
 			empty	: OUT STD_LOGIC ;
 			full	: OUT STD_LOGIC ;
 			q	: OUT STD_LOGIC_VECTOR (NBITS_DATA-1 DOWNTO 0);
-			usedw	: OUT STD_LOGIC_VECTOR (7 DOWNTO 0)
+			usedw	: OUT STD_LOGIC_VECTOR (FIFO_SIZE_BITS-1 DOWNTO 0)
 	);
 	END COMPONENT;
 
@@ -122,13 +123,13 @@ begin  -- architecture bhv
     GENERIC MAP (
       add_ram_output_register => "OFF",
       almost_empty_value => 16,
-      almost_full_value => 64,
+      almost_full_value => FIFO_SIZE-16,
       intended_device_family => "Cyclone V",
-      lpm_numwords => 256,
+      lpm_numwords => FIFO_SIZE,
       lpm_showahead => "ON",
       lpm_type => "scfifo",
       lpm_width => 32,
-      lpm_widthu => 8,
+      lpm_widthu => FIFO_SIZE_BITS,
       overflow_checking => "ON",
       underflow_checking => "ON",
       use_eab => "ON"
@@ -148,7 +149,7 @@ begin  -- architecture bhv
 
 
   fifoDataIn <= masterrd_readdata;
-  s_masterread <= '1' when (pending_counter < AVALON_MAXIMUM_PENDING_READS) and (state = st_reading) and (fifo_count < 240) and (fifoOverflow = '0') and (fifoUnderflow = '0') else '0';
+  s_masterread <= '1' when (pending_counter < AVALON_MAXIMUM_PENDING_READS) and (state = st_reading) and (fifo_count < FIFO_SIZE - 2*BURST) and (fifoOverflow = '0') and (fifoUnderflow = '0') else '0';
   masterrd_read <= s_masterread;
   masterrd_address <= std_logic_vector((rdcount sll 2) + UNSIGNED(address_init_flop));
   masterrd_burstcount <= std_logic_vector(to_unsigned(BURST, masterrd_burstcount'length));
@@ -158,7 +159,7 @@ begin  -- architecture bhv
   data_out <= fifoDataOut;
   rdreq <= get_read_data;
   data_ready <= not fifoEmpty;
-  half_full <= usedw(7);
+  half_full <= usedw(FIFO_SIZE_BITS-1);
   
 countProc: process (clk, rst_n) is
   begin  -- process countProc
@@ -205,19 +206,32 @@ countProc: process (clk, rst_n) is
           address_init_flop <= address_init;
           state <= st_reading;
 
-        when st_reading =>
-          if rdcount >= packets_to_read_flop then
-            state <= st_finish;
-            --rdcount <= (others => '0');
-          elsif masterrd_waitrequest = '0' and s_masterread = '1' then
-            rdcount <= rdcount + BURST;
+        when st_waitWr =>
+          if (fifo_count > FIFO_SIZE - 4*AVALON_MAXIMUM_PENDING_READS*BURST) then
+            state <= st_waitWr;
+          else
             state <= st_reading;
+            end if;
+            
+
+        when st_reading =>
+          if masterrd_waitrequest = '0' and s_masterread = '1' then
+           if rdcount >= packets_to_read_flop - BURST then
+             state <= st_finish;
+           else            
+             rdcount <= rdcount + BURST;
+             if (fifo_count > FIFO_SIZE - 2*AVALON_MAXIMUM_PENDING_READS*BURST) then
+               state <= st_waitWr;
+             else               
+               state <= st_reading;
+             end if;             
+           end if;           
           else
             state <= st_reading;
             rdcount <= rdcount;
           end if;
                   
-        when st_finish =>
+        when st_finish =>         
           state <= st_idle;
            
           
@@ -262,7 +276,7 @@ countProc: process (clk, rst_n) is
         fifoUnderflow <= fifoUnderflow;
       end if;
 
-      if (fifo_count = 255 and wrreq = '1') then
+      if (fifo_count = FIFO_SIZE-1 and wrreq = '1') then
         fifoOverflow <= '1';
       else
         fifoOverflow <= fifoOverflow;

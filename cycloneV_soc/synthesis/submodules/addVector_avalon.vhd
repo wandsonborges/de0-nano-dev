@@ -10,7 +10,8 @@ entity addVector_avalon is
   generic (
     NBITS_ADDR : integer := 32;
     NBITS_PACKETS : integer := 32;
-    FIFO_SIZE : integer := 256;
+    FIFO_SIZE : integer := 1024;
+    FIFO_SIZE_BITS : integer := 10;
     NBITS_DATA : integer := 32;
     NBITS_BURST : integer := 4;
     NBITS_BYTEEN : integer := 4;
@@ -170,7 +171,8 @@ begin  -- architecture bhv
       NBITS_ADDR    => NBITS_ADDR,
       NBITS_DATA    => NBITS_DATA,
       NBITS_PACKETS => NBITS_PACKETS,
-      FIFO_SIZE     => FIFO_SIZE)
+      FIFO_SIZE     => FIFO_SIZE,
+      FIFO_SIZE_BITS => FIFO_SIZE_BITS)
     port map (
       clk                    => clk,
       rst_n                  => rst_n,
@@ -205,7 +207,8 @@ begin  -- architecture bhv
       NBITS_ADDR    => NBITS_ADDR,
       NBITS_DATA    => NBITS_DATA,
       NBITS_PACKETS => NBITS_PACKETS,
-      FIFO_SIZE     => FIFO_SIZE)
+      FIFO_SIZE     => FIFO_SIZE,
+      FIFO_SIZE_BITS => FIFO_SIZE_BITS)
     port map (
       clk                    => clk,
       rst_n                  => rst_n,

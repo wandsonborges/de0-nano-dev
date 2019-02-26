@@ -4346,7 +4346,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_error         ()                                                                     //   (terminated)
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),
@@ -4375,7 +4375,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_0_error    (avalon_st_adapter_out_0_error)          //         .error
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),
@@ -4404,7 +4404,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_0_error    (avalon_st_adapter_001_out_0_error)      //         .error
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),
@@ -4433,7 +4433,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_0_error    (avalon_st_adapter_002_out_0_error)                        //         .error
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),
@@ -4462,7 +4462,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_0_error    (avalon_st_adapter_003_out_0_error)                     //         .error
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),
@@ -4491,7 +4491,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_0_error    (avalon_st_adapter_004_out_0_error)                   //         .error
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),
@@ -4520,7 +4520,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_0_error    (avalon_st_adapter_005_out_0_error)                        //         .error
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),
@@ -4549,7 +4549,7 @@ module cycloneV_soc_mm_interconnect_4 (
 		.out_0_error    (avalon_st_adapter_006_out_0_error)               //         .error
 	);
 
-	cycloneV_soc_mm_interconnect_0_avalon_st_adapter #(
+	cycloneV_soc_mm_interconnect_3_avalon_st_adapter #(
 		.inBitsPerSymbol (34),
 		.inUsePackets    (0),
 		.inDataWidth     (34),

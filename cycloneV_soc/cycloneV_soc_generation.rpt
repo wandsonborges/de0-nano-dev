@@ -14,6 +14,8 @@ Progress: Adding clk_0 [clock_source 16.1]
 Progress: Parameterizing module clk_0
 Progress: Adding convolution_0 [convolution 1.0]
 Progress: Parameterizing module convolution_0
+Progress: Adding homography_dma_0 [homography_dma 1.0]
+Progress: Parameterizing module homography_dma_0
 Progress: Adding hps_0 [altera_hps 16.1]
 Progress: Parameterizing module hps_0
 Progress: Adding led [altera_avalon_pio 16.1]
@@ -32,10 +34,6 @@ Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
 Progress: Done reading input file
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram0 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram1 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram2 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram3 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
 Info: cycloneV_soc.hps_0: HPS Main PLL counter settings: n = 0  m = 73
 Info: cycloneV_soc.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
 Warning: cycloneV_soc.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
@@ -46,6 +44,9 @@ Info: cycloneV_soc.sw: PIO inputs are not hardwired in test bench. Undefined val
 Info: cycloneV_soc.lwir_ul0304_0.st/bridge_stSrcMmMaster_0.avalon_streaming_sink: The sink has a ready signal of 1 bits, but the source does not. Avalon-ST Adapter will be inserted.
 Info: cycloneV_soc.swir_v400_0.st/bridge_stSrcMmMaster_1.avalon_streaming_sink: The sink has a ready signal of 1 bits, but the source does not. Avalon-ST Adapter will be inserted.
 Warning: cycloneV_soc.pll_0: pll_0.locked must be exported, or connected to a matching conduit.
+Warning: cycloneV_soc.homography_dma_0: homography_dma_0.avalon_master must be connected to an Avalon-MM slave
+Warning: cycloneV_soc.homography_dma_0: homography_dma_0.avalon_master_1 must be connected to an Avalon-MM slave
+Warning: cycloneV_soc.homography_dma_0: homography_dma_0.slave must be connected to an Avalon-MM master
 Warning: cycloneV_soc.hps_0: hps_0.f2h_sdram2_data must be connected to an Avalon-MM master
 Info: qsys-generate succeeded.
 Info: Finished: Create block symbol file (.bsf)
@@ -66,6 +67,8 @@ Progress: Adding clk_0 [clock_source 16.1]
 Progress: Parameterizing module clk_0
 Progress: Adding convolution_0 [convolution 1.0]
 Progress: Parameterizing module convolution_0
+Progress: Adding homography_dma_0 [homography_dma 1.0]
+Progress: Parameterizing module homography_dma_0
 Progress: Adding hps_0 [altera_hps 16.1]
 Progress: Parameterizing module hps_0
 Progress: Adding led [altera_avalon_pio 16.1]
@@ -84,10 +87,6 @@ Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
 Progress: Done reading input file
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram0 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram1 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram2 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: cycloneV_soc.hps_0: Setting the slave port width of interface f2h_sdram3 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
 Info: cycloneV_soc.hps_0: HPS Main PLL counter settings: n = 0  m = 73
 Info: cycloneV_soc.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
 Warning: cycloneV_soc.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
@@ -98,13 +97,16 @@ Info: cycloneV_soc.sw: PIO inputs are not hardwired in test bench. Undefined val
 Info: cycloneV_soc.lwir_ul0304_0.st/bridge_stSrcMmMaster_0.avalon_streaming_sink: The sink has a ready signal of 1 bits, but the source does not. Avalon-ST Adapter will be inserted.
 Info: cycloneV_soc.swir_v400_0.st/bridge_stSrcMmMaster_1.avalon_streaming_sink: The sink has a ready signal of 1 bits, but the source does not. Avalon-ST Adapter will be inserted.
 Warning: cycloneV_soc.pll_0: pll_0.locked must be exported, or connected to a matching conduit.
+Warning: cycloneV_soc.homography_dma_0: homography_dma_0.avalon_master must be connected to an Avalon-MM slave
+Warning: cycloneV_soc.homography_dma_0: homography_dma_0.avalon_master_1 must be connected to an Avalon-MM slave
+Warning: cycloneV_soc.homography_dma_0: homography_dma_0.slave must be connected to an Avalon-MM master
 Warning: cycloneV_soc.hps_0: hps_0.f2h_sdram2_data must be connected to an Avalon-MM master
 Info: cycloneV_soc: Generating cycloneV_soc "cycloneV_soc" for QUARTUS_SYNTH
-Info: Interconnect is inserted between master bridge_stSrcMmMaster_1.avalon_master and slave hps_0.f2h_sdram1_data because the master has address signal 32 bit wide, but the slave is 30 bit wide.
-Info: Interconnect is inserted between master bridge_stSrcMmMaster_1.avalon_master and slave hps_0.f2h_sdram1_data because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master bridge_stSrcMmMaster_1.avalon_master and slave hps_0.f2h_sdram1_data because the master has address signal 32 bit wide, but the slave is 29 bit wide.
+Info: Interconnect is inserted between master bridge_stSrcMmMaster_1.avalon_master and slave hps_0.f2h_sdram1_data because the master has writedata signal 8 bit wide, but the slave is 64 bit wide.
 Info: Interconnect is inserted between master bridge_stSrcMmMaster_1.avalon_master and slave hps_0.f2h_sdram1_data because the master has burstcount signal 4 bit wide, but the slave is 8 bit wide.
-Info: Interconnect is inserted between master bridge_stSrcMmMaster_0.avalon_master and slave hps_0.f2h_sdram3_data because the master has address signal 32 bit wide, but the slave is 30 bit wide.
-Info: Interconnect is inserted between master bridge_stSrcMmMaster_0.avalon_master and slave hps_0.f2h_sdram3_data because the master has writedata signal 8 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master bridge_stSrcMmMaster_0.avalon_master and slave hps_0.f2h_sdram3_data because the master has address signal 32 bit wide, but the slave is 29 bit wide.
+Info: Interconnect is inserted between master bridge_stSrcMmMaster_0.avalon_master and slave hps_0.f2h_sdram3_data because the master has writedata signal 8 bit wide, but the slave is 64 bit wide.
 Info: Interconnect is inserted between master bridge_stSrcMmMaster_0.avalon_master and slave hps_0.f2h_sdram3_data because the master has burstcount signal 4 bit wide, but the slave is 8 bit wide.
 Info: Interconnect is inserted between master hps_0.h2f_axi_master and slave onchip_memory2_0.s1 because the master is of type axi and the slave is of type avalon.
 Info: Inserting clock-crossing logic between cmd_demux.src3 and cmd_mux_003.sink0
@@ -119,28 +121,25 @@ Info: avalon_st_adapter: Inserting timing_adapter: timing_adapter_0
 Info: avalon_st_adapter_001: Inserting timing_adapter: timing_adapter_0
 Info: addVector_0: "cycloneV_soc" instantiated addVector "addVector_0"
 Info: bridge_stSrcMmMaster_0: "cycloneV_soc" instantiated bridge_stSrcMmMaster "bridge_stSrcMmMaster_0"
+Info: homography_dma_0: "cycloneV_soc" instantiated homography_dma "homography_dma_0"
 Info: hps_0: "Running  for module: hps_0"
-Warning: hps_0: Setting the slave port width of interface f2h_sdram0 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: hps_0: Setting the slave port width of interface f2h_sdram1 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: hps_0: Setting the slave port width of interface f2h_sdram2 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
-Warning: hps_0: Setting the slave port width of interface f2h_sdram3 to 32 results in bandwidth under-utilization.  Altera recommends you set the interface data width to 64-bit or greater.
 Info: hps_0: HPS Main PLL counter settings: n = 0  m = 73
 Info: hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
 Warning: hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
 Warning: hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
 Info: hps_0: "cycloneV_soc" instantiated altera_hps "hps_0"
 Info: led: Starting RTL generation for module 'cycloneV_soc_led'
-Info: led:   Generation command is [exec /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/bin/perl -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/europa -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/perl_lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/common -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cycloneV_soc_led --dir=/tmp/alt7952_4715246526456791635.dir/0003_led_gen/ --quartus_dir=/home/rodrigo/intelFPGA_lite/16.1s/quartus --verilog --config=/tmp/alt7952_4715246526456791635.dir/0003_led_gen//cycloneV_soc_led_component_configuration.pl  --do_build_sim=0  ]
+Info: led:   Generation command is [exec /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/bin/perl -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/europa -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/perl_lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/common -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cycloneV_soc_led --dir=/tmp/alt7952_4715246526456791635.dir/0207_led_gen/ --quartus_dir=/home/rodrigo/intelFPGA_lite/16.1s/quartus --verilog --config=/tmp/alt7952_4715246526456791635.dir/0207_led_gen//cycloneV_soc_led_component_configuration.pl  --do_build_sim=0  ]
 Info: led: Done RTL generation for module 'cycloneV_soc_led'
 Info: led: "cycloneV_soc" instantiated altera_avalon_pio "led"
 Info: lwir_ul0304_0: "cycloneV_soc" instantiated lwir_ul0304 "lwir_ul0304_0"
 Info: onchip_memory2_0: Starting RTL generation for module 'cycloneV_soc_onchip_memory2_0'
-Info: onchip_memory2_0:   Generation command is [exec /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/bin/perl -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/europa -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/perl_lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/common -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cycloneV_soc_onchip_memory2_0 --dir=/tmp/alt7952_4715246526456791635.dir/0005_onchip_memory2_0_gen/ --quartus_dir=/home/rodrigo/intelFPGA_lite/16.1s/quartus --verilog --config=/tmp/alt7952_4715246526456791635.dir/0005_onchip_memory2_0_gen//cycloneV_soc_onchip_memory2_0_component_configuration.pl  --do_build_sim=0  ]
+Info: onchip_memory2_0:   Generation command is [exec /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/bin/perl -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/europa -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/perl_lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/common -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cycloneV_soc_onchip_memory2_0 --dir=/tmp/alt7952_4715246526456791635.dir/0209_onchip_memory2_0_gen/ --quartus_dir=/home/rodrigo/intelFPGA_lite/16.1s/quartus --verilog --config=/tmp/alt7952_4715246526456791635.dir/0209_onchip_memory2_0_gen//cycloneV_soc_onchip_memory2_0_component_configuration.pl  --do_build_sim=0  ]
 Info: onchip_memory2_0: Done RTL generation for module 'cycloneV_soc_onchip_memory2_0'
 Info: onchip_memory2_0: "cycloneV_soc" instantiated altera_avalon_onchip_memory2 "onchip_memory2_0"
 Info: pll_0: "cycloneV_soc" instantiated altera_pll "pll_0"
 Info: sw: Starting RTL generation for module 'cycloneV_soc_sw'
-Info: sw:   Generation command is [exec /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/bin/perl -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/europa -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/perl_lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/common -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cycloneV_soc_sw --dir=/tmp/alt7952_4715246526456791635.dir/0007_sw_gen/ --quartus_dir=/home/rodrigo/intelFPGA_lite/16.1s/quartus --verilog --config=/tmp/alt7952_4715246526456791635.dir/0007_sw_gen//cycloneV_soc_sw_component_configuration.pl  --do_build_sim=0  ]
+Info: sw:   Generation command is [exec /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/bin/perl -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/linux64/perl/lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/europa -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin/perl_lib -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/sopc_builder/bin -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/common -I /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/rodrigo/intelFPGA_lite/16.1s/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cycloneV_soc_sw --dir=/tmp/alt7952_4715246526456791635.dir/0211_sw_gen/ --quartus_dir=/home/rodrigo/intelFPGA_lite/16.1s/quartus --verilog --config=/tmp/alt7952_4715246526456791635.dir/0211_sw_gen//cycloneV_soc_sw_component_configuration.pl  --do_build_sim=0  ]
 Info: sw: Done RTL generation for module 'cycloneV_soc_sw'
 Info: sw: "cycloneV_soc" instantiated altera_avalon_pio "sw"
 Info: swir_v400_0: "cycloneV_soc" instantiated swir_v400 "swir_v400_0"
@@ -199,6 +198,7 @@ Info: Reusing file /home/rodrigo/ivision/v500/de0-nano-dev/cycloneV_soc/synthesi
 Info: rsp_demux: "mm_interconnect_3" instantiated altera_merlin_demultiplexer "rsp_demux"
 Info: rsp_mux: "mm_interconnect_3" instantiated altera_merlin_multiplexer "rsp_mux"
 Info: Reusing file /home/rodrigo/ivision/v500/de0-nano-dev/cycloneV_soc/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: avalon_st_adapter: "mm_interconnect_3" instantiated altera_avalon_st_adapter "avalon_st_adapter"
 Info: router: "mm_interconnect_4" instantiated altera_merlin_router "router"
 Info: router_002: "mm_interconnect_4" instantiated altera_merlin_router "router_002"
 Info: hps_0_h2f_lw_axi_master_wr_limiter: "mm_interconnect_4" instantiated altera_merlin_traffic_limiter "hps_0_h2f_lw_axi_master_wr_limiter"
@@ -217,6 +217,7 @@ Info: Reusing file /home/rodrigo/ivision/v500/de0-nano-dev/cycloneV_soc/synthesi
 Info: timing_adapter_0: "avalon_st_adapter" instantiated timing_adapter "timing_adapter_0"
 Info: border: "hps_io" instantiated altera_interface_generator "border"
 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
-Info: cycloneV_soc: Done "cycloneV_soc" with 58 modules, 124 files
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: cycloneV_soc: Done "cycloneV_soc" with 61 modules, 128 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis

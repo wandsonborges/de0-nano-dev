@@ -77,10 +77,10 @@ module cycloneV_soc (
 	wire   [7:0] bridge_stsrcmmmaster_1_avalon_master_writedata;               // bridge_stSrcMmMaster_1:master_writedata -> mm_interconnect_0:bridge_stSrcMmMaster_1_avalon_master_writedata
 	wire   [3:0] bridge_stsrcmmmaster_1_avalon_master_burstcount;              // bridge_stSrcMmMaster_1:master_burstcount -> mm_interconnect_0:bridge_stSrcMmMaster_1_avalon_master_burstcount
 	wire         mm_interconnect_0_hps_0_f2h_sdram1_data_waitrequest;          // hps_0:f2h_sdram1_WAITREQUEST -> mm_interconnect_0:hps_0_f2h_sdram1_data_waitrequest
-	wire  [29:0] mm_interconnect_0_hps_0_f2h_sdram1_data_address;              // mm_interconnect_0:hps_0_f2h_sdram1_data_address -> hps_0:f2h_sdram1_ADDRESS
-	wire   [3:0] mm_interconnect_0_hps_0_f2h_sdram1_data_byteenable;           // mm_interconnect_0:hps_0_f2h_sdram1_data_byteenable -> hps_0:f2h_sdram1_BYTEENABLE
+	wire  [28:0] mm_interconnect_0_hps_0_f2h_sdram1_data_address;              // mm_interconnect_0:hps_0_f2h_sdram1_data_address -> hps_0:f2h_sdram1_ADDRESS
+	wire   [7:0] mm_interconnect_0_hps_0_f2h_sdram1_data_byteenable;           // mm_interconnect_0:hps_0_f2h_sdram1_data_byteenable -> hps_0:f2h_sdram1_BYTEENABLE
 	wire         mm_interconnect_0_hps_0_f2h_sdram1_data_write;                // mm_interconnect_0:hps_0_f2h_sdram1_data_write -> hps_0:f2h_sdram1_WRITE
-	wire  [31:0] mm_interconnect_0_hps_0_f2h_sdram1_data_writedata;            // mm_interconnect_0:hps_0_f2h_sdram1_data_writedata -> hps_0:f2h_sdram1_WRITEDATA
+	wire  [63:0] mm_interconnect_0_hps_0_f2h_sdram1_data_writedata;            // mm_interconnect_0:hps_0_f2h_sdram1_data_writedata -> hps_0:f2h_sdram1_WRITEDATA
 	wire   [7:0] mm_interconnect_0_hps_0_f2h_sdram1_data_burstcount;           // mm_interconnect_0:hps_0_f2h_sdram1_data_burstcount -> hps_0:f2h_sdram1_BURSTCOUNT
 	wire         bridge_stsrcmmmaster_0_avalon_master_waitrequest;             // mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_waitrequest -> bridge_stSrcMmMaster_0:master_waitrequest
 	wire  [31:0] bridge_stsrcmmmaster_0_avalon_master_address;                 // bridge_stSrcMmMaster_0:master_address -> mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_address
@@ -88,10 +88,10 @@ module cycloneV_soc (
 	wire   [7:0] bridge_stsrcmmmaster_0_avalon_master_writedata;               // bridge_stSrcMmMaster_0:master_writedata -> mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_writedata
 	wire   [3:0] bridge_stsrcmmmaster_0_avalon_master_burstcount;              // bridge_stSrcMmMaster_0:master_burstcount -> mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_burstcount
 	wire         mm_interconnect_1_hps_0_f2h_sdram3_data_waitrequest;          // hps_0:f2h_sdram3_WAITREQUEST -> mm_interconnect_1:hps_0_f2h_sdram3_data_waitrequest
-	wire  [29:0] mm_interconnect_1_hps_0_f2h_sdram3_data_address;              // mm_interconnect_1:hps_0_f2h_sdram3_data_address -> hps_0:f2h_sdram3_ADDRESS
-	wire   [3:0] mm_interconnect_1_hps_0_f2h_sdram3_data_byteenable;           // mm_interconnect_1:hps_0_f2h_sdram3_data_byteenable -> hps_0:f2h_sdram3_BYTEENABLE
+	wire  [28:0] mm_interconnect_1_hps_0_f2h_sdram3_data_address;              // mm_interconnect_1:hps_0_f2h_sdram3_data_address -> hps_0:f2h_sdram3_ADDRESS
+	wire   [7:0] mm_interconnect_1_hps_0_f2h_sdram3_data_byteenable;           // mm_interconnect_1:hps_0_f2h_sdram3_data_byteenable -> hps_0:f2h_sdram3_BYTEENABLE
 	wire         mm_interconnect_1_hps_0_f2h_sdram3_data_write;                // mm_interconnect_1:hps_0_f2h_sdram3_data_write -> hps_0:f2h_sdram3_WRITE
-	wire  [31:0] mm_interconnect_1_hps_0_f2h_sdram3_data_writedata;            // mm_interconnect_1:hps_0_f2h_sdram3_data_writedata -> hps_0:f2h_sdram3_WRITEDATA
+	wire  [63:0] mm_interconnect_1_hps_0_f2h_sdram3_data_writedata;            // mm_interconnect_1:hps_0_f2h_sdram3_data_writedata -> hps_0:f2h_sdram3_WRITEDATA
 	wire   [7:0] mm_interconnect_1_hps_0_f2h_sdram3_data_burstcount;           // mm_interconnect_1:hps_0_f2h_sdram3_data_burstcount -> hps_0:f2h_sdram3_BURSTCOUNT
 	wire  [31:0] addvector_0_avalon_rd1_1_1_1_readdata;                        // mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_readdata -> addVector_0:masterrd1_readdata
 	wire         addvector_0_avalon_rd1_1_1_1_waitrequest;                     // mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_waitrequest -> addVector_0:masterrd1_waitrequest
@@ -125,14 +125,14 @@ module cycloneV_soc (
 	wire  [31:0] addvector_1_avalon_wr_address;                                // addVector_1:masterwr_address -> mm_interconnect_2:addVector_1_avalon_wr_address
 	wire         addvector_1_avalon_wr_write;                                  // addVector_1:masterwr_write -> mm_interconnect_2:addVector_1_avalon_wr_write
 	wire  [31:0] addvector_1_avalon_wr_writedata;                              // addVector_1:masterwr_writedata -> mm_interconnect_2:addVector_1_avalon_wr_writedata
-	wire  [31:0] mm_interconnect_2_hps_0_f2h_sdram0_data_readdata;             // hps_0:f2h_sdram0_READDATA -> mm_interconnect_2:hps_0_f2h_sdram0_data_readdata
+	wire  [63:0] mm_interconnect_2_hps_0_f2h_sdram0_data_readdata;             // hps_0:f2h_sdram0_READDATA -> mm_interconnect_2:hps_0_f2h_sdram0_data_readdata
 	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_waitrequest;          // hps_0:f2h_sdram0_WAITREQUEST -> mm_interconnect_2:hps_0_f2h_sdram0_data_waitrequest
-	wire  [29:0] mm_interconnect_2_hps_0_f2h_sdram0_data_address;              // mm_interconnect_2:hps_0_f2h_sdram0_data_address -> hps_0:f2h_sdram0_ADDRESS
+	wire  [28:0] mm_interconnect_2_hps_0_f2h_sdram0_data_address;              // mm_interconnect_2:hps_0_f2h_sdram0_data_address -> hps_0:f2h_sdram0_ADDRESS
 	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_read;                 // mm_interconnect_2:hps_0_f2h_sdram0_data_read -> hps_0:f2h_sdram0_READ
-	wire   [3:0] mm_interconnect_2_hps_0_f2h_sdram0_data_byteenable;           // mm_interconnect_2:hps_0_f2h_sdram0_data_byteenable -> hps_0:f2h_sdram0_BYTEENABLE
+	wire   [7:0] mm_interconnect_2_hps_0_f2h_sdram0_data_byteenable;           // mm_interconnect_2:hps_0_f2h_sdram0_data_byteenable -> hps_0:f2h_sdram0_BYTEENABLE
 	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_readdatavalid;        // hps_0:f2h_sdram0_READDATAVALID -> mm_interconnect_2:hps_0_f2h_sdram0_data_readdatavalid
 	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_write;                // mm_interconnect_2:hps_0_f2h_sdram0_data_write -> hps_0:f2h_sdram0_WRITE
-	wire  [31:0] mm_interconnect_2_hps_0_f2h_sdram0_data_writedata;            // mm_interconnect_2:hps_0_f2h_sdram0_data_writedata -> hps_0:f2h_sdram0_WRITEDATA
+	wire  [63:0] mm_interconnect_2_hps_0_f2h_sdram0_data_writedata;            // mm_interconnect_2:hps_0_f2h_sdram0_data_writedata -> hps_0:f2h_sdram0_WRITEDATA
 	wire   [7:0] mm_interconnect_2_hps_0_f2h_sdram0_data_burstcount;           // mm_interconnect_2:hps_0_f2h_sdram0_data_burstcount -> hps_0:f2h_sdram0_BURSTCOUNT
 	wire   [1:0] hps_0_h2f_axi_master_awburst;                                 // hps_0:h2f_AWBURST -> mm_interconnect_3:hps_0_h2f_axi_master_awburst
 	wire   [3:0] hps_0_h2f_axi_master_arlen;                                   // hps_0:h2f_ARLEN -> mm_interconnect_3:hps_0_h2f_axi_master_arlen
@@ -290,7 +290,7 @@ module cycloneV_soc (
 	wire         avalon_st_adapter_001_out_0_ready;                            // bridge_stSrcMmMaster_1:st_ready -> avalon_st_adapter_001:out_0_ready
 	wire         avalon_st_adapter_001_out_0_startofpacket;                    // avalon_st_adapter_001:out_0_startofpacket -> bridge_stSrcMmMaster_1:st_startofpacket
 	wire         avalon_st_adapter_001_out_0_endofpacket;                      // avalon_st_adapter_001:out_0_endofpacket -> bridge_stSrcMmMaster_1:st_endofpacket
-	wire         rst_controller_reset_out_reset;                               // rst_controller:reset_out -> [addVector_0:rst_n, addVector_1:rst_n, led:reset_n, mm_interconnect_0:bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_1:bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_2:addVector_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_3:onchip_memory2_0_reset1_reset_bridge_in_reset_reset, mm_interconnect_4:led_reset_reset_bridge_in_reset_reset, onchip_memory2_0:reset, rst_translator:in_reset, sw:reset_n]
+	wire         rst_controller_reset_out_reset;                               // rst_controller:reset_out -> [addVector_0:rst_n, addVector_1:rst_n, homography_dma_0:rst_n, led:reset_n, mm_interconnect_0:bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_1:bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_2:addVector_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_3:onchip_memory2_0_reset1_reset_bridge_in_reset_reset, mm_interconnect_4:led_reset_reset_bridge_in_reset_reset, onchip_memory2_0:reset, rst_translator:in_reset, sw:reset_n]
 	wire         rst_controller_reset_out_reset_req;                           // rst_controller:reset_req -> [onchip_memory2_0:reset_req, rst_translator:reset_req_in]
 	wire         rst_controller_001_reset_out_reset;                           // rst_controller_001:reset_out -> [avalon_st_adapter:in_rst_0_reset, bridge_stSrcMmMaster_0:rst_n, lwir_ul0304_0:rst_n, mm_interconnect_4:lwir_ul0304_0_reset_sink_reset_bridge_in_reset_reset]
 	wire         rst_controller_002_reset_out_reset;                           // rst_controller_002:reset_out -> [avalon_st_adapter_001:in_rst_0_reset, bridge_stSrcMmMaster_1:rst_n, mm_interconnect_4:swir_v400_0_reset_sink_reset_bridge_in_reset_reset, swir_v400_0:rst_n]
@@ -298,16 +298,17 @@ module cycloneV_soc (
 	wire         hps_0_h2f_reset_reset;                                        // hps_0:h2f_rst_n -> rst_controller_003:reset_in0
 
 	addVector_avalon #(
-		.NBITS_ADDR    (32),
-		.NBITS_PACKETS (32),
-		.FIFO_SIZE     (256),
-		.NBITS_DATA    (32),
-		.NBITS_BURST   (4),
-		.NBITS_BYTEEN  (4),
-		.BURST         (8),
-		.ADDR_READ1    (32'b00111000000000000000000000000000),
-		.ADDR_READ2    (32'b00111000000100000000000000000000),
-		.ADDR_WRITE    (32'b00111000110000000000000000000000)
+		.NBITS_ADDR     (32),
+		.NBITS_PACKETS  (32),
+		.FIFO_SIZE      (1024),
+		.FIFO_SIZE_BITS (10),
+		.NBITS_DATA     (32),
+		.NBITS_BURST    (4),
+		.NBITS_BYTEEN   (4),
+		.BURST          (8),
+		.ADDR_READ1     (32'b00111000000000000000000000000000),
+		.ADDR_READ2     (32'b00111000000100000000000000000000),
+		.ADDR_WRITE     (32'b00111000110000000000000000000000)
 	) addvector_0 (
 		.clk                     (clk_clk),                                             //            clock.clk
 		.rst_n                   (~rst_controller_reset_out_reset),                     //       reset_sink.reset_n
@@ -339,16 +340,17 @@ module cycloneV_soc (
 	);
 
 	addVector_avalon #(
-		.NBITS_ADDR    (32),
-		.NBITS_PACKETS (32),
-		.FIFO_SIZE     (256),
-		.NBITS_DATA    (32),
-		.NBITS_BURST   (4),
-		.NBITS_BYTEEN  (4),
-		.BURST         (8),
-		.ADDR_READ1    (32'b00111000001000000000000000000000),
-		.ADDR_READ2    (32'b00111000001100000000000000000000),
-		.ADDR_WRITE    (32'b00111000010000000000000000000000)
+		.NBITS_ADDR     (32),
+		.NBITS_PACKETS  (32),
+		.FIFO_SIZE      (1024),
+		.FIFO_SIZE_BITS (10),
+		.NBITS_DATA     (32),
+		.NBITS_BURST    (4),
+		.NBITS_BYTEEN   (4),
+		.BURST          (8),
+		.ADDR_READ1     (32'b00111000001000000000000000000000),
+		.ADDR_READ2     (32'b00111000001100000000000000000000),
+		.ADDR_WRITE     (32'b00111000010000000000000000000000)
 	) addvector_1 (
 		.clk                     (clk_clk),                                             //            clock.clk
 		.rst_n                   (~rst_controller_reset_out_reset),                     //       reset_sink.reset_n
@@ -441,6 +443,43 @@ module cycloneV_soc (
 		.slave_readdata      (mm_interconnect_4_bridge_stsrcmmmaster_1_slave_readdata)       //                      .readdata
 	);
 
+	homography_avalon #(
+		.COLS            (320),
+		.LINES           (256),
+		.HOMOG_BITS_INT  (12),
+		.HOMOG_BITS_FRAC (20),
+		.NBITS_ADDR      (32),
+		.NBITS_DATA      (8),
+		.NBITS_COLS      (12),
+		.NBITS_LINES     (12),
+		.NBITS_BURST     (4),
+		.NBITS_BYTEEN    (4),
+		.BURST           (8),
+		.ADDR_READ       (32'b00111000110000000000000000000000),
+		.ADDR_WRITE      (32'b00111000010100000000000000000000)
+	) homography_dma_0 (
+		.clk                    (clk_clk),                         //           clock.clk
+		.masterrd_waitrequest   (),                                //   avalon_master.waitrequest
+		.masterrd_readdatavalid (),                                //                .readdatavalid
+		.masterrd_readdata      (),                                //                .readdata
+		.masterrd_address       (),                                //                .address
+		.masterrd_read          (),                                //                .read
+		.masterwr_address       (),                                // avalon_master_1.address
+		.masterwr_waitrequest   (),                                //                .waitrequest
+		.masterwr_write         (),                                //                .write
+		.masterwr_writedata     (),                                //                .writedata
+		.masterwr_burstcount    (),                                //                .burstcount
+		.rst_n                  (~rst_controller_reset_out_reset), //      reset_sink.reset_n
+		.slave_chipselect       (),                                //           slave.chipselect
+		.slave_read             (),                                //                .read
+		.slave_write            (),                                //                .write
+		.slave_address          (),                                //                .address
+		.slave_writedata        (),                                //                .writedata
+		.slave_waitrequest      (),                                //                .waitrequest
+		.slave_readdatavalid    (),                                //                .readdatavalid
+		.slave_readdata         ()                                 //                .readdata
+	);
+
 	cycloneV_soc_hps_0 #(
 		.F2S_Width (3),
 		.S2F_Width (2)
@@ -520,9 +559,6 @@ module cycloneV_soc (
 		.f2h_sdram2_READDATA      (),                                                      //                  .readdata
 		.f2h_sdram2_READDATAVALID (),                                                      //                  .readdatavalid
 		.f2h_sdram2_READ          (),                                                      //                  .read
-		.f2h_sdram2_WRITEDATA     (),                                                      //                  .writedata
-		.f2h_sdram2_BYTEENABLE    (),                                                      //                  .byteenable
-		.f2h_sdram2_WRITE         (),                                                      //                  .write
 		.f2h_sdram3_clk           (clk_clk),                                               //  f2h_sdram3_clock.clk
 		.f2h_sdram3_ADDRESS       (mm_interconnect_1_hps_0_f2h_sdram3_data_address),       //   f2h_sdram3_data.address
 		.f2h_sdram3_BURSTCOUNT    (mm_interconnect_1_hps_0_f2h_sdram3_data_burstcount),    //                  .burstcount

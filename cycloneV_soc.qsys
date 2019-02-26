@@ -193,6 +193,22 @@
          type = "String";
       }
    }
+   element homography_dma_0
+   {
+      datum _sortIndex
+      {
+         value = "13";
+         type = "int";
+      }
+   }
+   element homography_dma_0.slave
+   {
+      datum baseAddress
+      {
+         value = "65664";
+         type = "String";
+      }
+   }
    element hps_0
    {
       datum _sortIndex
@@ -357,7 +373,8 @@
   <parameter name="ADDR_READ2" value="940572672" />
   <parameter name="ADDR_WRITE" value="952107008" />
   <parameter name="BURST" value="8" />
-  <parameter name="FIFO_SIZE" value="256" />
+  <parameter name="FIFO_SIZE" value="1024" />
+  <parameter name="FIFO_SIZE_BITS" value="10" />
   <parameter name="NBITS_ADDR" value="32" />
   <parameter name="NBITS_BURST" value="4" />
   <parameter name="NBITS_BYTEEN" value="4" />
@@ -369,7 +386,8 @@
   <parameter name="ADDR_READ2" value="942669824" />
   <parameter name="ADDR_WRITE" value="943718400" />
   <parameter name="BURST" value="8" />
-  <parameter name="FIFO_SIZE" value="256" />
+  <parameter name="FIFO_SIZE" value="1024" />
+  <parameter name="FIFO_SIZE_BITS" value="10" />
   <parameter name="NBITS_ADDR" value="32" />
   <parameter name="NBITS_BURST" value="4" />
   <parameter name="NBITS_BYTEEN" value="4" />
@@ -410,6 +428,25 @@
   <parameter name="MAX_COLS" value="2592" />
   <parameter name="NBITS_ADDR" value="32" />
   <parameter name="NBITS_COLS" value="12" />
+  <parameter name="NBITS_LINES" value="12" />
+ </module>
+ <module
+   name="homography_dma_0"
+   kind="homography_dma"
+   version="1.0"
+   enabled="1">
+  <parameter name="ADDR_READ" value="952107008" />
+  <parameter name="ADDR_WRITE" value="944766976" />
+  <parameter name="BURST" value="8" />
+  <parameter name="COLS" value="320" />
+  <parameter name="HOMOG_BITS_FRAC" value="20" />
+  <parameter name="HOMOG_BITS_INT" value="12" />
+  <parameter name="LINES" value="256" />
+  <parameter name="NBITS_ADDR" value="32" />
+  <parameter name="NBITS_BURST" value="4" />
+  <parameter name="NBITS_BYTEEN" value="4" />
+  <parameter name="NBITS_COLS" value="12" />
+  <parameter name="NBITS_DATA" value="8" />
   <parameter name="NBITS_LINES" value="12" />
  </module>
  <module name="hps_0" kind="altera_hps" version="16.1" enabled="1">
@@ -522,8 +559,8 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Write-Only,Avalon-MM Bidirectional,Avalon-MM Write-Only</parameter>
-  <parameter name="F2SDRAM_Width" value="32,32,32,32" />
+  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Write-Only,Avalon-MM Read-Only,Avalon-MM Write-Only</parameter>
+  <parameter name="F2SDRAM_Width" value="64,64,64,64" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="3" />
   <parameter name="FIX_READ_LATENCY" value="8" />
@@ -1401,6 +1438,11 @@
    kind="clock"
    version="16.1"
    start="clk_0.clk"
+   end="homography_dma_0.clock" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clk_0.clk"
    end="bridge_stSrcMmMaster_0.clock_mem" />
  <connection
    kind="clock"
@@ -1511,6 +1553,11 @@
    version="16.1"
    start="clk_0.clk_reset"
    end="addVector_1.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clk_0.clk_reset"
+   end="homography_dma_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
