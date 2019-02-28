@@ -193,6 +193,14 @@
          type = "String";
       }
    }
+   element cycloneV_soc
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element homography_dma_0
    {
       datum _sortIndex
@@ -437,10 +445,11 @@
    enabled="1">
   <parameter name="ADDR_READ" value="952107008" />
   <parameter name="ADDR_WRITE" value="944766976" />
-  <parameter name="BURST" value="8" />
+  <parameter name="BURST" value="4" />
   <parameter name="COLS" value="320" />
   <parameter name="HOMOG_BITS_FRAC" value="20" />
   <parameter name="HOMOG_BITS_INT" value="12" />
+  <parameter name="HOMOG_DELAY_CYCLES" value="8" />
   <parameter name="LINES" value="256" />
   <parameter name="NBITS_ADDR" value="32" />
   <parameter name="NBITS_BURST" value="4" />
@@ -559,7 +568,7 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Write-Only,Avalon-MM Read-Only,Avalon-MM Write-Only</parameter>
+  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Write-Only,Avalon-MM Bidirectional,Avalon-MM Write-Only</parameter>
   <parameter name="F2SDRAM_Width" value="64,64,64,64" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="3" />
@@ -1251,6 +1260,15 @@
  <connection
    kind="avalon"
    version="16.1"
+   start="homography_dma_0.avalon_master"
+   end="hps_0.f2h_sdram0_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
    start="bridge_stSrcMmMaster_1.avalon_master"
    end="hps_0.f2h_sdram1_data">
   <parameter name="arbitrationPriority" value="1" />
@@ -1262,6 +1280,15 @@
    version="16.1"
    start="bridge_stSrcMmMaster_0.avalon_master"
    end="hps_0.f2h_sdram3_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="homography_dma_0.avalon_master_1"
+   end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -1390,6 +1417,15 @@
    end="bridge_stSrcMmMaster_1.slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0028" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="homography_dma_0.slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00010080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection

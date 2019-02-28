@@ -161,6 +161,9 @@ module cycloneV_soc_hps_0_fpga_interfaces(
  ,output wire [64 - 1 : 0 ] f2h_sdram2_READDATA
  ,output wire [1 - 1 : 0 ] f2h_sdram2_READDATAVALID
  ,input wire [1 - 1 : 0 ] f2h_sdram2_READ
+ ,input wire [64 - 1 : 0 ] f2h_sdram2_WRITEDATA
+ ,input wire [8 - 1 : 0 ] f2h_sdram2_BYTEENABLE
+ ,input wire [1 - 1 : 0 ] f2h_sdram2_WRITE
 // f2h_sdram2_clock
  ,input wire [1 - 1 : 0 ] f2h_sdram2_clk
 // f2h_sdram3_data
@@ -175,7 +178,7 @@ module cycloneV_soc_hps_0_fpga_interfaces(
 );
 
 
-wire [30 - 1 : 0] intermediate;
+wire [32 - 1 : 0] intermediate;
 assign intermediate[0:0] = ~intermediate[1:1];
 assign intermediate[6:6] = intermediate[3:3]|intermediate[5:5];
 assign intermediate[2:2] = intermediate[7:7];
@@ -186,26 +189,28 @@ assign intermediate[13:13] = intermediate[12:12];
 assign intermediate[11:11] = intermediate[14:14];
 assign intermediate[15:15] = intermediate[14:14];
 assign intermediate[16:16] = ~intermediate[17:17];
-assign intermediate[20:20] = intermediate[19:19];
-assign intermediate[18:18] = intermediate[21:21];
-assign intermediate[22:22] = intermediate[21:21];
-assign intermediate[23:23] = ~intermediate[24:24];
-assign intermediate[27:27] = intermediate[26:26];
-assign intermediate[25:25] = intermediate[28:28];
+assign intermediate[22:22] = intermediate[19:19]|intermediate[21:21];
+assign intermediate[18:18] = intermediate[23:23];
+assign intermediate[20:20] = intermediate[23:23];
+assign intermediate[24:24] = intermediate[23:23];
+assign intermediate[25:25] = ~intermediate[26:26];
 assign intermediate[29:29] = intermediate[28:28];
+assign intermediate[27:27] = intermediate[30:30];
+assign intermediate[31:31] = intermediate[30:30];
 assign f2h_sdram0_WAITREQUEST[0:0] = intermediate[0:0];
 assign f2h_sdram1_WAITREQUEST[0:0] = intermediate[9:9];
 assign f2h_sdram2_WAITREQUEST[0:0] = intermediate[16:16];
-assign f2h_sdram3_WAITREQUEST[0:0] = intermediate[23:23];
+assign f2h_sdram3_WAITREQUEST[0:0] = intermediate[25:25];
 assign intermediate[3:3] = f2h_sdram0_READ[0:0];
 assign intermediate[5:5] = f2h_sdram0_WRITE[0:0];
 assign intermediate[7:7] = f2h_sdram0_clk[0:0];
 assign intermediate[12:12] = f2h_sdram1_WRITE[0:0];
 assign intermediate[14:14] = f2h_sdram1_clk[0:0];
 assign intermediate[19:19] = f2h_sdram2_READ[0:0];
-assign intermediate[21:21] = f2h_sdram2_clk[0:0];
-assign intermediate[26:26] = f2h_sdram3_WRITE[0:0];
-assign intermediate[28:28] = f2h_sdram3_clk[0:0];
+assign intermediate[21:21] = f2h_sdram2_WRITE[0:0];
+assign intermediate[23:23] = f2h_sdram2_clk[0:0];
+assign intermediate[28:28] = f2h_sdram3_WRITE[0:0];
+assign intermediate[30:30] = f2h_sdram3_clk[0:0];
 
 cyclonev_hps_interface_clocks_resets clocks_resets(
  .f2h_pending_rst_ack({
@@ -627,13 +632,13 @@ cyclonev_hps_interface_fpga2sdram f2sdram(
     16'b0000000000100000 // 15:0
   })
 ,.cfg_wfifo_cport_map({
-    16'b0000001100010000 // 15:0
+    16'b0011001000010000 // 15:0
   })
 ,.cmd_port_clk_3({
-    intermediate[29:29] // 0:0
+    intermediate[31:31] // 0:0
   })
 ,.cmd_port_clk_2({
-    intermediate[22:22] // 0:0
+    intermediate[24:24] // 0:0
   })
 ,.cmd_port_clk_1({
     intermediate[15:15] // 0:0
@@ -650,6 +655,9 @@ cyclonev_hps_interface_fpga2sdram f2sdram(
 ,.rd_ready_0({
     1'b1 // 0:0
   })
+,.wrack_ready_2({
+    1'b1 // 0:0
+  })
 ,.wrack_ready_1({
     1'b1 // 0:0
   })
@@ -657,7 +665,7 @@ cyclonev_hps_interface_fpga2sdram f2sdram(
     1'b1 // 0:0
   })
 ,.cmd_ready_3({
-    intermediate[24:24] // 0:0
+    intermediate[26:26] // 0:0
   })
 ,.cmd_ready_2({
     intermediate[17:17] // 0:0
@@ -693,10 +701,10 @@ cyclonev_hps_interface_fpga2sdram f2sdram(
     6'b000000 // 5:0
   })
 ,.cmd_valid_3({
-    intermediate[27:27] // 0:0
+    intermediate[29:29] // 0:0
   })
 ,.cmd_valid_2({
-    intermediate[20:20] // 0:0
+    intermediate[22:22] // 0:0
   })
 ,.cmd_valid_1({
     intermediate[13:13] // 0:0
@@ -707,11 +715,17 @@ cyclonev_hps_interface_fpga2sdram f2sdram(
 ,.cfg_cport_rfifo_map({
     18'b000000000001000000 // 17:0
   })
-,.wr_data_2({
+,.wr_data_3({
     2'b00 // 89:88
    ,f2h_sdram3_BYTEENABLE[7:0] // 87:80
    ,16'b0000000000000000 // 79:64
    ,f2h_sdram3_WRITEDATA[63:0] // 63:0
+  })
+,.wr_data_2({
+    2'b00 // 89:88
+   ,f2h_sdram2_BYTEENABLE[7:0] // 87:80
+   ,16'b0000000000000000 // 79:64
+   ,f2h_sdram2_WRITEDATA[63:0] // 63:0
   })
 ,.wr_data_1({
     2'b00 // 89:88
@@ -726,34 +740,37 @@ cyclonev_hps_interface_fpga2sdram f2sdram(
    ,f2h_sdram0_WRITEDATA[63:0] // 63:0
   })
 ,.cfg_cport_type({
-    12'b000001100111 // 11:0
+    12'b000001110111 // 11:0
   })
 ,.cfg_cport_wfifo_map({
-    18'b000000010000001000 // 17:0
+    18'b000000011010001000 // 17:0
+  })
+,.wr_clk_3({
+    intermediate[27:27] // 0:0
   })
 ,.wr_clk_2({
-    intermediate[25:25] // 0:0
+    intermediate[20:20] // 0:0
   })
 ,.wr_clk_1({
     intermediate[11:11] // 0:0
+  })
+,.wr_clk_0({
+    intermediate[4:4] // 0:0
   })
 ,.cmd_data_3({
     18'b000000000000000000 // 59:42
    ,f2h_sdram3_BURSTCOUNT[7:0] // 41:34
    ,3'b000 // 33:31
    ,f2h_sdram3_ADDRESS[28:0] // 30:2
-   ,intermediate[26:26] // 1:1
+   ,intermediate[28:28] // 1:1
    ,1'b0 // 0:0
-  })
-,.wr_clk_0({
-    intermediate[4:4] // 0:0
   })
 ,.cmd_data_2({
     18'b000000000000000000 // 59:42
    ,f2h_sdram2_BURSTCOUNT[7:0] // 41:34
    ,3'b000 // 33:31
    ,f2h_sdram2_ADDRESS[28:0] // 30:2
-   ,1'b0 // 1:1
+   ,intermediate[21:21] // 1:1
    ,intermediate[19:19] // 0:0
   })
 ,.cmd_data_1({

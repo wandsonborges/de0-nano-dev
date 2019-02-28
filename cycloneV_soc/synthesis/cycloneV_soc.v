@@ -71,69 +71,78 @@ module cycloneV_soc (
 
 	wire         pll_0_outclk0_clk;                                            // pll_0:outclk_0 -> [avalon_st_adapter_001:in_clk_0_clk, bridge_stSrcMmMaster_1:clk, mm_interconnect_4:pll_0_outclk0_clk, rst_controller_002:clk, swir_v400_0:pxl_clk_in]
 	wire         pll_0_outclk1_clk;                                            // pll_0:outclk_1 -> [avalon_st_adapter:in_clk_0_clk, bridge_stSrcMmMaster_0:clk, lwir_ul0304_0:sensor_clk_in, mm_interconnect_4:pll_0_outclk1_clk, rst_controller_001:clk, swir_v400_0:sensor_clk_in]
-	wire         bridge_stsrcmmmaster_1_avalon_master_waitrequest;             // mm_interconnect_0:bridge_stSrcMmMaster_1_avalon_master_waitrequest -> bridge_stSrcMmMaster_1:master_waitrequest
-	wire  [31:0] bridge_stsrcmmmaster_1_avalon_master_address;                 // bridge_stSrcMmMaster_1:master_address -> mm_interconnect_0:bridge_stSrcMmMaster_1_avalon_master_address
-	wire         bridge_stsrcmmmaster_1_avalon_master_write;                   // bridge_stSrcMmMaster_1:master_write -> mm_interconnect_0:bridge_stSrcMmMaster_1_avalon_master_write
-	wire   [7:0] bridge_stsrcmmmaster_1_avalon_master_writedata;               // bridge_stSrcMmMaster_1:master_writedata -> mm_interconnect_0:bridge_stSrcMmMaster_1_avalon_master_writedata
-	wire   [3:0] bridge_stsrcmmmaster_1_avalon_master_burstcount;              // bridge_stSrcMmMaster_1:master_burstcount -> mm_interconnect_0:bridge_stSrcMmMaster_1_avalon_master_burstcount
-	wire         mm_interconnect_0_hps_0_f2h_sdram1_data_waitrequest;          // hps_0:f2h_sdram1_WAITREQUEST -> mm_interconnect_0:hps_0_f2h_sdram1_data_waitrequest
-	wire  [28:0] mm_interconnect_0_hps_0_f2h_sdram1_data_address;              // mm_interconnect_0:hps_0_f2h_sdram1_data_address -> hps_0:f2h_sdram1_ADDRESS
-	wire   [7:0] mm_interconnect_0_hps_0_f2h_sdram1_data_byteenable;           // mm_interconnect_0:hps_0_f2h_sdram1_data_byteenable -> hps_0:f2h_sdram1_BYTEENABLE
-	wire         mm_interconnect_0_hps_0_f2h_sdram1_data_write;                // mm_interconnect_0:hps_0_f2h_sdram1_data_write -> hps_0:f2h_sdram1_WRITE
-	wire  [63:0] mm_interconnect_0_hps_0_f2h_sdram1_data_writedata;            // mm_interconnect_0:hps_0_f2h_sdram1_data_writedata -> hps_0:f2h_sdram1_WRITEDATA
-	wire   [7:0] mm_interconnect_0_hps_0_f2h_sdram1_data_burstcount;           // mm_interconnect_0:hps_0_f2h_sdram1_data_burstcount -> hps_0:f2h_sdram1_BURSTCOUNT
-	wire         bridge_stsrcmmmaster_0_avalon_master_waitrequest;             // mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_waitrequest -> bridge_stSrcMmMaster_0:master_waitrequest
-	wire  [31:0] bridge_stsrcmmmaster_0_avalon_master_address;                 // bridge_stSrcMmMaster_0:master_address -> mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_address
-	wire         bridge_stsrcmmmaster_0_avalon_master_write;                   // bridge_stSrcMmMaster_0:master_write -> mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_write
-	wire   [7:0] bridge_stsrcmmmaster_0_avalon_master_writedata;               // bridge_stSrcMmMaster_0:master_writedata -> mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_writedata
-	wire   [3:0] bridge_stsrcmmmaster_0_avalon_master_burstcount;              // bridge_stSrcMmMaster_0:master_burstcount -> mm_interconnect_1:bridge_stSrcMmMaster_0_avalon_master_burstcount
-	wire         mm_interconnect_1_hps_0_f2h_sdram3_data_waitrequest;          // hps_0:f2h_sdram3_WAITREQUEST -> mm_interconnect_1:hps_0_f2h_sdram3_data_waitrequest
-	wire  [28:0] mm_interconnect_1_hps_0_f2h_sdram3_data_address;              // mm_interconnect_1:hps_0_f2h_sdram3_data_address -> hps_0:f2h_sdram3_ADDRESS
-	wire   [7:0] mm_interconnect_1_hps_0_f2h_sdram3_data_byteenable;           // mm_interconnect_1:hps_0_f2h_sdram3_data_byteenable -> hps_0:f2h_sdram3_BYTEENABLE
-	wire         mm_interconnect_1_hps_0_f2h_sdram3_data_write;                // mm_interconnect_1:hps_0_f2h_sdram3_data_write -> hps_0:f2h_sdram3_WRITE
-	wire  [63:0] mm_interconnect_1_hps_0_f2h_sdram3_data_writedata;            // mm_interconnect_1:hps_0_f2h_sdram3_data_writedata -> hps_0:f2h_sdram3_WRITEDATA
-	wire   [7:0] mm_interconnect_1_hps_0_f2h_sdram3_data_burstcount;           // mm_interconnect_1:hps_0_f2h_sdram3_data_burstcount -> hps_0:f2h_sdram3_BURSTCOUNT
-	wire  [31:0] addvector_0_avalon_rd1_1_1_1_readdata;                        // mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_readdata -> addVector_0:masterrd1_readdata
-	wire         addvector_0_avalon_rd1_1_1_1_waitrequest;                     // mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_waitrequest -> addVector_0:masterrd1_waitrequest
-	wire  [31:0] addvector_0_avalon_rd1_1_1_1_address;                         // addVector_0:masterrd1_address -> mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_address
-	wire         addvector_0_avalon_rd1_1_1_1_read;                            // addVector_0:masterrd1_read -> mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_read
-	wire         addvector_0_avalon_rd1_1_1_1_readdatavalid;                   // mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_readdatavalid -> addVector_0:masterrd1_readdatavalid
-	wire   [3:0] addvector_0_avalon_rd1_1_1_1_burstcount;                      // addVector_0:masterrd1_burstcount -> mm_interconnect_2:addVector_0_avalon_rd1_1_1_1_burstcount
-	wire  [31:0] addvector_1_avalon_rd1_1_1_1_readdata;                        // mm_interconnect_2:addVector_1_avalon_rd1_1_1_1_readdata -> addVector_1:masterrd1_readdata
-	wire         addvector_1_avalon_rd1_1_1_1_waitrequest;                     // mm_interconnect_2:addVector_1_avalon_rd1_1_1_1_waitrequest -> addVector_1:masterrd1_waitrequest
-	wire  [31:0] addvector_1_avalon_rd1_1_1_1_address;                         // addVector_1:masterrd1_address -> mm_interconnect_2:addVector_1_avalon_rd1_1_1_1_address
-	wire         addvector_1_avalon_rd1_1_1_1_read;                            // addVector_1:masterrd1_read -> mm_interconnect_2:addVector_1_avalon_rd1_1_1_1_read
-	wire         addvector_1_avalon_rd1_1_1_1_readdatavalid;                   // mm_interconnect_2:addVector_1_avalon_rd1_1_1_1_readdatavalid -> addVector_1:masterrd1_readdatavalid
-	wire   [3:0] addvector_1_avalon_rd1_1_1_1_burstcount;                      // addVector_1:masterrd1_burstcount -> mm_interconnect_2:addVector_1_avalon_rd1_1_1_1_burstcount
-	wire  [31:0] addvector_0_avalon_rd2_readdata;                              // mm_interconnect_2:addVector_0_avalon_rd2_readdata -> addVector_0:masterrd2_readdata
-	wire         addvector_0_avalon_rd2_waitrequest;                           // mm_interconnect_2:addVector_0_avalon_rd2_waitrequest -> addVector_0:masterrd2_waitrequest
-	wire  [31:0] addvector_0_avalon_rd2_address;                               // addVector_0:masterrd2_address -> mm_interconnect_2:addVector_0_avalon_rd2_address
-	wire         addvector_0_avalon_rd2_read;                                  // addVector_0:masterrd2_read -> mm_interconnect_2:addVector_0_avalon_rd2_read
-	wire         addvector_0_avalon_rd2_readdatavalid;                         // mm_interconnect_2:addVector_0_avalon_rd2_readdatavalid -> addVector_0:masterrd2_readdatavalid
-	wire   [3:0] addvector_0_avalon_rd2_burstcount;                            // addVector_0:masterrd2_burstcount -> mm_interconnect_2:addVector_0_avalon_rd2_burstcount
-	wire  [31:0] addvector_1_avalon_rd2_readdata;                              // mm_interconnect_2:addVector_1_avalon_rd2_readdata -> addVector_1:masterrd2_readdata
-	wire         addvector_1_avalon_rd2_waitrequest;                           // mm_interconnect_2:addVector_1_avalon_rd2_waitrequest -> addVector_1:masterrd2_waitrequest
-	wire  [31:0] addvector_1_avalon_rd2_address;                               // addVector_1:masterrd2_address -> mm_interconnect_2:addVector_1_avalon_rd2_address
-	wire         addvector_1_avalon_rd2_read;                                  // addVector_1:masterrd2_read -> mm_interconnect_2:addVector_1_avalon_rd2_read
-	wire         addvector_1_avalon_rd2_readdatavalid;                         // mm_interconnect_2:addVector_1_avalon_rd2_readdatavalid -> addVector_1:masterrd2_readdatavalid
-	wire   [3:0] addvector_1_avalon_rd2_burstcount;                            // addVector_1:masterrd2_burstcount -> mm_interconnect_2:addVector_1_avalon_rd2_burstcount
-	wire         addvector_0_avalon_wr_waitrequest;                            // mm_interconnect_2:addVector_0_avalon_wr_waitrequest -> addVector_0:masterwr_waitrequest
-	wire  [31:0] addvector_0_avalon_wr_address;                                // addVector_0:masterwr_address -> mm_interconnect_2:addVector_0_avalon_wr_address
-	wire         addvector_0_avalon_wr_write;                                  // addVector_0:masterwr_write -> mm_interconnect_2:addVector_0_avalon_wr_write
-	wire  [31:0] addvector_0_avalon_wr_writedata;                              // addVector_0:masterwr_writedata -> mm_interconnect_2:addVector_0_avalon_wr_writedata
-	wire         addvector_1_avalon_wr_waitrequest;                            // mm_interconnect_2:addVector_1_avalon_wr_waitrequest -> addVector_1:masterwr_waitrequest
-	wire  [31:0] addvector_1_avalon_wr_address;                                // addVector_1:masterwr_address -> mm_interconnect_2:addVector_1_avalon_wr_address
-	wire         addvector_1_avalon_wr_write;                                  // addVector_1:masterwr_write -> mm_interconnect_2:addVector_1_avalon_wr_write
-	wire  [31:0] addvector_1_avalon_wr_writedata;                              // addVector_1:masterwr_writedata -> mm_interconnect_2:addVector_1_avalon_wr_writedata
-	wire  [63:0] mm_interconnect_2_hps_0_f2h_sdram0_data_readdata;             // hps_0:f2h_sdram0_READDATA -> mm_interconnect_2:hps_0_f2h_sdram0_data_readdata
-	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_waitrequest;          // hps_0:f2h_sdram0_WAITREQUEST -> mm_interconnect_2:hps_0_f2h_sdram0_data_waitrequest
-	wire  [28:0] mm_interconnect_2_hps_0_f2h_sdram0_data_address;              // mm_interconnect_2:hps_0_f2h_sdram0_data_address -> hps_0:f2h_sdram0_ADDRESS
-	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_read;                 // mm_interconnect_2:hps_0_f2h_sdram0_data_read -> hps_0:f2h_sdram0_READ
-	wire   [7:0] mm_interconnect_2_hps_0_f2h_sdram0_data_byteenable;           // mm_interconnect_2:hps_0_f2h_sdram0_data_byteenable -> hps_0:f2h_sdram0_BYTEENABLE
-	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_readdatavalid;        // hps_0:f2h_sdram0_READDATAVALID -> mm_interconnect_2:hps_0_f2h_sdram0_data_readdatavalid
-	wire         mm_interconnect_2_hps_0_f2h_sdram0_data_write;                // mm_interconnect_2:hps_0_f2h_sdram0_data_write -> hps_0:f2h_sdram0_WRITE
-	wire  [63:0] mm_interconnect_2_hps_0_f2h_sdram0_data_writedata;            // mm_interconnect_2:hps_0_f2h_sdram0_data_writedata -> hps_0:f2h_sdram0_WRITEDATA
-	wire   [7:0] mm_interconnect_2_hps_0_f2h_sdram0_data_burstcount;           // mm_interconnect_2:hps_0_f2h_sdram0_data_burstcount -> hps_0:f2h_sdram0_BURSTCOUNT
+	wire         homography_dma_0_avalon_master_waitrequest;                   // mm_interconnect_0:homography_dma_0_avalon_master_waitrequest -> homography_dma_0:masterrd_waitrequest
+	wire   [7:0] homography_dma_0_avalon_master_readdata;                      // mm_interconnect_0:homography_dma_0_avalon_master_readdata -> homography_dma_0:masterrd_readdata
+	wire  [31:0] homography_dma_0_avalon_master_address;                       // homography_dma_0:masterrd_address -> mm_interconnect_0:homography_dma_0_avalon_master_address
+	wire         homography_dma_0_avalon_master_read;                          // homography_dma_0:masterrd_read -> mm_interconnect_0:homography_dma_0_avalon_master_read
+	wire         homography_dma_0_avalon_master_readdatavalid;                 // mm_interconnect_0:homography_dma_0_avalon_master_readdatavalid -> homography_dma_0:masterrd_readdatavalid
+	wire         homography_dma_0_avalon_master_1_waitrequest;                 // mm_interconnect_0:homography_dma_0_avalon_master_1_waitrequest -> homography_dma_0:masterwr_waitrequest
+	wire  [31:0] homography_dma_0_avalon_master_1_address;                     // homography_dma_0:masterwr_address -> mm_interconnect_0:homography_dma_0_avalon_master_1_address
+	wire         homography_dma_0_avalon_master_1_write;                       // homography_dma_0:masterwr_write -> mm_interconnect_0:homography_dma_0_avalon_master_1_write
+	wire   [7:0] homography_dma_0_avalon_master_1_writedata;                   // homography_dma_0:masterwr_writedata -> mm_interconnect_0:homography_dma_0_avalon_master_1_writedata
+	wire  [31:0] addvector_0_avalon_rd1_1_1_1_readdata;                        // mm_interconnect_0:addVector_0_avalon_rd1_1_1_1_readdata -> addVector_0:masterrd1_readdata
+	wire         addvector_0_avalon_rd1_1_1_1_waitrequest;                     // mm_interconnect_0:addVector_0_avalon_rd1_1_1_1_waitrequest -> addVector_0:masterrd1_waitrequest
+	wire  [31:0] addvector_0_avalon_rd1_1_1_1_address;                         // addVector_0:masterrd1_address -> mm_interconnect_0:addVector_0_avalon_rd1_1_1_1_address
+	wire         addvector_0_avalon_rd1_1_1_1_read;                            // addVector_0:masterrd1_read -> mm_interconnect_0:addVector_0_avalon_rd1_1_1_1_read
+	wire         addvector_0_avalon_rd1_1_1_1_readdatavalid;                   // mm_interconnect_0:addVector_0_avalon_rd1_1_1_1_readdatavalid -> addVector_0:masterrd1_readdatavalid
+	wire   [3:0] addvector_0_avalon_rd1_1_1_1_burstcount;                      // addVector_0:masterrd1_burstcount -> mm_interconnect_0:addVector_0_avalon_rd1_1_1_1_burstcount
+	wire  [31:0] addvector_1_avalon_rd1_1_1_1_readdata;                        // mm_interconnect_0:addVector_1_avalon_rd1_1_1_1_readdata -> addVector_1:masterrd1_readdata
+	wire         addvector_1_avalon_rd1_1_1_1_waitrequest;                     // mm_interconnect_0:addVector_1_avalon_rd1_1_1_1_waitrequest -> addVector_1:masterrd1_waitrequest
+	wire  [31:0] addvector_1_avalon_rd1_1_1_1_address;                         // addVector_1:masterrd1_address -> mm_interconnect_0:addVector_1_avalon_rd1_1_1_1_address
+	wire         addvector_1_avalon_rd1_1_1_1_read;                            // addVector_1:masterrd1_read -> mm_interconnect_0:addVector_1_avalon_rd1_1_1_1_read
+	wire         addvector_1_avalon_rd1_1_1_1_readdatavalid;                   // mm_interconnect_0:addVector_1_avalon_rd1_1_1_1_readdatavalid -> addVector_1:masterrd1_readdatavalid
+	wire   [3:0] addvector_1_avalon_rd1_1_1_1_burstcount;                      // addVector_1:masterrd1_burstcount -> mm_interconnect_0:addVector_1_avalon_rd1_1_1_1_burstcount
+	wire  [31:0] addvector_0_avalon_rd2_readdata;                              // mm_interconnect_0:addVector_0_avalon_rd2_readdata -> addVector_0:masterrd2_readdata
+	wire         addvector_0_avalon_rd2_waitrequest;                           // mm_interconnect_0:addVector_0_avalon_rd2_waitrequest -> addVector_0:masterrd2_waitrequest
+	wire  [31:0] addvector_0_avalon_rd2_address;                               // addVector_0:masterrd2_address -> mm_interconnect_0:addVector_0_avalon_rd2_address
+	wire         addvector_0_avalon_rd2_read;                                  // addVector_0:masterrd2_read -> mm_interconnect_0:addVector_0_avalon_rd2_read
+	wire         addvector_0_avalon_rd2_readdatavalid;                         // mm_interconnect_0:addVector_0_avalon_rd2_readdatavalid -> addVector_0:masterrd2_readdatavalid
+	wire   [3:0] addvector_0_avalon_rd2_burstcount;                            // addVector_0:masterrd2_burstcount -> mm_interconnect_0:addVector_0_avalon_rd2_burstcount
+	wire  [31:0] addvector_1_avalon_rd2_readdata;                              // mm_interconnect_0:addVector_1_avalon_rd2_readdata -> addVector_1:masterrd2_readdata
+	wire         addvector_1_avalon_rd2_waitrequest;                           // mm_interconnect_0:addVector_1_avalon_rd2_waitrequest -> addVector_1:masterrd2_waitrequest
+	wire  [31:0] addvector_1_avalon_rd2_address;                               // addVector_1:masterrd2_address -> mm_interconnect_0:addVector_1_avalon_rd2_address
+	wire         addvector_1_avalon_rd2_read;                                  // addVector_1:masterrd2_read -> mm_interconnect_0:addVector_1_avalon_rd2_read
+	wire         addvector_1_avalon_rd2_readdatavalid;                         // mm_interconnect_0:addVector_1_avalon_rd2_readdatavalid -> addVector_1:masterrd2_readdatavalid
+	wire   [3:0] addvector_1_avalon_rd2_burstcount;                            // addVector_1:masterrd2_burstcount -> mm_interconnect_0:addVector_1_avalon_rd2_burstcount
+	wire         addvector_0_avalon_wr_waitrequest;                            // mm_interconnect_0:addVector_0_avalon_wr_waitrequest -> addVector_0:masterwr_waitrequest
+	wire  [31:0] addvector_0_avalon_wr_address;                                // addVector_0:masterwr_address -> mm_interconnect_0:addVector_0_avalon_wr_address
+	wire         addvector_0_avalon_wr_write;                                  // addVector_0:masterwr_write -> mm_interconnect_0:addVector_0_avalon_wr_write
+	wire  [31:0] addvector_0_avalon_wr_writedata;                              // addVector_0:masterwr_writedata -> mm_interconnect_0:addVector_0_avalon_wr_writedata
+	wire         addvector_1_avalon_wr_waitrequest;                            // mm_interconnect_0:addVector_1_avalon_wr_waitrequest -> addVector_1:masterwr_waitrequest
+	wire  [31:0] addvector_1_avalon_wr_address;                                // addVector_1:masterwr_address -> mm_interconnect_0:addVector_1_avalon_wr_address
+	wire         addvector_1_avalon_wr_write;                                  // addVector_1:masterwr_write -> mm_interconnect_0:addVector_1_avalon_wr_write
+	wire  [31:0] addvector_1_avalon_wr_writedata;                              // addVector_1:masterwr_writedata -> mm_interconnect_0:addVector_1_avalon_wr_writedata
+	wire  [63:0] mm_interconnect_0_hps_0_f2h_sdram0_data_readdata;             // hps_0:f2h_sdram0_READDATA -> mm_interconnect_0:hps_0_f2h_sdram0_data_readdata
+	wire         mm_interconnect_0_hps_0_f2h_sdram0_data_waitrequest;          // hps_0:f2h_sdram0_WAITREQUEST -> mm_interconnect_0:hps_0_f2h_sdram0_data_waitrequest
+	wire  [28:0] mm_interconnect_0_hps_0_f2h_sdram0_data_address;              // mm_interconnect_0:hps_0_f2h_sdram0_data_address -> hps_0:f2h_sdram0_ADDRESS
+	wire         mm_interconnect_0_hps_0_f2h_sdram0_data_read;                 // mm_interconnect_0:hps_0_f2h_sdram0_data_read -> hps_0:f2h_sdram0_READ
+	wire   [7:0] mm_interconnect_0_hps_0_f2h_sdram0_data_byteenable;           // mm_interconnect_0:hps_0_f2h_sdram0_data_byteenable -> hps_0:f2h_sdram0_BYTEENABLE
+	wire         mm_interconnect_0_hps_0_f2h_sdram0_data_readdatavalid;        // hps_0:f2h_sdram0_READDATAVALID -> mm_interconnect_0:hps_0_f2h_sdram0_data_readdatavalid
+	wire         mm_interconnect_0_hps_0_f2h_sdram0_data_write;                // mm_interconnect_0:hps_0_f2h_sdram0_data_write -> hps_0:f2h_sdram0_WRITE
+	wire  [63:0] mm_interconnect_0_hps_0_f2h_sdram0_data_writedata;            // mm_interconnect_0:hps_0_f2h_sdram0_data_writedata -> hps_0:f2h_sdram0_WRITEDATA
+	wire   [7:0] mm_interconnect_0_hps_0_f2h_sdram0_data_burstcount;           // mm_interconnect_0:hps_0_f2h_sdram0_data_burstcount -> hps_0:f2h_sdram0_BURSTCOUNT
+	wire         bridge_stsrcmmmaster_1_avalon_master_waitrequest;             // mm_interconnect_1:bridge_stSrcMmMaster_1_avalon_master_waitrequest -> bridge_stSrcMmMaster_1:master_waitrequest
+	wire  [31:0] bridge_stsrcmmmaster_1_avalon_master_address;                 // bridge_stSrcMmMaster_1:master_address -> mm_interconnect_1:bridge_stSrcMmMaster_1_avalon_master_address
+	wire         bridge_stsrcmmmaster_1_avalon_master_write;                   // bridge_stSrcMmMaster_1:master_write -> mm_interconnect_1:bridge_stSrcMmMaster_1_avalon_master_write
+	wire   [7:0] bridge_stsrcmmmaster_1_avalon_master_writedata;               // bridge_stSrcMmMaster_1:master_writedata -> mm_interconnect_1:bridge_stSrcMmMaster_1_avalon_master_writedata
+	wire   [3:0] bridge_stsrcmmmaster_1_avalon_master_burstcount;              // bridge_stSrcMmMaster_1:master_burstcount -> mm_interconnect_1:bridge_stSrcMmMaster_1_avalon_master_burstcount
+	wire         mm_interconnect_1_hps_0_f2h_sdram1_data_waitrequest;          // hps_0:f2h_sdram1_WAITREQUEST -> mm_interconnect_1:hps_0_f2h_sdram1_data_waitrequest
+	wire  [28:0] mm_interconnect_1_hps_0_f2h_sdram1_data_address;              // mm_interconnect_1:hps_0_f2h_sdram1_data_address -> hps_0:f2h_sdram1_ADDRESS
+	wire   [7:0] mm_interconnect_1_hps_0_f2h_sdram1_data_byteenable;           // mm_interconnect_1:hps_0_f2h_sdram1_data_byteenable -> hps_0:f2h_sdram1_BYTEENABLE
+	wire         mm_interconnect_1_hps_0_f2h_sdram1_data_write;                // mm_interconnect_1:hps_0_f2h_sdram1_data_write -> hps_0:f2h_sdram1_WRITE
+	wire  [63:0] mm_interconnect_1_hps_0_f2h_sdram1_data_writedata;            // mm_interconnect_1:hps_0_f2h_sdram1_data_writedata -> hps_0:f2h_sdram1_WRITEDATA
+	wire   [7:0] mm_interconnect_1_hps_0_f2h_sdram1_data_burstcount;           // mm_interconnect_1:hps_0_f2h_sdram1_data_burstcount -> hps_0:f2h_sdram1_BURSTCOUNT
+	wire         bridge_stsrcmmmaster_0_avalon_master_waitrequest;             // mm_interconnect_2:bridge_stSrcMmMaster_0_avalon_master_waitrequest -> bridge_stSrcMmMaster_0:master_waitrequest
+	wire  [31:0] bridge_stsrcmmmaster_0_avalon_master_address;                 // bridge_stSrcMmMaster_0:master_address -> mm_interconnect_2:bridge_stSrcMmMaster_0_avalon_master_address
+	wire         bridge_stsrcmmmaster_0_avalon_master_write;                   // bridge_stSrcMmMaster_0:master_write -> mm_interconnect_2:bridge_stSrcMmMaster_0_avalon_master_write
+	wire   [7:0] bridge_stsrcmmmaster_0_avalon_master_writedata;               // bridge_stSrcMmMaster_0:master_writedata -> mm_interconnect_2:bridge_stSrcMmMaster_0_avalon_master_writedata
+	wire   [3:0] bridge_stsrcmmmaster_0_avalon_master_burstcount;              // bridge_stSrcMmMaster_0:master_burstcount -> mm_interconnect_2:bridge_stSrcMmMaster_0_avalon_master_burstcount
+	wire         mm_interconnect_2_hps_0_f2h_sdram3_data_waitrequest;          // hps_0:f2h_sdram3_WAITREQUEST -> mm_interconnect_2:hps_0_f2h_sdram3_data_waitrequest
+	wire  [28:0] mm_interconnect_2_hps_0_f2h_sdram3_data_address;              // mm_interconnect_2:hps_0_f2h_sdram3_data_address -> hps_0:f2h_sdram3_ADDRESS
+	wire   [7:0] mm_interconnect_2_hps_0_f2h_sdram3_data_byteenable;           // mm_interconnect_2:hps_0_f2h_sdram3_data_byteenable -> hps_0:f2h_sdram3_BYTEENABLE
+	wire         mm_interconnect_2_hps_0_f2h_sdram3_data_write;                // mm_interconnect_2:hps_0_f2h_sdram3_data_write -> hps_0:f2h_sdram3_WRITE
+	wire  [63:0] mm_interconnect_2_hps_0_f2h_sdram3_data_writedata;            // mm_interconnect_2:hps_0_f2h_sdram3_data_writedata -> hps_0:f2h_sdram3_WRITEDATA
+	wire   [7:0] mm_interconnect_2_hps_0_f2h_sdram3_data_burstcount;           // mm_interconnect_2:hps_0_f2h_sdram3_data_burstcount -> hps_0:f2h_sdram3_BURSTCOUNT
 	wire   [1:0] hps_0_h2f_axi_master_awburst;                                 // hps_0:h2f_AWBURST -> mm_interconnect_3:hps_0_h2f_axi_master_awburst
 	wire   [3:0] hps_0_h2f_axi_master_arlen;                                   // hps_0:h2f_ARLEN -> mm_interconnect_3:hps_0_h2f_axi_master_arlen
 	wire   [7:0] hps_0_h2f_axi_master_wstrb;                                   // hps_0:h2f_WSTRB -> mm_interconnect_3:hps_0_h2f_axi_master_wstrb
@@ -254,6 +263,14 @@ module cycloneV_soc (
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_1_slave_readdatavalid; // bridge_stSrcMmMaster_1:slave_readdatavalid -> mm_interconnect_4:bridge_stSrcMmMaster_1_slave_readdatavalid
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_1_slave_write;         // mm_interconnect_4:bridge_stSrcMmMaster_1_slave_write -> bridge_stSrcMmMaster_1:slave_write
 	wire  [31:0] mm_interconnect_4_bridge_stsrcmmmaster_1_slave_writedata;     // mm_interconnect_4:bridge_stSrcMmMaster_1_slave_writedata -> bridge_stSrcMmMaster_1:slave_writedata
+	wire         mm_interconnect_4_homography_dma_0_slave_chipselect;          // mm_interconnect_4:homography_dma_0_slave_chipselect -> homography_dma_0:slave_chipselect
+	wire  [31:0] mm_interconnect_4_homography_dma_0_slave_readdata;            // homography_dma_0:slave_readdata -> mm_interconnect_4:homography_dma_0_slave_readdata
+	wire         mm_interconnect_4_homography_dma_0_slave_waitrequest;         // homography_dma_0:slave_waitrequest -> mm_interconnect_4:homography_dma_0_slave_waitrequest
+	wire   [3:0] mm_interconnect_4_homography_dma_0_slave_address;             // mm_interconnect_4:homography_dma_0_slave_address -> homography_dma_0:slave_address
+	wire         mm_interconnect_4_homography_dma_0_slave_read;                // mm_interconnect_4:homography_dma_0_slave_read -> homography_dma_0:slave_read
+	wire         mm_interconnect_4_homography_dma_0_slave_readdatavalid;       // homography_dma_0:slave_readdatavalid -> mm_interconnect_4:homography_dma_0_slave_readdatavalid
+	wire         mm_interconnect_4_homography_dma_0_slave_write;               // mm_interconnect_4:homography_dma_0_slave_write -> homography_dma_0:slave_write
+	wire  [31:0] mm_interconnect_4_homography_dma_0_slave_writedata;           // mm_interconnect_4:homography_dma_0_slave_writedata -> homography_dma_0:slave_writedata
 	wire         mm_interconnect_4_addvector_0_slave_1_chipselect;             // mm_interconnect_4:addVector_0_slave_1_chipselect -> addVector_0:slave_chipselect
 	wire  [31:0] mm_interconnect_4_addvector_0_slave_1_readdata;               // addVector_0:slave_readdata -> mm_interconnect_4:addVector_0_slave_1_readdata
 	wire         mm_interconnect_4_addvector_0_slave_1_waitrequest;            // addVector_0:slave_waitrequest -> mm_interconnect_4:addVector_0_slave_1_waitrequest
@@ -290,11 +307,11 @@ module cycloneV_soc (
 	wire         avalon_st_adapter_001_out_0_ready;                            // bridge_stSrcMmMaster_1:st_ready -> avalon_st_adapter_001:out_0_ready
 	wire         avalon_st_adapter_001_out_0_startofpacket;                    // avalon_st_adapter_001:out_0_startofpacket -> bridge_stSrcMmMaster_1:st_startofpacket
 	wire         avalon_st_adapter_001_out_0_endofpacket;                      // avalon_st_adapter_001:out_0_endofpacket -> bridge_stSrcMmMaster_1:st_endofpacket
-	wire         rst_controller_reset_out_reset;                               // rst_controller:reset_out -> [addVector_0:rst_n, addVector_1:rst_n, homography_dma_0:rst_n, led:reset_n, mm_interconnect_0:bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_1:bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_2:addVector_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_3:onchip_memory2_0_reset1_reset_bridge_in_reset_reset, mm_interconnect_4:led_reset_reset_bridge_in_reset_reset, onchip_memory2_0:reset, rst_translator:in_reset, sw:reset_n]
+	wire         rst_controller_reset_out_reset;                               // rst_controller:reset_out -> [addVector_0:rst_n, addVector_1:rst_n, homography_dma_0:rst_n, led:reset_n, mm_interconnect_0:homography_dma_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_1:bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_2:bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset_reset, mm_interconnect_3:onchip_memory2_0_reset1_reset_bridge_in_reset_reset, mm_interconnect_4:led_reset_reset_bridge_in_reset_reset, onchip_memory2_0:reset, rst_translator:in_reset, sw:reset_n]
 	wire         rst_controller_reset_out_reset_req;                           // rst_controller:reset_req -> [onchip_memory2_0:reset_req, rst_translator:reset_req_in]
 	wire         rst_controller_001_reset_out_reset;                           // rst_controller_001:reset_out -> [avalon_st_adapter:in_rst_0_reset, bridge_stSrcMmMaster_0:rst_n, lwir_ul0304_0:rst_n, mm_interconnect_4:lwir_ul0304_0_reset_sink_reset_bridge_in_reset_reset]
 	wire         rst_controller_002_reset_out_reset;                           // rst_controller_002:reset_out -> [avalon_st_adapter_001:in_rst_0_reset, bridge_stSrcMmMaster_1:rst_n, mm_interconnect_4:swir_v400_0_reset_sink_reset_bridge_in_reset_reset, swir_v400_0:rst_n]
-	wire         rst_controller_003_reset_out_reset;                           // rst_controller_003:reset_out -> [mm_interconnect_0:hps_0_f2h_sdram1_data_translator_reset_reset_bridge_in_reset_reset, mm_interconnect_1:hps_0_f2h_sdram3_data_translator_reset_reset_bridge_in_reset_reset, mm_interconnect_2:hps_0_f2h_sdram0_data_translator_reset_reset_bridge_in_reset_reset, mm_interconnect_3:hps_0_h2f_axi_master_agent_clk_reset_reset_bridge_in_reset_reset, mm_interconnect_4:hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset]
+	wire         rst_controller_003_reset_out_reset;                           // rst_controller_003:reset_out -> [mm_interconnect_0:hps_0_f2h_sdram0_data_translator_reset_reset_bridge_in_reset_reset, mm_interconnect_1:hps_0_f2h_sdram1_data_translator_reset_reset_bridge_in_reset_reset, mm_interconnect_2:hps_0_f2h_sdram3_data_translator_reset_reset_bridge_in_reset_reset, mm_interconnect_3:hps_0_h2f_axi_master_agent_clk_reset_reset_bridge_in_reset_reset, mm_interconnect_4:hps_0_h2f_lw_axi_master_agent_clk_reset_reset_bridge_in_reset_reset]
 	wire         hps_0_h2f_reset_reset;                                        // hps_0:h2f_rst_n -> rst_controller_003:reset_in0
 
 	addVector_avalon #(
@@ -444,40 +461,40 @@ module cycloneV_soc (
 	);
 
 	homography_avalon #(
-		.COLS            (320),
-		.LINES           (256),
-		.HOMOG_BITS_INT  (12),
-		.HOMOG_BITS_FRAC (20),
-		.NBITS_ADDR      (32),
-		.NBITS_DATA      (8),
-		.NBITS_COLS      (12),
-		.NBITS_LINES     (12),
-		.NBITS_BURST     (4),
-		.NBITS_BYTEEN    (4),
-		.BURST           (8),
-		.ADDR_READ       (32'b00111000110000000000000000000000),
-		.ADDR_WRITE      (32'b00111000010100000000000000000000)
+		.COLS               (320),
+		.LINES              (256),
+		.HOMOG_BITS_INT     (12),
+		.HOMOG_BITS_FRAC    (20),
+		.NBITS_ADDR         (32),
+		.NBITS_DATA         (8),
+		.NBITS_COLS         (12),
+		.NBITS_LINES        (12),
+		.NBITS_BURST        (4),
+		.NBITS_BYTEEN       (4),
+		.HOMOG_DELAY_CYCLES (8),
+		.BURST              (4),
+		.ADDR_READ          (32'b00111000110000000000000000000000),
+		.ADDR_WRITE         (32'b00111000010100000000000000000000)
 	) homography_dma_0 (
-		.clk                    (clk_clk),                         //           clock.clk
-		.masterrd_waitrequest   (),                                //   avalon_master.waitrequest
-		.masterrd_readdatavalid (),                                //                .readdatavalid
-		.masterrd_readdata      (),                                //                .readdata
-		.masterrd_address       (),                                //                .address
-		.masterrd_read          (),                                //                .read
-		.masterwr_address       (),                                // avalon_master_1.address
-		.masterwr_waitrequest   (),                                //                .waitrequest
-		.masterwr_write         (),                                //                .write
-		.masterwr_writedata     (),                                //                .writedata
-		.masterwr_burstcount    (),                                //                .burstcount
-		.rst_n                  (~rst_controller_reset_out_reset), //      reset_sink.reset_n
-		.slave_chipselect       (),                                //           slave.chipselect
-		.slave_read             (),                                //                .read
-		.slave_write            (),                                //                .write
-		.slave_address          (),                                //                .address
-		.slave_writedata        (),                                //                .writedata
-		.slave_waitrequest      (),                                //                .waitrequest
-		.slave_readdatavalid    (),                                //                .readdatavalid
-		.slave_readdata         ()                                 //                .readdata
+		.clk                    (clk_clk),                                                //           clock.clk
+		.masterrd_waitrequest   (homography_dma_0_avalon_master_waitrequest),             //   avalon_master.waitrequest
+		.masterrd_readdatavalid (homography_dma_0_avalon_master_readdatavalid),           //                .readdatavalid
+		.masterrd_readdata      (homography_dma_0_avalon_master_readdata),                //                .readdata
+		.masterrd_address       (homography_dma_0_avalon_master_address),                 //                .address
+		.masterrd_read          (homography_dma_0_avalon_master_read),                    //                .read
+		.masterwr_address       (homography_dma_0_avalon_master_1_address),               // avalon_master_1.address
+		.masterwr_waitrequest   (homography_dma_0_avalon_master_1_waitrequest),           //                .waitrequest
+		.masterwr_write         (homography_dma_0_avalon_master_1_write),                 //                .write
+		.masterwr_writedata     (homography_dma_0_avalon_master_1_writedata),             //                .writedata
+		.rst_n                  (~rst_controller_reset_out_reset),                        //      reset_sink.reset_n
+		.slave_chipselect       (mm_interconnect_4_homography_dma_0_slave_chipselect),    //           slave.chipselect
+		.slave_read             (mm_interconnect_4_homography_dma_0_slave_read),          //                .read
+		.slave_write            (mm_interconnect_4_homography_dma_0_slave_write),         //                .write
+		.slave_address          (mm_interconnect_4_homography_dma_0_slave_address),       //                .address
+		.slave_writedata        (mm_interconnect_4_homography_dma_0_slave_writedata),     //                .writedata
+		.slave_waitrequest      (mm_interconnect_4_homography_dma_0_slave_waitrequest),   //                .waitrequest
+		.slave_readdatavalid    (mm_interconnect_4_homography_dma_0_slave_readdatavalid), //                .readdatavalid
+		.slave_readdata         (mm_interconnect_4_homography_dma_0_slave_readdata)       //                .readdata
 	);
 
 	cycloneV_soc_hps_0 #(
@@ -536,22 +553,22 @@ module cycloneV_soc (
 		.hps_io_uart0_inst_TX     (hps_io_hps_io_uart0_inst_TX),                           //                  .hps_io_uart0_inst_TX
 		.h2f_rst_n                (hps_0_h2f_reset_reset),                                 //         h2f_reset.reset_n
 		.f2h_sdram0_clk           (clk_clk),                                               //  f2h_sdram0_clock.clk
-		.f2h_sdram0_ADDRESS       (mm_interconnect_2_hps_0_f2h_sdram0_data_address),       //   f2h_sdram0_data.address
-		.f2h_sdram0_BURSTCOUNT    (mm_interconnect_2_hps_0_f2h_sdram0_data_burstcount),    //                  .burstcount
-		.f2h_sdram0_WAITREQUEST   (mm_interconnect_2_hps_0_f2h_sdram0_data_waitrequest),   //                  .waitrequest
-		.f2h_sdram0_READDATA      (mm_interconnect_2_hps_0_f2h_sdram0_data_readdata),      //                  .readdata
-		.f2h_sdram0_READDATAVALID (mm_interconnect_2_hps_0_f2h_sdram0_data_readdatavalid), //                  .readdatavalid
-		.f2h_sdram0_READ          (mm_interconnect_2_hps_0_f2h_sdram0_data_read),          //                  .read
-		.f2h_sdram0_WRITEDATA     (mm_interconnect_2_hps_0_f2h_sdram0_data_writedata),     //                  .writedata
-		.f2h_sdram0_BYTEENABLE    (mm_interconnect_2_hps_0_f2h_sdram0_data_byteenable),    //                  .byteenable
-		.f2h_sdram0_WRITE         (mm_interconnect_2_hps_0_f2h_sdram0_data_write),         //                  .write
+		.f2h_sdram0_ADDRESS       (mm_interconnect_0_hps_0_f2h_sdram0_data_address),       //   f2h_sdram0_data.address
+		.f2h_sdram0_BURSTCOUNT    (mm_interconnect_0_hps_0_f2h_sdram0_data_burstcount),    //                  .burstcount
+		.f2h_sdram0_WAITREQUEST   (mm_interconnect_0_hps_0_f2h_sdram0_data_waitrequest),   //                  .waitrequest
+		.f2h_sdram0_READDATA      (mm_interconnect_0_hps_0_f2h_sdram0_data_readdata),      //                  .readdata
+		.f2h_sdram0_READDATAVALID (mm_interconnect_0_hps_0_f2h_sdram0_data_readdatavalid), //                  .readdatavalid
+		.f2h_sdram0_READ          (mm_interconnect_0_hps_0_f2h_sdram0_data_read),          //                  .read
+		.f2h_sdram0_WRITEDATA     (mm_interconnect_0_hps_0_f2h_sdram0_data_writedata),     //                  .writedata
+		.f2h_sdram0_BYTEENABLE    (mm_interconnect_0_hps_0_f2h_sdram0_data_byteenable),    //                  .byteenable
+		.f2h_sdram0_WRITE         (mm_interconnect_0_hps_0_f2h_sdram0_data_write),         //                  .write
 		.f2h_sdram1_clk           (clk_clk),                                               //  f2h_sdram1_clock.clk
-		.f2h_sdram1_ADDRESS       (mm_interconnect_0_hps_0_f2h_sdram1_data_address),       //   f2h_sdram1_data.address
-		.f2h_sdram1_BURSTCOUNT    (mm_interconnect_0_hps_0_f2h_sdram1_data_burstcount),    //                  .burstcount
-		.f2h_sdram1_WAITREQUEST   (mm_interconnect_0_hps_0_f2h_sdram1_data_waitrequest),   //                  .waitrequest
-		.f2h_sdram1_WRITEDATA     (mm_interconnect_0_hps_0_f2h_sdram1_data_writedata),     //                  .writedata
-		.f2h_sdram1_BYTEENABLE    (mm_interconnect_0_hps_0_f2h_sdram1_data_byteenable),    //                  .byteenable
-		.f2h_sdram1_WRITE         (mm_interconnect_0_hps_0_f2h_sdram1_data_write),         //                  .write
+		.f2h_sdram1_ADDRESS       (mm_interconnect_1_hps_0_f2h_sdram1_data_address),       //   f2h_sdram1_data.address
+		.f2h_sdram1_BURSTCOUNT    (mm_interconnect_1_hps_0_f2h_sdram1_data_burstcount),    //                  .burstcount
+		.f2h_sdram1_WAITREQUEST   (mm_interconnect_1_hps_0_f2h_sdram1_data_waitrequest),   //                  .waitrequest
+		.f2h_sdram1_WRITEDATA     (mm_interconnect_1_hps_0_f2h_sdram1_data_writedata),     //                  .writedata
+		.f2h_sdram1_BYTEENABLE    (mm_interconnect_1_hps_0_f2h_sdram1_data_byteenable),    //                  .byteenable
+		.f2h_sdram1_WRITE         (mm_interconnect_1_hps_0_f2h_sdram1_data_write),         //                  .write
 		.f2h_sdram2_clk           (clk_clk),                                               //  f2h_sdram2_clock.clk
 		.f2h_sdram2_ADDRESS       (),                                                      //   f2h_sdram2_data.address
 		.f2h_sdram2_BURSTCOUNT    (),                                                      //                  .burstcount
@@ -559,13 +576,16 @@ module cycloneV_soc (
 		.f2h_sdram2_READDATA      (),                                                      //                  .readdata
 		.f2h_sdram2_READDATAVALID (),                                                      //                  .readdatavalid
 		.f2h_sdram2_READ          (),                                                      //                  .read
+		.f2h_sdram2_WRITEDATA     (),                                                      //                  .writedata
+		.f2h_sdram2_BYTEENABLE    (),                                                      //                  .byteenable
+		.f2h_sdram2_WRITE         (),                                                      //                  .write
 		.f2h_sdram3_clk           (clk_clk),                                               //  f2h_sdram3_clock.clk
-		.f2h_sdram3_ADDRESS       (mm_interconnect_1_hps_0_f2h_sdram3_data_address),       //   f2h_sdram3_data.address
-		.f2h_sdram3_BURSTCOUNT    (mm_interconnect_1_hps_0_f2h_sdram3_data_burstcount),    //                  .burstcount
-		.f2h_sdram3_WAITREQUEST   (mm_interconnect_1_hps_0_f2h_sdram3_data_waitrequest),   //                  .waitrequest
-		.f2h_sdram3_WRITEDATA     (mm_interconnect_1_hps_0_f2h_sdram3_data_writedata),     //                  .writedata
-		.f2h_sdram3_BYTEENABLE    (mm_interconnect_1_hps_0_f2h_sdram3_data_byteenable),    //                  .byteenable
-		.f2h_sdram3_WRITE         (mm_interconnect_1_hps_0_f2h_sdram3_data_write),         //                  .write
+		.f2h_sdram3_ADDRESS       (mm_interconnect_2_hps_0_f2h_sdram3_data_address),       //   f2h_sdram3_data.address
+		.f2h_sdram3_BURSTCOUNT    (mm_interconnect_2_hps_0_f2h_sdram3_data_burstcount),    //                  .burstcount
+		.f2h_sdram3_WAITREQUEST   (mm_interconnect_2_hps_0_f2h_sdram3_data_waitrequest),   //                  .waitrequest
+		.f2h_sdram3_WRITEDATA     (mm_interconnect_2_hps_0_f2h_sdram3_data_writedata),     //                  .writedata
+		.f2h_sdram3_BYTEENABLE    (mm_interconnect_2_hps_0_f2h_sdram3_data_byteenable),    //                  .byteenable
+		.f2h_sdram3_WRITE         (mm_interconnect_2_hps_0_f2h_sdram3_data_write),         //                  .write
 		.h2f_axi_clk              (clk_clk),                                               //     h2f_axi_clock.clk
 		.h2f_AWID                 (hps_0_h2f_axi_master_awid),                             //    h2f_axi_master.awid
 		.h2f_AWADDR               (hps_0_h2f_axi_master_awaddr),                           //                  .awaddr
@@ -773,42 +793,8 @@ module cycloneV_soc (
 	);
 
 	cycloneV_soc_mm_interconnect_0 mm_interconnect_0 (
-		.clk_0_clk_clk                                                      (clk_clk),                                             //                                                    clk_0_clk.clk
-		.bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset_reset      (rst_controller_reset_out_reset),                      //      bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset.reset
-		.hps_0_f2h_sdram1_data_translator_reset_reset_bridge_in_reset_reset (rst_controller_003_reset_out_reset),                  // hps_0_f2h_sdram1_data_translator_reset_reset_bridge_in_reset.reset
-		.bridge_stSrcMmMaster_1_avalon_master_address                       (bridge_stsrcmmmaster_1_avalon_master_address),        //                         bridge_stSrcMmMaster_1_avalon_master.address
-		.bridge_stSrcMmMaster_1_avalon_master_waitrequest                   (bridge_stsrcmmmaster_1_avalon_master_waitrequest),    //                                                             .waitrequest
-		.bridge_stSrcMmMaster_1_avalon_master_burstcount                    (bridge_stsrcmmmaster_1_avalon_master_burstcount),     //                                                             .burstcount
-		.bridge_stSrcMmMaster_1_avalon_master_write                         (bridge_stsrcmmmaster_1_avalon_master_write),          //                                                             .write
-		.bridge_stSrcMmMaster_1_avalon_master_writedata                     (bridge_stsrcmmmaster_1_avalon_master_writedata),      //                                                             .writedata
-		.hps_0_f2h_sdram1_data_address                                      (mm_interconnect_0_hps_0_f2h_sdram1_data_address),     //                                        hps_0_f2h_sdram1_data.address
-		.hps_0_f2h_sdram1_data_write                                        (mm_interconnect_0_hps_0_f2h_sdram1_data_write),       //                                                             .write
-		.hps_0_f2h_sdram1_data_writedata                                    (mm_interconnect_0_hps_0_f2h_sdram1_data_writedata),   //                                                             .writedata
-		.hps_0_f2h_sdram1_data_burstcount                                   (mm_interconnect_0_hps_0_f2h_sdram1_data_burstcount),  //                                                             .burstcount
-		.hps_0_f2h_sdram1_data_byteenable                                   (mm_interconnect_0_hps_0_f2h_sdram1_data_byteenable),  //                                                             .byteenable
-		.hps_0_f2h_sdram1_data_waitrequest                                  (mm_interconnect_0_hps_0_f2h_sdram1_data_waitrequest)  //                                                             .waitrequest
-	);
-
-	cycloneV_soc_mm_interconnect_1 mm_interconnect_1 (
-		.clk_0_clk_clk                                                      (clk_clk),                                             //                                                    clk_0_clk.clk
-		.bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset_reset      (rst_controller_reset_out_reset),                      //      bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset.reset
-		.hps_0_f2h_sdram3_data_translator_reset_reset_bridge_in_reset_reset (rst_controller_003_reset_out_reset),                  // hps_0_f2h_sdram3_data_translator_reset_reset_bridge_in_reset.reset
-		.bridge_stSrcMmMaster_0_avalon_master_address                       (bridge_stsrcmmmaster_0_avalon_master_address),        //                         bridge_stSrcMmMaster_0_avalon_master.address
-		.bridge_stSrcMmMaster_0_avalon_master_waitrequest                   (bridge_stsrcmmmaster_0_avalon_master_waitrequest),    //                                                             .waitrequest
-		.bridge_stSrcMmMaster_0_avalon_master_burstcount                    (bridge_stsrcmmmaster_0_avalon_master_burstcount),     //                                                             .burstcount
-		.bridge_stSrcMmMaster_0_avalon_master_write                         (bridge_stsrcmmmaster_0_avalon_master_write),          //                                                             .write
-		.bridge_stSrcMmMaster_0_avalon_master_writedata                     (bridge_stsrcmmmaster_0_avalon_master_writedata),      //                                                             .writedata
-		.hps_0_f2h_sdram3_data_address                                      (mm_interconnect_1_hps_0_f2h_sdram3_data_address),     //                                        hps_0_f2h_sdram3_data.address
-		.hps_0_f2h_sdram3_data_write                                        (mm_interconnect_1_hps_0_f2h_sdram3_data_write),       //                                                             .write
-		.hps_0_f2h_sdram3_data_writedata                                    (mm_interconnect_1_hps_0_f2h_sdram3_data_writedata),   //                                                             .writedata
-		.hps_0_f2h_sdram3_data_burstcount                                   (mm_interconnect_1_hps_0_f2h_sdram3_data_burstcount),  //                                                             .burstcount
-		.hps_0_f2h_sdram3_data_byteenable                                   (mm_interconnect_1_hps_0_f2h_sdram3_data_byteenable),  //                                                             .byteenable
-		.hps_0_f2h_sdram3_data_waitrequest                                  (mm_interconnect_1_hps_0_f2h_sdram3_data_waitrequest)  //                                                             .waitrequest
-	);
-
-	cycloneV_soc_mm_interconnect_2 mm_interconnect_2 (
 		.clk_0_clk_clk                                                      (clk_clk),                                               //                                                    clk_0_clk.clk
-		.addVector_0_reset_sink_reset_bridge_in_reset_reset                 (rst_controller_reset_out_reset),                        //                 addVector_0_reset_sink_reset_bridge_in_reset.reset
+		.homography_dma_0_reset_sink_reset_bridge_in_reset_reset            (rst_controller_reset_out_reset),                        //            homography_dma_0_reset_sink_reset_bridge_in_reset.reset
 		.hps_0_f2h_sdram0_data_translator_reset_reset_bridge_in_reset_reset (rst_controller_003_reset_out_reset),                    // hps_0_f2h_sdram0_data_translator_reset_reset_bridge_in_reset.reset
 		.addVector_0_avalon_rd1_1_1_1_address                               (addvector_0_avalon_rd1_1_1_1_address),                  //                                 addVector_0_avalon_rd1_1_1_1.address
 		.addVector_0_avalon_rd1_1_1_1_waitrequest                           (addvector_0_avalon_rd1_1_1_1_waitrequest),              //                                                             .waitrequest
@@ -842,15 +828,58 @@ module cycloneV_soc (
 		.addVector_1_avalon_wr_waitrequest                                  (addvector_1_avalon_wr_waitrequest),                     //                                                             .waitrequest
 		.addVector_1_avalon_wr_write                                        (addvector_1_avalon_wr_write),                           //                                                             .write
 		.addVector_1_avalon_wr_writedata                                    (addvector_1_avalon_wr_writedata),                       //                                                             .writedata
-		.hps_0_f2h_sdram0_data_address                                      (mm_interconnect_2_hps_0_f2h_sdram0_data_address),       //                                        hps_0_f2h_sdram0_data.address
-		.hps_0_f2h_sdram0_data_write                                        (mm_interconnect_2_hps_0_f2h_sdram0_data_write),         //                                                             .write
-		.hps_0_f2h_sdram0_data_read                                         (mm_interconnect_2_hps_0_f2h_sdram0_data_read),          //                                                             .read
-		.hps_0_f2h_sdram0_data_readdata                                     (mm_interconnect_2_hps_0_f2h_sdram0_data_readdata),      //                                                             .readdata
-		.hps_0_f2h_sdram0_data_writedata                                    (mm_interconnect_2_hps_0_f2h_sdram0_data_writedata),     //                                                             .writedata
-		.hps_0_f2h_sdram0_data_burstcount                                   (mm_interconnect_2_hps_0_f2h_sdram0_data_burstcount),    //                                                             .burstcount
-		.hps_0_f2h_sdram0_data_byteenable                                   (mm_interconnect_2_hps_0_f2h_sdram0_data_byteenable),    //                                                             .byteenable
-		.hps_0_f2h_sdram0_data_readdatavalid                                (mm_interconnect_2_hps_0_f2h_sdram0_data_readdatavalid), //                                                             .readdatavalid
-		.hps_0_f2h_sdram0_data_waitrequest                                  (mm_interconnect_2_hps_0_f2h_sdram0_data_waitrequest)    //                                                             .waitrequest
+		.homography_dma_0_avalon_master_address                             (homography_dma_0_avalon_master_address),                //                               homography_dma_0_avalon_master.address
+		.homography_dma_0_avalon_master_waitrequest                         (homography_dma_0_avalon_master_waitrequest),            //                                                             .waitrequest
+		.homography_dma_0_avalon_master_read                                (homography_dma_0_avalon_master_read),                   //                                                             .read
+		.homography_dma_0_avalon_master_readdata                            (homography_dma_0_avalon_master_readdata),               //                                                             .readdata
+		.homography_dma_0_avalon_master_readdatavalid                       (homography_dma_0_avalon_master_readdatavalid),          //                                                             .readdatavalid
+		.homography_dma_0_avalon_master_1_address                           (homography_dma_0_avalon_master_1_address),              //                             homography_dma_0_avalon_master_1.address
+		.homography_dma_0_avalon_master_1_waitrequest                       (homography_dma_0_avalon_master_1_waitrequest),          //                                                             .waitrequest
+		.homography_dma_0_avalon_master_1_write                             (homography_dma_0_avalon_master_1_write),                //                                                             .write
+		.homography_dma_0_avalon_master_1_writedata                         (homography_dma_0_avalon_master_1_writedata),            //                                                             .writedata
+		.hps_0_f2h_sdram0_data_address                                      (mm_interconnect_0_hps_0_f2h_sdram0_data_address),       //                                        hps_0_f2h_sdram0_data.address
+		.hps_0_f2h_sdram0_data_write                                        (mm_interconnect_0_hps_0_f2h_sdram0_data_write),         //                                                             .write
+		.hps_0_f2h_sdram0_data_read                                         (mm_interconnect_0_hps_0_f2h_sdram0_data_read),          //                                                             .read
+		.hps_0_f2h_sdram0_data_readdata                                     (mm_interconnect_0_hps_0_f2h_sdram0_data_readdata),      //                                                             .readdata
+		.hps_0_f2h_sdram0_data_writedata                                    (mm_interconnect_0_hps_0_f2h_sdram0_data_writedata),     //                                                             .writedata
+		.hps_0_f2h_sdram0_data_burstcount                                   (mm_interconnect_0_hps_0_f2h_sdram0_data_burstcount),    //                                                             .burstcount
+		.hps_0_f2h_sdram0_data_byteenable                                   (mm_interconnect_0_hps_0_f2h_sdram0_data_byteenable),    //                                                             .byteenable
+		.hps_0_f2h_sdram0_data_readdatavalid                                (mm_interconnect_0_hps_0_f2h_sdram0_data_readdatavalid), //                                                             .readdatavalid
+		.hps_0_f2h_sdram0_data_waitrequest                                  (mm_interconnect_0_hps_0_f2h_sdram0_data_waitrequest)    //                                                             .waitrequest
+	);
+
+	cycloneV_soc_mm_interconnect_1 mm_interconnect_1 (
+		.clk_0_clk_clk                                                      (clk_clk),                                             //                                                    clk_0_clk.clk
+		.bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset_reset      (rst_controller_reset_out_reset),                      //      bridge_stSrcMmMaster_1_reset_sink_reset_bridge_in_reset.reset
+		.hps_0_f2h_sdram1_data_translator_reset_reset_bridge_in_reset_reset (rst_controller_003_reset_out_reset),                  // hps_0_f2h_sdram1_data_translator_reset_reset_bridge_in_reset.reset
+		.bridge_stSrcMmMaster_1_avalon_master_address                       (bridge_stsrcmmmaster_1_avalon_master_address),        //                         bridge_stSrcMmMaster_1_avalon_master.address
+		.bridge_stSrcMmMaster_1_avalon_master_waitrequest                   (bridge_stsrcmmmaster_1_avalon_master_waitrequest),    //                                                             .waitrequest
+		.bridge_stSrcMmMaster_1_avalon_master_burstcount                    (bridge_stsrcmmmaster_1_avalon_master_burstcount),     //                                                             .burstcount
+		.bridge_stSrcMmMaster_1_avalon_master_write                         (bridge_stsrcmmmaster_1_avalon_master_write),          //                                                             .write
+		.bridge_stSrcMmMaster_1_avalon_master_writedata                     (bridge_stsrcmmmaster_1_avalon_master_writedata),      //                                                             .writedata
+		.hps_0_f2h_sdram1_data_address                                      (mm_interconnect_1_hps_0_f2h_sdram1_data_address),     //                                        hps_0_f2h_sdram1_data.address
+		.hps_0_f2h_sdram1_data_write                                        (mm_interconnect_1_hps_0_f2h_sdram1_data_write),       //                                                             .write
+		.hps_0_f2h_sdram1_data_writedata                                    (mm_interconnect_1_hps_0_f2h_sdram1_data_writedata),   //                                                             .writedata
+		.hps_0_f2h_sdram1_data_burstcount                                   (mm_interconnect_1_hps_0_f2h_sdram1_data_burstcount),  //                                                             .burstcount
+		.hps_0_f2h_sdram1_data_byteenable                                   (mm_interconnect_1_hps_0_f2h_sdram1_data_byteenable),  //                                                             .byteenable
+		.hps_0_f2h_sdram1_data_waitrequest                                  (mm_interconnect_1_hps_0_f2h_sdram1_data_waitrequest)  //                                                             .waitrequest
+	);
+
+	cycloneV_soc_mm_interconnect_2 mm_interconnect_2 (
+		.clk_0_clk_clk                                                      (clk_clk),                                             //                                                    clk_0_clk.clk
+		.bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset_reset      (rst_controller_reset_out_reset),                      //      bridge_stSrcMmMaster_0_reset_sink_reset_bridge_in_reset.reset
+		.hps_0_f2h_sdram3_data_translator_reset_reset_bridge_in_reset_reset (rst_controller_003_reset_out_reset),                  // hps_0_f2h_sdram3_data_translator_reset_reset_bridge_in_reset.reset
+		.bridge_stSrcMmMaster_0_avalon_master_address                       (bridge_stsrcmmmaster_0_avalon_master_address),        //                         bridge_stSrcMmMaster_0_avalon_master.address
+		.bridge_stSrcMmMaster_0_avalon_master_waitrequest                   (bridge_stsrcmmmaster_0_avalon_master_waitrequest),    //                                                             .waitrequest
+		.bridge_stSrcMmMaster_0_avalon_master_burstcount                    (bridge_stsrcmmmaster_0_avalon_master_burstcount),     //                                                             .burstcount
+		.bridge_stSrcMmMaster_0_avalon_master_write                         (bridge_stsrcmmmaster_0_avalon_master_write),          //                                                             .write
+		.bridge_stSrcMmMaster_0_avalon_master_writedata                     (bridge_stsrcmmmaster_0_avalon_master_writedata),      //                                                             .writedata
+		.hps_0_f2h_sdram3_data_address                                      (mm_interconnect_2_hps_0_f2h_sdram3_data_address),     //                                        hps_0_f2h_sdram3_data.address
+		.hps_0_f2h_sdram3_data_write                                        (mm_interconnect_2_hps_0_f2h_sdram3_data_write),       //                                                             .write
+		.hps_0_f2h_sdram3_data_writedata                                    (mm_interconnect_2_hps_0_f2h_sdram3_data_writedata),   //                                                             .writedata
+		.hps_0_f2h_sdram3_data_burstcount                                   (mm_interconnect_2_hps_0_f2h_sdram3_data_burstcount),  //                                                             .burstcount
+		.hps_0_f2h_sdram3_data_byteenable                                   (mm_interconnect_2_hps_0_f2h_sdram3_data_byteenable),  //                                                             .byteenable
+		.hps_0_f2h_sdram3_data_waitrequest                                  (mm_interconnect_2_hps_0_f2h_sdram3_data_waitrequest)  //                                                             .waitrequest
 	);
 
 	cycloneV_soc_mm_interconnect_3 mm_interconnect_3 (
@@ -980,6 +1009,14 @@ module cycloneV_soc (
 		.bridge_stSrcMmMaster_1_slave_readdatavalid                          (mm_interconnect_4_bridge_stsrcmmmaster_1_slave_readdatavalid), //                                                              .readdatavalid
 		.bridge_stSrcMmMaster_1_slave_waitrequest                            (mm_interconnect_4_bridge_stsrcmmmaster_1_slave_waitrequest),   //                                                              .waitrequest
 		.bridge_stSrcMmMaster_1_slave_chipselect                             (mm_interconnect_4_bridge_stsrcmmmaster_1_slave_chipselect),    //                                                              .chipselect
+		.homography_dma_0_slave_address                                      (mm_interconnect_4_homography_dma_0_slave_address),             //                                        homography_dma_0_slave.address
+		.homography_dma_0_slave_write                                        (mm_interconnect_4_homography_dma_0_slave_write),               //                                                              .write
+		.homography_dma_0_slave_read                                         (mm_interconnect_4_homography_dma_0_slave_read),                //                                                              .read
+		.homography_dma_0_slave_readdata                                     (mm_interconnect_4_homography_dma_0_slave_readdata),            //                                                              .readdata
+		.homography_dma_0_slave_writedata                                    (mm_interconnect_4_homography_dma_0_slave_writedata),           //                                                              .writedata
+		.homography_dma_0_slave_readdatavalid                                (mm_interconnect_4_homography_dma_0_slave_readdatavalid),       //                                                              .readdatavalid
+		.homography_dma_0_slave_waitrequest                                  (mm_interconnect_4_homography_dma_0_slave_waitrequest),         //                                                              .waitrequest
+		.homography_dma_0_slave_chipselect                                   (mm_interconnect_4_homography_dma_0_slave_chipselect),          //                                                              .chipselect
 		.led_s1_address                                                      (mm_interconnect_4_led_s1_address),                             //                                                        led_s1.address
 		.led_s1_write                                                        (mm_interconnect_4_led_s1_write),                               //                                                              .write
 		.led_s1_readdata                                                     (mm_interconnect_4_led_s1_readdata),                            //                                                              .readdata

@@ -18,7 +18,11 @@ entity homography_avalon is
     NBITS_LINES : integer := 12;
     NBITS_BURST : integer := 4;
     NBITS_BYTEEN : integer := 4;
-    BURST : integer := 8
+    HOMOG_DELAY_CYCLES : integer := 8;
+    BURST : integer := 8;
+    ADDR_READ : std_logic_vector(31 downto 0) := x"38C00000";
+    ADDR_WRITE : std_logic_vector(31 downto 0) := x"38500000"
+    
     );
 
   port (
@@ -30,7 +34,7 @@ entity homography_avalon is
     masterwr_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
     masterwr_write       : out std_logic;
     masterwr_writedata   : out std_logic_vector(NBITS_DATA-1 downto 0);
-    masterwr_burstcount  : out std_logic_vector(NBITS_BURST-1 downto 0);
+    --masterwr_burstcount  : out std_logic_vector(NBITS_BURST-1 downto 0);
     
 
     -- avalon MM Master 2 - Get Raw Image
@@ -78,8 +82,8 @@ architecture bhv of homography_avalon is
   signal y_out : STD_LOGIC_VECTOR(NBITS_LINES-1 downto 0) := (others => '0');
  
   -- BUFFER ADDR:
-  constant ADDR_BASE_WRITE : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38500000";
-  constant ADDR_BASE_READ : std_logic_vector(NBITS_ADDR-1 downto 0) := x"38000000";
+  constant ADDR_BASE_WRITE : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_WRITE;
+  constant ADDR_BASE_READ : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_READ;
 
   -- MULTIPLIER SIGNALS --> addr = y_out*COLS + x_out + ADDR_BASE
   constant NCOL : std_logic_vector(NBITS_COLS-1 downto 0) := std_logic_vector(to_unsigned(COLS, NBITS_COLS));
@@ -90,11 +94,20 @@ architecture bhv of homography_avalon is
   signal s_masterwrite, s_masterread, s_masterread_f : std_logic := '0';
 
   --GENERAL SIGNALS
-  signal rdcount : UNSIGNED(NBITS_COLS+NBITS_LINES-1 downto 0) := (others => '0');
+  signal rdcount, wrcount, pxl_count : UNSIGNED(NBITS_COLS+NBITS_LINES-1 downto 0) := (others => '0');  
   signal words_written_during_burst : UNSIGNED(NBITS_BURST-1 downto 0) := (others => '0');
 
   type wr_control_st is (st_idle, st_write);
-  signal state_write : wr_control_st := st_idle;
+  signal state_write, state_write_f : wr_control_st := st_idle;
+
+  --RD PROC SIGNALS
+  signal count_delay_cycles : UNSIGNED(7 downto 0) := (others => '0');
+  type rd_control_st is (st_waitRq, st_waitHomogDelay, st_wait);
+  signal rdstate : rd_control_st := st_wait;
+  signal delayCycles : UNSIGNED(31 downto 0) := (others => '0');
+
+  signal pending_counter : UNSIGNED(7 downto 0) := (others => '0');
+  constant AVALON_MAXIMUM_PENDING_READS : integer := 16;
   
   -- CONFIGURE HOMOG SIGNALS
   type reg_type is array (0 to 15) of std_logic_vector(31 downto 0);
@@ -106,7 +119,7 @@ architecture bhv of homography_avalon is
     x"00000000", --h[0,2]
     x"00000000", --h[0,3]
     x"00000000", --h[1,1]
-    x"00010000", --h[1,2]
+    x"00100000", --h[1,2]
     x"00000000", --h[1,3]
     x"00000000", --h[2,1]
     x"00000000", --h[2,2]
@@ -263,12 +276,48 @@ begin  -- architecture bhv
       usedw => usedw
       );
 
+  rd_proc: process (clk, rst_n) is
+  begin  -- process rd_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      count_delay_cycles <= (others => '0');
+      rdstate <= st_wait;
+      delayCycles <= (others => '0');
+    elsif clk'event and clk = '1' then  -- rising clock edge
+      case rdstate is
+        when st_wait =>
+          if delayCycles = 50000000*3 then
+            rdstate <= st_waitRq;
+          else
+            delayCycles <= delayCycles + 1;
+            rdstate <= st_wait;
+          end if;
+
+        when st_waitRq =>
+          count_delay_cycles <= (others => '0');
+          if masterrd_waitrequest = '0' then
+            rdstate <= st_waitHomogDelay;
+          else
+            rdstate <= st_waitRq;
+          end if;
+
+        when st_waitHomogDelay =>          
+          if count_delay_cycles = HOMOG_DELAY_CYCLES-1 then
+            rdstate <= st_waitRq;            
+          else
+            count_delay_cycles <= count_delay_cycles + 1;
+          end if;
+
+      end case;
+        
+    end if;
+  end process rd_proc;
+
   inc_addr <= s_masterread and (not masterrd_waitrequest);
   fifoDataIn <= lastDataFlag & masterrd_readdata;
-  s_masterread <= not half_full;
+  s_masterread <= '1' when rdstate = st_waitRq and half_full = '0' and pending_counter < AVALON_MAXIMUM_PENDING_READS-1 else '0';
   masterrd_read <= s_masterread;
   masterrd_address <= std_logic_vector(UNSIGNED(mult_result) + UNSIGNED(x_out) + UNSIGNED(ADDR_BASE_READ));
-  wrreq <= masterrd_readdatavalid and (not fifoFull);
+  wrreq <= masterrd_readdatavalid;
  
 
   half_full <= usedw(11);
@@ -310,14 +359,31 @@ begin  -- process xy_gen
 end process xy_gen;
 
 
-  s_masterwrite <= '1' when state_write = st_write else '0';--not fifoEmpty;
+  s_masterwrite <= '1' when fifoEmpty = '0' else '0';
   masterwr_write <= s_masterwrite;
-  masterwr_address <= s_address;
+  masterwr_address <= std_logic_vector(wrcount + unsigned(ADDR_BASE_WRITE)); --s_address;
   masterwr_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
   rdreq <= (not masterwr_waitrequest) and s_masterwrite;
-  masterwr_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
+  --masterwr_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
 
 
+  pending_proc: process (clk, rst_n) is
+  begin  -- process pending_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      pending_counter <= (others => '0');
+    elsif clk'event and clk = '1' then  -- rising clock edge
+      if (s_masterread = '1' and masterrd_waitrequest = '0' and masterrd_readdatavalid = '1') then
+        pending_counter <= pending_counter;
+      elsif (s_masterread = '1' and masterrd_waitrequest = '0' and masterrd_readdatavalid = '0') then
+        pending_counter <= pending_counter + 1;
+      elsif (masterrd_readdatavalid = '1' and pending_counter > 0) then
+        pending_counter <= pending_counter - 1;
+      else
+        pending_counter <= pending_counter;
+      end if;
+
+    end if;
+  end process pending_proc;
   stwrite_proc: process (clk, rst_n) is
   begin  -- process write_proc
     if rst_n = '0' then                 -- asynchronous reset (active low)
@@ -325,7 +391,7 @@ end process xy_gen;
     elsif clk'event and clk = '1' then  -- rising clock edge
       case state_write is
         when st_idle =>
-          if (unsigned(usedw) > BURST) then
+          if (unsigned(usedw) > 1) then
             state_write <= st_write;
           else
             state_write <= st_idle;
@@ -341,32 +407,60 @@ end process xy_gen;
       
     end if;
   end process stwrite_proc;
-  
-  waitreq_proc: process (clk, rst_n) is
-  begin  -- process waitreq_proc
-    if rst_n = '0' then           -- asynchronous reset (active low)
-      s_address <= ADDR_BASE_WRITE;
-      words_written_during_burst <= (others => '0');
+
+
+  wrcountProc: process (clk, rst_n) is
+  begin  -- process wrcount
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      wrcount <= (others => '0');
     elsif clk'event and clk = '1' then  -- rising clock edge
-      -- ADDR UPDATE
       if rdreq = '1' then
-        if fifoDataOut(NBITS_DATA) = '1' then --endofpacket received
-          s_address <= ADDR_BASE_WRITE;
-          words_written_during_burst <= (others => '0');
-        else
-          if words_written_during_burst = BURST-1 then
-            words_written_during_burst <= (others => '0');
-            s_address <= std_logic_vector(unsigned(s_address) + BURST);
-          else
-            words_written_during_burst <= words_written_during_burst + 1;
-          end if;          
+        if wrcount = LINES*COLS-1 then
+          wrcount <= (others => '0');
+        else          
+          wrcount <= wrcount + 1;
         end if;
       else
-        s_address <= s_address;
-      end if; 
-      
+        wrcount <= wrcount;
+      end if;      
     end if;
-  end process waitreq_proc;
+  end process wrcountProc;
 
+  
+ --  waitreq_proc: process (clk, rst_n) is
+ --  begin  -- process waitreq_proc
+ --    if rst_n = '0' then           -- asynchronous reset (active low)
+ --      s_address <= ADDR_BASE_WRITE;
+ --      words_written_during_burst <= (others => '0');
+ --      wrcount <= (others => '0');
+ --      pxl_count <= (others => '0');
+ --    elsif clk'event and clk = '1' then  -- rising clock edge
+ --      -- ADDR UPDATE
+ --      if rdreq = '1' then        
+ --        if words_written_during_burst = BURST-1 then
+ --          words_written_during_burst <= (others => '0');
+ --          if (wrcount >= COLS*LINES-1-BURST) and (pxl_count >= COLS*LINES-1) then
+ --            s_address <= ADDR_BASE_WRITE;
+ --            wrcount <= (others => '0');
+ --            pxl_count <= (others => '0');
+ --          else
+ --            pxl_count <= pxl_count + 1;
+ --            wrcount <= wrcount + BURST;
+ --            s_address <= std_logic_vector(unsigned(s_address) + BURST);
+ --          end if;          
+ --        else
+ --          pxl_count <= pxl_count + 1;
+ --          words_written_during_burst <= words_written_during_burst + 1;            
+ --        end if;          
+ --      else
+ --        words_written_during_burst <= words_written_during_burst;
+ --        s_address <= s_address;
+ --        pxl_count <= pxl_count;
+ --      end if; 
+    
+ --    end if;
+ -- end process waitreq_proc;
+
+  
   
 end architecture bhv;

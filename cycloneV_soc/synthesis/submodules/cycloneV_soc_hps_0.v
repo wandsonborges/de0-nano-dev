@@ -147,6 +147,9 @@ module cycloneV_soc_hps_0 #(
 		output wire [63:0]  f2h_sdram2_READDATA,      //                  .readdata
 		output wire         f2h_sdram2_READDATAVALID, //                  .readdatavalid
 		input  wire         f2h_sdram2_READ,          //                  .read
+		input  wire [63:0]  f2h_sdram2_WRITEDATA,     //                  .writedata
+		input  wire [7:0]   f2h_sdram2_BYTEENABLE,    //                  .byteenable
+		input  wire         f2h_sdram2_WRITE,         //                  .write
 		input  wire         f2h_sdram2_clk,           //  f2h_sdram2_clock.clk
 		input  wire [28:0]  f2h_sdram3_ADDRESS,       //   f2h_sdram3_data.address
 		input  wire [7:0]   f2h_sdram3_BURSTCOUNT,    //                  .burstcount
@@ -371,6 +374,9 @@ module cycloneV_soc_hps_0 #(
 		.f2h_sdram2_READDATA      (f2h_sdram2_READDATA),      //                  .readdata
 		.f2h_sdram2_READDATAVALID (f2h_sdram2_READDATAVALID), //                  .readdatavalid
 		.f2h_sdram2_READ          (f2h_sdram2_READ),          //                  .read
+		.f2h_sdram2_WRITEDATA     (f2h_sdram2_WRITEDATA),     //                  .writedata
+		.f2h_sdram2_BYTEENABLE    (f2h_sdram2_BYTEENABLE),    //                  .byteenable
+		.f2h_sdram2_WRITE         (f2h_sdram2_WRITE),         //                  .write
 		.f2h_sdram2_clk           (f2h_sdram2_clk),           //  f2h_sdram2_clock.clk
 		.f2h_sdram3_ADDRESS       (f2h_sdram3_ADDRESS),       //   f2h_sdram3_data.address
 		.f2h_sdram3_BURSTCOUNT    (f2h_sdram3_BURSTCOUNT),    //                  .burstcount

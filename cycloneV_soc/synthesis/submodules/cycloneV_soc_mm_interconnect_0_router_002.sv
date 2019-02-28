@@ -49,14 +49,14 @@ module cycloneV_soc_mm_interconnect_0_router_002_default_decode
                DEFAULT_RD_CHANNEL = -1,
                DEFAULT_DESTID = 0 
    )
-  (output [99 - 97 : 0] default_destination_id,
+  (output [100 - 98 : 0] default_destination_id,
    output [8-1 : 0] default_wr_channel,
    output [8-1 : 0] default_rd_channel,
    output [8-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
-    DEFAULT_DESTID[99 - 97 : 0];
+    DEFAULT_DESTID[100 - 98 : 0];
 
   generate
     if (DEFAULT_CHANNEL == -1) begin : no_default_channel_assignment
@@ -93,7 +93,7 @@ module cycloneV_soc_mm_interconnect_0_router_002
     // Command Sink (Input)
     // -------------------
     input                       sink_valid,
-    input  [113-1 : 0]    sink_data,
+    input  [114-1 : 0]    sink_data,
     input                       sink_startofpacket,
     input                       sink_endofpacket,
     output                      sink_ready,
@@ -102,7 +102,7 @@ module cycloneV_soc_mm_interconnect_0_router_002
     // Command Source (Output)
     // -------------------
     output                          src_valid,
-    output reg [113-1    : 0] src_data,
+    output reg [114-1    : 0] src_data,
     output reg [8-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
@@ -114,11 +114,11 @@ module cycloneV_soc_mm_interconnect_0_router_002
     // -------------------------------------------------------
     localparam PKT_ADDR_H = 67;
     localparam PKT_ADDR_L = 36;
-    localparam PKT_DEST_ID_H = 99;
-    localparam PKT_DEST_ID_L = 97;
-    localparam PKT_PROTECTION_H = 103;
-    localparam PKT_PROTECTION_L = 101;
-    localparam ST_DATA_W = 113;
+    localparam PKT_DEST_ID_H = 100;
+    localparam PKT_DEST_ID_L = 98;
+    localparam PKT_PROTECTION_H = 104;
+    localparam PKT_PROTECTION_L = 102;
+    localparam ST_DATA_W = 114;
     localparam ST_CHANNEL_W = 8;
     localparam DECODER_TYPE = 0;
 
