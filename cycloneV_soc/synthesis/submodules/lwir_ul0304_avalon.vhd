@@ -99,8 +99,8 @@ begin
       ROI_EN     => true,
       ROI_COL    => NUM_COLS,
       ROI_LINE   => NUM_ROWS,
-      CLOCK_FREQ => 7500000,
-      FRAME_RATE => 20)
+      CLOCK_FREQ => 500000,
+      FRAME_RATE => 30)
     port map (
       clk         => sensor_clk_in,
       rst_n       => rst_n,

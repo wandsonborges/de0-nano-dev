@@ -626,8 +626,8 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_USB_DATA[7]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_USB_DIR
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_USB_NXT
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_USB_STP
-set_global_assignment -name ENABLE_SIGNALTAP OFF
-set_global_assignment -name USE_SIGNALTAP_FILE output_files/homog.stp
+set_global_assignment -name ENABLE_SIGNALTAP ON
+set_global_assignment -name USE_SIGNALTAP_FILE output_files/trippleBuffer.stp
 set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS ON
 set_global_assignment -name NUM_PARALLEL_PROCESSORS 3
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ADC_CONVST -entity cycloneV_soc
@@ -1086,6 +1086,39 @@ set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_DDR3_WE_N -e
 set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_DDR3_RESET_N -entity cycloneV_soc
 set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_DDR3_CK_P -entity cycloneV_soc
 set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_DDR3_CK_N -entity cycloneV_soc
+set_global_assignment -name SLD_NODE_CREATOR_ID 110 -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_ENTITY_NAME sld_signaltap -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_RAM_BLOCK_TYPE=AUTO" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_INFO=805334528" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_POWER_UP_TRIGGER=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_INVERSION_MASK_LENGTH=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SEGMENT_SIZE=128" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ATTRIBUTE_MEM_MODE=OFF" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_FLOW_USE_GENERATED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_BITS=11" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_BUFFER_FULL_STOP=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_CURRENT_RESOURCE_WIDTH=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INCREMENTAL_ROUTING=1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[7] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[8] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[10] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[18] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[21] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SAMPLE_DEPTH=128" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_IN_ENABLED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_PIPELINE=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_RAM_PIPELINE=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_COUNTER_PIPELINE=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ADVANCED_TRIGGER_ENTITY=basic,1," -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL_PIPELINE=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ENABLE_ADVANCED_TRIGGER=0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[20] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[24] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[30] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[12] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[13] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[16] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
 set_global_assignment -name VHDL_FILE src/swir/swir_emulator.vhd
 set_global_assignment -name VHDL_FILE src/swir/IntegrationTimeController.vhd
 set_global_assignment -name VHDL_FILE src/swir/DigitalRegisterController.vhd
@@ -1111,4 +1144,395 @@ set_global_assignment -name SIGNALTAP_FILE src/lwir_ul0304/stp_addVector.stp
 set_global_assignment -name SIGNALTAP_FILE src/lwir_ul0304/stp_addVector2.stp
 set_global_assignment -name SIGNALTAP_FILE src/lwir_ul0304/stp_addVector_resume.stp
 set_global_assignment -name SIGNALTAP_FILE output_files/homog.stp
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[0] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[2] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[14] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[27] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[3] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[31] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_global_assignment -name SIGNALTAP_FILE output_files/trippleBuffer.stp
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_clk -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|clk_mem" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[0] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.buffer_0" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[1] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.buffer_1" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[2] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.buffer_2" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[3] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.none" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[4] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.buffer_0" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[5] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.buffer_1" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[6] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.buffer_2" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[7] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.none" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[0] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.buffer_0" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[1] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.buffer_1" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[2] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.buffer_2" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[3] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_read.none" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[4] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.buffer_0" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[5] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.buffer_1" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[6] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.buffer_2" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[7] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|buffer_write.none" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[5] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[6] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[9] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[11] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[19] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[22] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[23] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[26] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[29] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[8] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|cpuIsReading_f" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[9] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.buffer_0" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[10] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.buffer_1" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[11] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.buffer_2" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[12] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.none" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[13] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[14] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[15] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[16] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[17] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[18] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[19] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[20] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[21] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[22] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[23] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[24] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[25] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[26] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[27] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[28] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[29] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[30] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[31] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[32] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[33] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[34] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[35] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[36] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[37] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[38] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[39] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[40] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[41] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[42] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[43] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[44] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[45] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[46] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[47] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[48] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[49] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[50] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[51] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[52] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[8] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|cpuIsReading_f" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[9] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.buffer_0" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[10] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.buffer_1" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[11] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.buffer_2" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[12] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|last_buffer_ready.none" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[13] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[14] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[15] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[16] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[17] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[18] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[19] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[20] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[21] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[22] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[23] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[24] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[25] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[26] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[27] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[28] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[29] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[30] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[31] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[32] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[33] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[34] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[35] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[36] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[37] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[38] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[39] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[40] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[41] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[42] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[43] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[44] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_address[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[45] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[46] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[47] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[48] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[49] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[50] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[51] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[52] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|master_writedata[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[4] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[53] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[54] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[55] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[56] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[57] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[58] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[59] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[60] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[61] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[62] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[63] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[64] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[65] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[66] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[67] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[68] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[69] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[70] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[71] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[72] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[73] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[74] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[75] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[76] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[77] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[78] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[79] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[80] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[81] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[82] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[83] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[84] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[85] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[86] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[87] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[88] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[89] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[90] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[91] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[92] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[93] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[94] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[95] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[96] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[97] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[98] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[99] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[100] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[101] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[102] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[103] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[104] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[105] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[106] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[107] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[108] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[109] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[110] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[111] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[112] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[113] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[114] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[115] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[116] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[117] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[118] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[119] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[120] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[121] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[122] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[123] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[124] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[125] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[126] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[127] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[128] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[129] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[130] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[131] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[132] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[133] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[134] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[135] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[136] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[137] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[138] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[139] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[140] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[141] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[142] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[143] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[144] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[145] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[146] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[147] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[148] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[149] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[150] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[151] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[152] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[153] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[154] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[155] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[156] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[157] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[158] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[159] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[160] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[161] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[162] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[163] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[164] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[165] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[166] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[167] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[168] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[169] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[170] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[171] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[172] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[173] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[174] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[175] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[176] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[177] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[178] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[179] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[180] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[53] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[54] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[55] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[56] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[57] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[58] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[59] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[60] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[61] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[62] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[63] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[64] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[65] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[66] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[67] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[68] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[69] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[70] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[71] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[72] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[73] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[74] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[75] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[76] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[77] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[78] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[79] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[80] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[81] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[82] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[83] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[84] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[0][9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[85] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[86] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[87] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[88] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[89] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[90] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[91] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[92] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[93] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[94] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[95] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[96] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[97] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[98] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[99] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[100] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[101] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[102] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[103] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[104] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[105] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[106] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[107] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[108] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[109] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[110] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[111] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[112] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[113] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[114] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[115] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[116] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[1][9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[117] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[118] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[119] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[120] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[121] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[122] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[123] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[124] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[125] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[126] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[127] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[128] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[129] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[130] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[131] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[132] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[133] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[134] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[135] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[136] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[137] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[138] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[139] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[140] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[141] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[142] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[143] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[144] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[145] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[146] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[147] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[148] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[2][9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[149] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[150] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[151] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[152] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[153] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[154] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[155] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[156] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[157] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[158] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[159] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[160] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[161] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[162] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[163] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[164] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][23]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[165] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][24]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[166] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][25]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[167] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][26]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[168] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][27]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[169] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][28]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[170] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][29]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[171] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[172] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][30]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[173] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][31]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[174] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[175] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[176] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[177] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[178] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[179] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[180] -to "cycloneV_soc:cycloneV_soc_2|bridge_stSrc_mmMaster:bridge_stsrcmmmaster_0|registers[3][9]" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_DATA_BITS=181" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_BITS=181" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_BITS=181" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK=000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK_LENGTH=564" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[1] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[15] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[17] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[25] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[28] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_global_assignment -name SLD_FILE db/trippleBuffer_auto_stripped.stp
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

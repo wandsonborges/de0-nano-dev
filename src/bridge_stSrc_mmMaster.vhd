@@ -24,7 +24,7 @@ entity bridge_stSrc_mmMaster is
     slave_chipselect    : in std_logic;
     slave_read          : in std_logic;
     slave_write         : in std_logic;
-    slave_address       : in std_logic_vector(0 downto 0);
+    slave_address       : in std_logic_vector(1 downto 0);
     slave_writedata     : in std_logic_vector(31 downto 0);
     slave_waitrequest   : out std_logic;
     slave_readdatavalid : out std_logic;
@@ -53,31 +53,26 @@ architecture bhv of bridge_stSrc_mmMaster is
   --0 (32 bits), somente leitura: endereço do buffer a ser lido
   --1 (32 bits), somente escrita: requisição de buffer (manter em 1 enquanto
   --estiver lendo)
-  type reg_type is array (0 to 1) of std_logic_vector(31 downto 0);
+  type reg_type is array (0 to 3) of std_logic_vector(31 downto 0);
   signal registers : reg_type := (
-    x"11223344",
-    x"55667788"
+    x"11223344", -- id
+    x"00000001", -- frame disponivel para ser lido (0, 1 ou 2)
+    x"00014000", -- frameSize
+    x"00000000" -- reading
     );
 
-  -- type reg_type is array (0 to 10) of std_logic_vector(31 downto 0);
-  -- signal registers : reg_type := (
-  --   x"11223344",
-  --   x"0000FFCB",
-  --   x"00000037",
-  --   x"00000037",
-  --   x"00000037",
-  --   x"00000005",
-  --   x"00000006",
-  --   x"00000007",
-  --   x"00000008",
-  --   x"00000009",
-  --   x"0000000A"
-  --   );
+  constant BUFFER_TO_READ_INDEX : integer := 1;
+  constant FRAME_SIZE_INDEX : integer := 2;
+  constant READING_BUFFER_INDEX : integer := 3;
+  
 
+  signal FRAME_SIZE : unsigned(31 downto 0) := x"00014000";
+
+  signal cpuIsReading, cpuIsReading_f : std_logic := '0';
+  
   constant ADDR_BASE_BUF0 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF;
-  constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF;
-  --constant ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) :=
-  --x"38500000"; --TROCAR!!
+  signal ADDR_BASE_BUF1 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF;
+  signal ADDR_BASE_BUF2 : std_logic_vector(NBITS_ADDR-1 downto 0) := ADDR_BASE_BUF;
   
   signal fifoDataIn : std_logic_vector(NBITS_DATA+1 downto 0);
   signal fifoDataOut : std_logic_vector(NBITS_DATA+1 downto 0);
@@ -90,10 +85,9 @@ architecture bhv of bridge_stSrc_mmMaster is
 
   signal buffer_update : std_logic := '0';
 
-  type BUF_TYPE is (buffer_0, buffer_1, none);
+  type BUF_TYPE is (buffer_0, buffer_1, buffer_2, none);
   signal buffer_write : BUF_TYPE := buffer_1;
-  signal buffer_read : BUF_TYPE := none;
-  signal last_buffer_read : BUF_TYPE := buffer_1;
+  signal buffer_read, last_buffer_ready : BUF_TYPE := none;
 
   type db_state is (st_idle, st_define, st_lockB1, st_lockB0, st_waitFreeB0, st_waitFreeB1);
   signal state : db_state := st_idle;
@@ -136,120 +130,59 @@ architecture bhv of bridge_stSrc_mmMaster is
   
 begin  -- architecture bhv
 
+  
+  FRAME_SIZE <= unsigned(registers(FRAME_SIZE_INDEX));
+  ADDR_BASE_BUF1 <= std_logic_vector(to_unsigned(to_integer(unsigned(ADDR_BASE_BUF) + FRAME_SIZE),ADDR_BASE_BUF'length));
+  ADDR_BASE_BUF2 <= std_logic_vector(to_unsigned(to_integer(unsigned(ADDR_BASE_BUF) + 2*FRAME_SIZE),ADDR_BASE_BUF'length));
+
+  cpuIsReading <= registers(READING_BUFFER_INDEX)(0);
+
   rd_wr_slave_proc: process (clk_mem, rst_n) is
   begin  -- process rd_wr_slave_proc
     if rst_n = '0' then                 -- asynchronous reset (active low)
       slave_readdata <= (others => '0');
       slave_readdatavalid <= '0';
       request_read <= '0';
+      cpuIsReading_f <= '0';
     elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
+
+      cpuIsReading_f <= cpuIsReading;
+   
+      
       --LEITURA DO SLAVE
       if slave_read = '1' then
         slave_readdata <= registers(to_integer(unsigned(slave_address)));
         slave_readdatavalid <= '1';
-      --ESCRITA NO SLAVE
+        --ESCRITA NO SLAVE
       elsif slave_write = '1' and slave_chipselect = '1' then
-        request_read <= slave_writedata(0);
-        slave_readdatavalid <= '0';
+        if unsigned(slave_address) > BUFFER_TO_READ_INDEX then 
+          registers(to_integer(unsigned(slave_address))) <= slave_writedata;
+          slave_readdatavalid <= '0';
+        else
+          slave_readdatavalid <= '0';  
+        end if;        
       else
         slave_readdatavalid <= '0';
+        if cpuIsReading = '1' and cpuIsReading_f = '0' then
+          buffer_read <= last_buffer_ready;
+          if (last_buffer_ready = buffer_2) then
+            registers(BUFFER_TO_READ_INDEX) <= x"00000002";
+          elsif (last_buffer_ready = buffer_1) then
+            registers(BUFFER_TO_READ_INDEX) <= x"00000001";
+          else
+            registers(BUFFER_TO_READ_INDEX) <= x"00000000";
+          end if;
+          
+        elsif cpuIsReading = '0' then
+          buffer_read <= none;
+        else
+          buffer_read <= buffer_read;
+        end if;
+        
       end if;      
     end if;
   end process rd_wr_slave_proc;
 
-
-  -- state_proc: process (clk_mem, rst_n) is
-  -- begin  -- process state_proc
-  --   if rst_n = '0' then                 -- asynchronous reset (active low)
-  --     state <= st_idle;
-  --     buffer_read <= none;
-  --     registers <= (x"11223344", x"55667788");
-  --     last_buffer_read <= buffer_1;
-  --   elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
-  --         ---- STATE MACHINE
-  --   case state is
-  --     when st_idle =>
-  --       registers(1) <= (others => '0');
-  --       buffer_read <= none;
-  --       if request_read = '1' then
-  --         state <= st_define;
-  --       else
-  --         state <= st_idle;
-  --       end if;
-
-  --     when st_define =>
-  --       registers(1) <= (others => '0');
-  --       buffer_read <= none;
-  --       if last_buffer_read = buffer_1 then
-  --         state <= st_lockB0;
-  --       else
-  --         state <= st_lockB1;
-  --       end if;        
-
-  --     when st_lockB0 =>
-  --       buffer_read <= none;
-  --       registers(1) <= (others => '0');
-  --       if buffer_write = buffer_0 then
-  --         state <= st_lockB0;
-  --       else
-  --         state <= st_waitFreeB0;
-  --       end if;
-
-  --     when st_waitFreeB0 =>
-  --       buffer_read <= buffer_0;
-  --       last_buffer_read <= buffer_0;
-  --       registers(1) <= x"00000001";
-  --       registers(0) <= ADDR_BASE_BUF0;
-  --       if request_read = '0' then
-  --         state <= st_idle;
-  --       else
-  --         state <= st_waitFreeB0;
-  --       end if;
-
-  --     when st_lockB1 =>
-  --       registers(1) <= (others => '0');
-  --       buffer_read <= none;
-  --       if buffer_write = buffer_1 then
-  --         state <= st_lockB1;
-  --       else
-  --         state <= st_waitFreeB1;
-  --       end if;
-
-  --     when st_waitFreeB1 =>
-  --       buffer_read <= buffer_1;
-  --       last_buffer_read <= buffer_1;
-  --       registers(1) <= x"00000001";
-  --       registers(0) <= ADDR_BASE_BUF1;
-  --       if request_read = '0' then
-  --         state <= st_idle;
-  --       else
-  --         state <= st_waitFreeB1;
-  --       end if;
-        
-  --   end case;
-  --   end if;
-  -- end process state_proc;
-
-  req_buffer_proc: process (clk_mem, rst_n) is
-begin  -- process slave_proc
-  if rst_n = '0' then                   -- asynchronous reset (active low)
-    buffer_read <= none;
-  elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
-    if request_read = '1' then
-      if buffer_write = buffer_0 then
-        buffer_read <= buffer_1;
-        registers(0) <= ADDR_BASE_BUF1;
-      else
-        buffer_read <= buffer_0;
-        registers(0) <= ADDR_BASE_BUF0;
-      end if;
-      registers(1) <= x"00000000";
-    else
-      buffer_read <= none;
-      registers(1) <= x"00000001";
-    end if;   
-  end if;
-end process req_buffer_proc;
 
 
 
@@ -286,14 +219,48 @@ waitreq_proc: process (clk_mem, rst_n) is
 begin  -- process waitreq_proc
   if rst_n = '0' then           -- asynchronous reset (active low)
     s_address <= ADDR_BASE_BUF1;
-    buffer_write <= buffer_1;
+    last_buffer_ready <= buffer_1;
     words_written_during_burst <= (others => '0');
   elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
     -- ADDR UPDATE
     if s_masterwrite = '1' and master_waitrequest = '0' then
       if fifoDataOut(NBITS_DATA+1) = '1' then --endofpacket received
+
+        last_buffer_ready <= buffer_write;     
+          
+        
         if (buffer_read = none) then --nao ha leitura, buffer ping
                                                --pong corre livre
+          if buffer_write = buffer_0 then 
+            buffer_write <= buffer_1;
+            s_address <= ADDR_BASE_BUF1;
+          elsif buffer_write = buffer_1 then
+            buffer_write <= buffer_2;
+            s_address <= ADDR_BASE_BUF2;
+          else
+            buffer_write <= buffer_0;
+            s_address <= ADDR_BASE_BUF0;
+          end if;
+          
+        elsif buffer_read = buffer_1 then --buffer1 sendo lido
+          if buffer_write = buffer_0 then 
+            buffer_write <= buffer_2;
+            s_address <= ADDR_BASE_BUF2;
+          else
+            buffer_write <= buffer_0;
+            s_address <= ADDR_BASE_BUF0;
+          end if;
+
+        elsif buffer_read = buffer_0 then --buffer0 sendo lido
+          if buffer_write = buffer_2 then 
+            buffer_write <= buffer_1;
+            s_address <= ADDR_BASE_BUF1;
+          else
+            buffer_write <= buffer_2;
+            s_address <= ADDR_BASE_BUF2;
+          end if;
+
+        else  --buffer2 sendo lido
           if buffer_write = buffer_1 then 
             buffer_write <= buffer_0;
             s_address <= ADDR_BASE_BUF0;
@@ -301,12 +268,6 @@ begin  -- process waitreq_proc
             buffer_write <= buffer_1;
             s_address <= ADDR_BASE_BUF1;
           end if;
-        elsif buffer_read = buffer_1 then --buffer1 sendo lido
-          buffer_write <= buffer_0;
-          s_address <= ADDR_BASE_BUF0; 
-        else  --buffer0 sendo lido
-          buffer_write <= buffer_1;  
-          s_address <= ADDR_BASE_BUF1; 
         end if;
         words_written_during_burst <= (others => '0');
       else
@@ -360,7 +321,10 @@ s_masterwrite <= '1' when state_write = st_write else '0'; --not fifoEmpty;
 
 master_write <= s_masterwrite;
 master_address <= s_address;
-master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
+--master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
+  master_writedata <= (others => '0') when buffer_write = buffer_0 else
+                      (others => '1') when buffer_write = buffer_1 else
+                      x"7F" when buffer_write = buffer_2;
 
 master_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
 

@@ -232,20 +232,11 @@ module cycloneV_soc (
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_0_slave_chipselect;    // mm_interconnect_4:bridge_stSrcMmMaster_0_slave_chipselect -> bridge_stSrcMmMaster_0:slave_chipselect
 	wire  [31:0] mm_interconnect_4_bridge_stsrcmmmaster_0_slave_readdata;      // bridge_stSrcMmMaster_0:slave_readdata -> mm_interconnect_4:bridge_stSrcMmMaster_0_slave_readdata
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_0_slave_waitrequest;   // bridge_stSrcMmMaster_0:slave_waitrequest -> mm_interconnect_4:bridge_stSrcMmMaster_0_slave_waitrequest
-	wire   [0:0] mm_interconnect_4_bridge_stsrcmmmaster_0_slave_address;       // mm_interconnect_4:bridge_stSrcMmMaster_0_slave_address -> bridge_stSrcMmMaster_0:slave_address
+	wire   [1:0] mm_interconnect_4_bridge_stsrcmmmaster_0_slave_address;       // mm_interconnect_4:bridge_stSrcMmMaster_0_slave_address -> bridge_stSrcMmMaster_0:slave_address
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_0_slave_read;          // mm_interconnect_4:bridge_stSrcMmMaster_0_slave_read -> bridge_stSrcMmMaster_0:slave_read
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_0_slave_readdatavalid; // bridge_stSrcMmMaster_0:slave_readdatavalid -> mm_interconnect_4:bridge_stSrcMmMaster_0_slave_readdatavalid
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_0_slave_write;         // mm_interconnect_4:bridge_stSrcMmMaster_0_slave_write -> bridge_stSrcMmMaster_0:slave_write
 	wire  [31:0] mm_interconnect_4_bridge_stsrcmmmaster_0_slave_writedata;     // mm_interconnect_4:bridge_stSrcMmMaster_0_slave_writedata -> bridge_stSrcMmMaster_0:slave_writedata
-	wire         mm_interconnect_4_lwir_ul0304_0_slave_chipselect;             // mm_interconnect_4:lwir_ul0304_0_slave_chipselect -> lwir_ul0304_0:slave_chipselect
-	wire  [31:0] mm_interconnect_4_lwir_ul0304_0_slave_readdata;               // lwir_ul0304_0:slave_readdata -> mm_interconnect_4:lwir_ul0304_0_slave_readdata
-	wire         mm_interconnect_4_lwir_ul0304_0_slave_waitrequest;            // lwir_ul0304_0:slave_waitrequest -> mm_interconnect_4:lwir_ul0304_0_slave_waitrequest
-	wire   [0:0] mm_interconnect_4_lwir_ul0304_0_slave_address;                // mm_interconnect_4:lwir_ul0304_0_slave_address -> lwir_ul0304_0:slave_address
-	wire         mm_interconnect_4_lwir_ul0304_0_slave_read;                   // mm_interconnect_4:lwir_ul0304_0_slave_read -> lwir_ul0304_0:slave_read
-	wire   [3:0] mm_interconnect_4_lwir_ul0304_0_slave_byteenable;             // mm_interconnect_4:lwir_ul0304_0_slave_byteenable -> lwir_ul0304_0:slave_byteenable
-	wire         mm_interconnect_4_lwir_ul0304_0_slave_readdatavalid;          // lwir_ul0304_0:slave_readdatavalid -> mm_interconnect_4:lwir_ul0304_0_slave_readdatavalid
-	wire         mm_interconnect_4_lwir_ul0304_0_slave_write;                  // mm_interconnect_4:lwir_ul0304_0_slave_write -> lwir_ul0304_0:slave_write
-	wire  [31:0] mm_interconnect_4_lwir_ul0304_0_slave_writedata;              // mm_interconnect_4:lwir_ul0304_0_slave_writedata -> lwir_ul0304_0:slave_writedata
 	wire         mm_interconnect_4_swir_v400_0_slave_chipselect;               // mm_interconnect_4:swir_v400_0_slave_chipselect -> swir_v400_0:slave_chipselect
 	wire  [31:0] mm_interconnect_4_swir_v400_0_slave_readdata;                 // swir_v400_0:slave_readdata -> mm_interconnect_4:swir_v400_0_slave_readdata
 	wire         mm_interconnect_4_swir_v400_0_slave_waitrequest;              // swir_v400_0:slave_waitrequest -> mm_interconnect_4:swir_v400_0_slave_waitrequest
@@ -258,7 +249,7 @@ module cycloneV_soc (
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_1_slave_chipselect;    // mm_interconnect_4:bridge_stSrcMmMaster_1_slave_chipselect -> bridge_stSrcMmMaster_1:slave_chipselect
 	wire  [31:0] mm_interconnect_4_bridge_stsrcmmmaster_1_slave_readdata;      // bridge_stSrcMmMaster_1:slave_readdata -> mm_interconnect_4:bridge_stSrcMmMaster_1_slave_readdata
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_1_slave_waitrequest;   // bridge_stSrcMmMaster_1:slave_waitrequest -> mm_interconnect_4:bridge_stSrcMmMaster_1_slave_waitrequest
-	wire   [0:0] mm_interconnect_4_bridge_stsrcmmmaster_1_slave_address;       // mm_interconnect_4:bridge_stSrcMmMaster_1_slave_address -> bridge_stSrcMmMaster_1:slave_address
+	wire   [1:0] mm_interconnect_4_bridge_stsrcmmmaster_1_slave_address;       // mm_interconnect_4:bridge_stSrcMmMaster_1_slave_address -> bridge_stSrcMmMaster_1:slave_address
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_1_slave_read;          // mm_interconnect_4:bridge_stSrcMmMaster_1_slave_read -> bridge_stSrcMmMaster_1:slave_read
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_1_slave_readdatavalid; // bridge_stSrcMmMaster_1:slave_readdatavalid -> mm_interconnect_4:bridge_stSrcMmMaster_1_slave_readdatavalid
 	wire         mm_interconnect_4_bridge_stsrcmmmaster_1_slave_write;         // mm_interconnect_4:bridge_stSrcMmMaster_1_slave_write -> bridge_stSrcMmMaster_1:slave_write
@@ -271,6 +262,15 @@ module cycloneV_soc (
 	wire         mm_interconnect_4_homography_dma_0_slave_readdatavalid;       // homography_dma_0:slave_readdatavalid -> mm_interconnect_4:homography_dma_0_slave_readdatavalid
 	wire         mm_interconnect_4_homography_dma_0_slave_write;               // mm_interconnect_4:homography_dma_0_slave_write -> homography_dma_0:slave_write
 	wire  [31:0] mm_interconnect_4_homography_dma_0_slave_writedata;           // mm_interconnect_4:homography_dma_0_slave_writedata -> homography_dma_0:slave_writedata
+	wire         mm_interconnect_4_lwir_ul0304_0_slave_chipselect;             // mm_interconnect_4:lwir_ul0304_0_slave_chipselect -> lwir_ul0304_0:slave_chipselect
+	wire  [31:0] mm_interconnect_4_lwir_ul0304_0_slave_readdata;               // lwir_ul0304_0:slave_readdata -> mm_interconnect_4:lwir_ul0304_0_slave_readdata
+	wire         mm_interconnect_4_lwir_ul0304_0_slave_waitrequest;            // lwir_ul0304_0:slave_waitrequest -> mm_interconnect_4:lwir_ul0304_0_slave_waitrequest
+	wire   [0:0] mm_interconnect_4_lwir_ul0304_0_slave_address;                // mm_interconnect_4:lwir_ul0304_0_slave_address -> lwir_ul0304_0:slave_address
+	wire         mm_interconnect_4_lwir_ul0304_0_slave_read;                   // mm_interconnect_4:lwir_ul0304_0_slave_read -> lwir_ul0304_0:slave_read
+	wire   [3:0] mm_interconnect_4_lwir_ul0304_0_slave_byteenable;             // mm_interconnect_4:lwir_ul0304_0_slave_byteenable -> lwir_ul0304_0:slave_byteenable
+	wire         mm_interconnect_4_lwir_ul0304_0_slave_readdatavalid;          // lwir_ul0304_0:slave_readdatavalid -> mm_interconnect_4:lwir_ul0304_0_slave_readdatavalid
+	wire         mm_interconnect_4_lwir_ul0304_0_slave_write;                  // mm_interconnect_4:lwir_ul0304_0_slave_write -> lwir_ul0304_0:slave_write
+	wire  [31:0] mm_interconnect_4_lwir_ul0304_0_slave_writedata;              // mm_interconnect_4:lwir_ul0304_0_slave_writedata -> lwir_ul0304_0:slave_writedata
 	wire         mm_interconnect_4_addvector_0_slave_1_chipselect;             // mm_interconnect_4:addVector_0_slave_1_chipselect -> addVector_0:slave_chipselect
 	wire  [31:0] mm_interconnect_4_addvector_0_slave_1_readdata;               // addVector_0:slave_readdata -> mm_interconnect_4:addVector_0_slave_1_readdata
 	wire         mm_interconnect_4_addvector_0_slave_1_waitrequest;            // addVector_0:slave_waitrequest -> mm_interconnect_4:addVector_0_slave_1_waitrequest
@@ -757,7 +757,7 @@ module cycloneV_soc (
 		.rst      (~reset_reset_n),    //   reset.reset
 		.outclk_0 (pll_0_outclk0_clk), // outclk0.clk
 		.outclk_1 (pll_0_outclk1_clk), // outclk1.clk
-		.locked   ()                   //  locked.export
+		.locked   ()                   // (terminated)
 	);
 
 	cycloneV_soc_sw sw (
