@@ -1,5 +1,5 @@
 EDA Netlist Writer report for cycloneV_soc
-Thu Feb 28 18:54:12 2019
+Wed Mar 20 19:34:31 2019
 Quartus Prime Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
 
 
@@ -37,7 +37,7 @@ agreement for further details.
 +-------------------------------------------------------------------+
 ; EDA Netlist Writer Summary                                        ;
 +---------------------------+---------------------------------------+
-; EDA Netlist Writer Status ; Successful - Thu Feb 28 18:54:12 2019 ;
+; EDA Netlist Writer Status ; Successful - Wed Mar 20 19:34:31 2019 ;
 ; Revision Name             ; cycloneV_soc                          ;
 ; Top-level Entity Name     ; soc_top                               ;
 ; Family                    ; Cyclone V                             ;
@@ -82,16 +82,16 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime EDA Netlist Writer
     Info: Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
-    Info: Processing started: Thu Feb 28 18:54:07 2019
+    Info: Processing started: Wed Mar 20 19:34:23 2019
 Info: Command: quartus_eda --read_settings_files=off --write_settings_files=off cycloneV_soc -c cycloneV_soc
 Warning (125092): Tcl Script File fifoDC.qip not found
     Info (125063): set_global_assignment -name QIP_FILE fifoDC.qip
 Warning (10905): Generated the EDA functional simulation netlist because it is the only supported netlist type for this device.
 Info (204019): Generated file cycloneV_soc.vo in folder "/home/rodrigo/ivision/v500/de0-nano-dev/simulation/modelsim/" for EDA simulation tool
 Info: Quartus Prime EDA Netlist Writer was successful. 0 errors, 2 warnings
-    Info: Peak virtual memory: 1438 megabytes
-    Info: Processing ended: Thu Feb 28 18:54:13 2019
-    Info: Elapsed time: 00:00:06
-    Info: Total CPU time (on all processors): 00:00:05
+    Info: Peak virtual memory: 1477 megabytes
+    Info: Processing ended: Wed Mar 20 19:34:32 2019
+    Info: Elapsed time: 00:00:09
+    Info: Total CPU time (on all processors): 00:00:08
 
 

@@ -6,7 +6,7 @@
 -- Author     :   <rodrigo@thomson>
 -- Company    : 
 -- Created    : 2015-08-07
--- Last update: 2019-02-19
+-- Last update: 2019-03-01
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -33,8 +33,8 @@ entity lwir_UL_03_04_controller is
     ROI_EN         : boolean          := true;
     ROI_COL        : integer          := 320;
     ROI_LINE       : integer          := 256;
-    CLOCK_FREQ     : integer          := 7500000; --7500000;
-    FRAME_RATE     : integer          := 20 --valor maximo : ~50 FPS a 7,5Mhz
+    CLOCK_FREQ     : integer          := 500000; --7500000;
+    FRAME_RATE     : integer          := 30 --valor maximo : ~50 FPS a 7,5Mhz
     );
 
   port (

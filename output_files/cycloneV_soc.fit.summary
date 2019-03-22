@@ -1,16 +1,16 @@
-Fitter Status : Successful - Thu Feb 28 18:52:54 2019
+Fitter Status : Successful - Wed Mar 20 19:32:31 2019
 Quartus Prime Version : 16.1.0 Build 196 10/24/2016 SJ Lite Edition
 Revision Name : cycloneV_soc
 Top-level Entity Name : soc_top
 Family : Cyclone V
 Device : 5CSEMA4U23C6
 Timing Models : Final
-Logic utilization (in ALMs) : 6,664 / 15,880 ( 42 % )
-Total registers : 8857
+Logic utilization (in ALMs) : 7,458 / 15,880 ( 47 % )
+Total registers : 11784
 Total pins : 142 / 314 ( 45 % )
 Total virtual pins : 0
-Total block memory bits : 770,281 / 2,764,800 ( 28 % )
-Total RAM Blocks : 101 / 270 ( 37 % )
+Total block memory bits : 727,913 / 2,764,800 ( 26 % )
+Total RAM Blocks : 98 / 270 ( 36 % )
 Total DSP Blocks : 1 / 84 ( 1 % )
 Total HSSI RX PCSs : 0
 Total HSSI PMA RX Deserializers : 0
