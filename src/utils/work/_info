@@ -1,0 +1,102 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/rodrigo/ivision/v500/de0-nano-dev/src/utils
+Edelay_regs
+Z1 w1553637646
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z4 8delay_regs.vhd
+Z5 Fdelay_regs.vhd
+l0
+L17
+V2Li@L=aK72DLkOmdS796A2
+!s100 d0R<B6UQCD=0j5XTiMPhd0
+Z6 OV;C;10.5b;63
+32
+Z7 !s110 1553637648
+!i10b 1
+Z8 !s108 1553637648.000000
+Z9 !s90 delay_regs.vhd|
+Z10 !s107 delay_regs.vhd|
+!i113 1
+Z11 tExplicit 1 CvgOpt 0
+Abhv
+R2
+R3
+Z12 DEx4 work 10 delay_regs 0 22 2Li@L=aK72DLkOmdS796A2
+l87
+L79
+Z13 VR^Af``NRhQZ8Df<igK=h93
+Z14 !s100 aD>E9N;1^Z>?55GgB<8:B1
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
+Astr
+Z15 DEx4 work 3 reg 0 22 8809S^A`O9K=@FzLaa_Po1
+R2
+R3
+R12
+l46
+L30
+Z16 VIOi7YU2AFSn3RA8:MJj5<1
+Z17 !s100 J0T?N=WXMcBn<AiL]5?DW1
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
+Ereg
+Z18 w1553633268
+R2
+R3
+R0
+Z19 8reg.vhd
+Z20 Freg.vhd
+l0
+L13
+V8809S^A`O9K=@FzLaa_Po1
+!s100 Q4KfOk:J_0nRbN_bHgK0M0
+R6
+32
+Z21 !s110 1553637622
+!i10b 1
+Z22 !s108 1553637622.000000
+Z23 !s90 reg.vhd|
+Z24 !s107 reg.vhd|
+!i113 1
+R11
+Abhv
+R2
+R3
+R15
+l23
+L22
+V6goomhl3RjQW4FJl3L[GG0
+!s100 aP]OYJEzbUkmAnR6iYi[M0
+R6
+32
+R21
+!i10b 1
+R22
+R23
+R24
+!i113 1
+R11

@@ -50,6 +50,10 @@ architecture bhv of lwir_ul0304_avalon is
 
 
   --LWIR_CONTROL SIGNALS
+  constant CLOCK_FREQ : integer := 5000000;
+  signal clk_counter : unsigned(31 downto 0) := (others => '0');
+  signal enable_lwir : std_logic := '0';
+  
   constant FRAME_SIZE : integer := NUM_COLS*NUM_ROWS;
   signal pxl_count : unsigned(31 downto 0) := (others => '0');
   signal lwir_dataValid : std_logic := '0';
@@ -99,12 +103,12 @@ begin
       ROI_EN     => true,
       ROI_COL    => NUM_COLS,
       ROI_LINE   => NUM_ROWS,
-      CLOCK_FREQ => 500000,
-      FRAME_RATE => 30)
+      CLOCK_FREQ => 7500000,
+      FRAME_RATE => 20)
     port map (
       clk         => sensor_clk_in,
       rst_n       => rst_n,
-      en          => '1',
+      en          => '1', --enable_lwir,
       invert_data => '1',
       pxl_in      => lwir_dataIn,
       pxl_out     => lwir_dataOut,
@@ -127,4 +131,20 @@ begin  -- process pxl_count_proc
     end if;
   end if;  
 end process pxl_count_proc;
+
+
+  enable_proc: process (sensor_clk_in, rst_n) is
+  begin  -- process enable_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      clk_counter <= (others => '0');
+    elsif sensor_clk_in'event and sensor_clk_in = '1' then  -- rising clock edge
+      if (clk_counter >= CLOCK_FREQ*3) then
+        clk_counter <= clk_counter;
+        enable_lwir <= '1';
+      else
+        clk_counter <= clk_counter + 1;
+        enable_lwir <= '0';
+      end if;      
+    end if;
+  end process enable_proc;
 end bhv;

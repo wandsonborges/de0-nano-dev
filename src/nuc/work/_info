@@ -1,0 +1,262 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/rodrigo/ivision/v500/de0-nano-dev/src/nuc
+Edelay_regs
+Z1 w1553633263
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z4 8../utils/delay_regs.vhd
+Z5 F../utils/delay_regs.vhd
+l0
+L17
+V2Li@L=aK72DLkOmdS796A2
+!s100 d0R<B6UQCD=0j5XTiMPhd0
+Z6 OV;C;10.5b;63
+32
+Z7 !s110 1553633291
+!i10b 1
+Z8 !s108 1553633291.000000
+Z9 !s90 ../utils/delay_regs.vhd|
+Z10 !s107 ../utils/delay_regs.vhd|
+!i113 1
+Z11 tExplicit 1 CvgOpt 0
+Abhv
+R2
+R3
+Z12 DEx4 work 10 delay_regs 0 22 2Li@L=aK72DLkOmdS796A2
+l87
+L79
+VR^Af``NRhQZ8Df<igK=h93
+!s100 aD>E9N;1^Z>?55GgB<8:B1
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
+Astr
+DEx4 work 3 reg 0 22 8809S^A`O9K=@FzLaa_Po1
+R2
+R3
+R12
+l46
+L30
+VIOi7YU2AFSn3RA8:MJj5<1
+!s100 J0T?N=WXMcBn<AiL]5?DW1
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
+Emean_frame
+Z13 w1553633155
+Z14 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+R2
+R3
+R0
+Z15 8mean_frame.vhd
+Z16 Fmean_frame.vhd
+l0
+L10
+V;PPgIkjT<1fR6YU;A@_U^0
+!s100 =;9zHPo2_Kz8gFo9mlPBP0
+R6
+32
+Z17 !s110 1553633294
+!i10b 1
+Z18 !s108 1553633294.000000
+Z19 !s90 mean_frame.vhd|
+Z20 !s107 mean_frame.vhd|
+!i113 1
+R11
+Abhv
+R12
+R14
+R2
+R3
+Z21 DEx4 work 10 mean_frame 0 22 ;PPgIkjT<1fR6YU;A@_U^0
+l59
+L24
+Vdz:a^M15h^YO:I<PPeR=L0
+!s100 n5c7Vk@@dLcOGIkjV`^520
+R6
+32
+R17
+!i10b 1
+R18
+R19
+R20
+!i113 1
+R11
+Enuc_avalon
+Z22 w1553720945
+R14
+R2
+R3
+R0
+Z23 8nuc_avalon.vhd
+Z24 Fnuc_avalon.vhd
+l0
+L8
+V[lEM5EH4<1SfCJ<<P57UD1
+!s100 UV[2;1X2hFhBlcM6fRi`G2
+R6
+32
+Z25 !s110 1553720948
+!i10b 1
+Z26 !s108 1553720947.000000
+Z27 !s90 nuc_avalon.vhd|
+Z28 !s107 nuc_avalon.vhd|
+!i113 1
+R11
+Abhv
+Z29 DEx4 work 8 nuc_core 0 22 MPA@=JdS1:Oe>]Gcb^iNm1
+R21
+Z30 DEx4 work 17 readpacketsavalon 0 22 ^eS3XOib:@l3DVCC2ZZNb1
+R14
+R2
+R3
+Z31 DEx4 work 10 nuc_avalon 0 22 [lEM5EH4<1SfCJ<<P57UD1
+l140
+L65
+V4lTM[PJ;K5Fih_J=3Qi]O3
+!s100 EYP@PXA=amk>a3CRUimEJ2
+R6
+32
+R25
+!i10b 1
+R26
+R27
+R28
+!i113 1
+R11
+Enuc_core
+Z32 w1553639277
+R14
+R2
+R3
+R0
+Z33 8nuc_core.vhd
+Z34 Fnuc_core.vhd
+l0
+L5
+VMPA@=JdS1:Oe>]Gcb^iNm1
+!s100 O:WXMgTaJ<V;H_iomK>Wk3
+R6
+32
+Z35 !s110 1553639280
+!i10b 1
+Z36 !s108 1553639280.000000
+Z37 !s90 nuc_core.vhd|
+Z38 !s107 nuc_core.vhd|
+!i113 1
+R11
+Abhv
+R14
+R2
+R3
+R29
+l25
+L20
+V2mI3?3onG0Z@QB=gDePc21
+!s100 ]:PB^96n9b67LSFJ@MNB[2
+R6
+32
+R35
+!i10b 1
+R36
+R37
+R38
+!i113 1
+R11
+Ereadpacketsavalon
+Z39 w1553283530
+R14
+R2
+R3
+R0
+Z40 8readPacketsAvalon.vhd
+Z41 FreadPacketsAvalon.vhd
+l0
+L8
+V^eS3XOib:@l3DVCC2ZZNb1
+!s100 hE^;nYEW3lHd]=T4IF2nJ1
+R6
+32
+Z42 !s110 1553285394
+!i10b 1
+Z43 !s108 1553285394.000000
+Z44 !s90 readPacketsAvalon.vhd|
+Z45 !s107 readPacketsAvalon.vhd|
+!i113 1
+R11
+Abhv
+R14
+R2
+R3
+R30
+l118
+L45
+VQG35`iX5ZTHOKH0`E7PQ[3
+!s100 F=kce]nKMB1B2RdfdJgbX0
+R6
+32
+R42
+!i10b 1
+R43
+R44
+R45
+!i113 1
+R11
+Ereg
+R1
+R2
+R3
+R0
+R4
+R5
+l0
+L139
+V6I_7bC7V@XcULdI:OT_Xf3
+!s100 ==eKYfO;Q[EhGzooa9[7f3
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
+Abhv
+R2
+R3
+DEx4 work 3 reg 0 22 6I_7bC7V@XcULdI:OT_Xf3
+l149
+L148
+V6Bzn]7MQ`X;bJ0[cX;f<g1
+!s100 9f7?D:<=M?M:XO6H4J:HN1
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11

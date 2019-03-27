@@ -9,7 +9,7 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
-   element addVector_0
+   element bridge_stSrcMmMaster_0
    {
       datum _sortIndex
       {
@@ -17,59 +17,16 @@
          type = "int";
       }
    }
-   element addVector_0.slave_1
-   {
-      datum baseAddress
-      {
-         value = "224";
-         type = "String";
-      }
-   }
-   element addVector_1
-   {
-      datum _sortIndex
-      {
-         value = "12";
-         type = "int";
-      }
-   }
-   element addVector_1.slave_1
-   {
-      datum baseAddress
-      {
-         value = "192";
-         type = "String";
-      }
-   }
-   element bridge_stSrcMmMaster_0
-   {
-      datum _sortIndex
-      {
-         value = "8";
-         type = "int";
-      }
-   }
    element bridge_stSrcMmMaster_0.slave
    {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
       datum baseAddress
       {
          value = "312";
-         type = "String";
-      }
-   }
-   element bridge_stSrcMmMaster_1
-   {
-      datum _sortIndex
-      {
-         value = "10";
-         type = "int";
-      }
-   }
-   element bridge_stSrcMmMaster_1.slave
-   {
-      datum baseAddress
-      {
-         value = "296";
          type = "String";
       }
    }
@@ -201,22 +158,6 @@
          type = "String";
       }
    }
-   element homography_dma_0
-   {
-      datum _sortIndex
-      {
-         value = "13";
-         type = "int";
-      }
-   }
-   element homography_dma_0.slave
-   {
-      datum baseAddress
-      {
-         value = "128";
-         type = "String";
-      }
-   }
    element hps_0
    {
       datum _sortIndex
@@ -266,7 +207,7 @@
       }
       datum baseAddress
       {
-         value = "272";
+         value = "80";
          type = "String";
       }
    }
@@ -277,12 +218,38 @@
          value = "9";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
    }
    element lwir_ul0304_0.slave
    {
       datum baseAddress
       {
-         value = "288";
+         value = "104";
+         type = "String";
+      }
+   }
+   element nuc_one_point_0
+   {
+      datum _sortIndex
+      {
+         value = "8";
+         type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
+   element nuc_one_point_0.slave_1
+   {
+      datum baseAddress
+      {
+         value = "32";
          type = "String";
       }
    }
@@ -327,7 +294,7 @@
       }
       datum baseAddress
       {
-         value = "256";
+         value = "64";
          type = "String";
       }
    }
@@ -335,7 +302,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "10";
          type = "int";
       }
    }
@@ -343,7 +310,7 @@
    {
       datum baseAddress
       {
-         value = "304";
+         value = "112";
          type = "String";
       }
    }
@@ -392,50 +359,12 @@
    internal="swir_v400_0.conduit_end"
    type="conduit"
    dir="end" />
- <module name="addVector_0" kind="addVector" version="1.0" enabled="1">
-  <parameter name="ADDR_READ1" value="939524096" />
-  <parameter name="ADDR_READ2" value="940572672" />
-  <parameter name="ADDR_WRITE" value="952107008" />
-  <parameter name="BURST" value="8" />
-  <parameter name="FIFO_SIZE" value="1024" />
-  <parameter name="FIFO_SIZE_BITS" value="10" />
-  <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
-  <parameter name="NBITS_BYTEEN" value="4" />
-  <parameter name="NBITS_DATA" value="32" />
-  <parameter name="NBITS_PACKETS" value="32" />
- </module>
- <module name="addVector_1" kind="addVector" version="1.0" enabled="1">
-  <parameter name="ADDR_READ1" value="941621248" />
-  <parameter name="ADDR_READ2" value="942669824" />
-  <parameter name="ADDR_WRITE" value="943718400" />
-  <parameter name="BURST" value="8" />
-  <parameter name="FIFO_SIZE" value="1024" />
-  <parameter name="FIFO_SIZE_BITS" value="10" />
-  <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
-  <parameter name="NBITS_BYTEEN" value="4" />
-  <parameter name="NBITS_DATA" value="32" />
-  <parameter name="NBITS_PACKETS" value="32" />
- </module>
  <module
    name="bridge_stSrcMmMaster_0"
    kind="bridge_stSrcMmMaster"
    version="1.0"
    enabled="1">
   <parameter name="ADDR_BASE_BUF" value="939524096" />
-  <parameter name="BURST" value="1" />
-  <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
-  <parameter name="NBITS_BYTEEN" value="4" />
-  <parameter name="NBITS_DATA" value="8" />
- </module>
- <module
-   name="bridge_stSrcMmMaster_1"
-   kind="bridge_stSrcMmMaster"
-   version="1.0"
-   enabled="1">
-  <parameter name="ADDR_BASE_BUF" value="941621248" />
   <parameter name="BURST" value="1" />
   <parameter name="NBITS_ADDR" value="32" />
   <parameter name="NBITS_BURST" value="4" />
@@ -452,26 +381,6 @@
   <parameter name="MAX_COLS" value="2592" />
   <parameter name="NBITS_ADDR" value="32" />
   <parameter name="NBITS_COLS" value="12" />
-  <parameter name="NBITS_LINES" value="12" />
- </module>
- <module
-   name="homography_dma_0"
-   kind="homography_dma"
-   version="1.0"
-   enabled="1">
-  <parameter name="ADDR_READ" value="952107008" />
-  <parameter name="ADDR_WRITE" value="944766976" />
-  <parameter name="BURST" value="4" />
-  <parameter name="COLS" value="320" />
-  <parameter name="HOMOG_BITS_FRAC" value="20" />
-  <parameter name="HOMOG_BITS_INT" value="12" />
-  <parameter name="HOMOG_DELAY_CYCLES" value="8" />
-  <parameter name="LINES" value="256" />
-  <parameter name="NBITS_ADDR" value="32" />
-  <parameter name="NBITS_BURST" value="4" />
-  <parameter name="NBITS_BYTEEN" value="4" />
-  <parameter name="NBITS_COLS" value="12" />
-  <parameter name="NBITS_DATA" value="8" />
   <parameter name="NBITS_LINES" value="12" />
  </module>
  <module name="hps_0" kind="altera_hps" version="16.1" enabled="1">
@@ -1023,6 +932,17 @@
   <parameter name="NUM_COLS" value="320" />
   <parameter name="NUM_ROWS" value="256" />
  </module>
+ <module name="nuc_one_point_0" kind="nuc_one_point" version="1.0" enabled="1">
+  <parameter name="ADDR_BASE_READ" value="940572672" />
+  <parameter name="BURST" value="8" />
+  <parameter name="FIFO_SIZE" value="1024" />
+  <parameter name="FIFO_SIZE_BITS" value="10" />
+  <parameter name="NBITS_ADDR" value="32" />
+  <parameter name="NBITS_BURST" value="4" />
+  <parameter name="NBITS_BYTEEN" value="4" />
+  <parameter name="NBITS_DATA" value="8" />
+  <parameter name="NBITS_PACKETS" value="32" />
+ </module>
  <module
    name="onchip_memory2_0"
    kind="altera_avalon_onchip_memory2"
@@ -1174,8 +1094,8 @@
   <parameter name="gui_multiply_factor" value="1" />
   <parameter name="gui_number_of_clocks" value="2" />
   <parameter name="gui_operation_mode" value="direct" />
-  <parameter name="gui_output_clock_frequency0" value="10.0" />
-  <parameter name="gui_output_clock_frequency1" value="5.0" />
+  <parameter name="gui_output_clock_frequency0" value="15.0" />
+  <parameter name="gui_output_clock_frequency1" value="7.5" />
   <parameter name="gui_output_clock_frequency10" value="100.0" />
   <parameter name="gui_output_clock_frequency11" value="100.0" />
   <parameter name="gui_output_clock_frequency12" value="100.0" />
@@ -1276,17 +1196,8 @@
  <connection
    kind="avalon"
    version="16.1"
-   start="homography_dma_0.avalon_master"
+   start="nuc_one_point_0.avalon_master"
    end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="bridge_stSrcMmMaster_1.avalon_master"
-   end="hps_0.f2h_sdram1_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -1296,69 +1207,6 @@
    version="16.1"
    start="bridge_stSrcMmMaster_0.avalon_master"
    end="hps_0.f2h_sdram3_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="homography_dma_0.avalon_master_1"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_0.avalon_rd1_1_1_1"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_1.avalon_rd1_1_1_1"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_0.avalon_rd2"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_1.avalon_rd2"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_0.avalon_wr"
-   end="hps_0.f2h_sdram0_data">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="addVector_1.avalon_wr"
-   end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -1378,7 +1226,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="led.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0110" />
+  <parameter name="baseAddress" value="0x0050" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1387,7 +1235,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="sw.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0100" />
+  <parameter name="baseAddress" value="0x0040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1414,25 +1262,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="swir_v400_0.slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0130" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="hps_0.h2f_lw_axi_master"
-   end="bridge_stSrcMmMaster_1.slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0128" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="hps_0.h2f_lw_axi_master"
-   end="homography_dma_0.slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0080" />
+  <parameter name="baseAddress" value="0x0070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1441,37 +1271,28 @@
    start="hps_0.h2f_lw_axi_master"
    end="lwir_ul0304_0.slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0120" />
+  <parameter name="baseAddress" value="0x0068" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="16.1"
    start="hps_0.h2f_lw_axi_master"
-   end="addVector_0.slave_1">
+   end="nuc_one_point_0.slave_1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00e0" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="hps_0.h2f_lw_axi_master"
-   end="addVector_1.slave_1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00c0" />
+  <parameter name="baseAddress" value="0x0020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon_streaming"
    version="16.1"
    start="lwir_ul0304_0.st"
-   end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
+   end="nuc_one_point_0.avalon_streaming_sink" />
  <connection
    kind="avalon_streaming"
    version="16.1"
-   start="swir_v400_0.st"
-   end="bridge_stSrcMmMaster_1.avalon_streaming_sink" />
+   start="nuc_one_point_0.st_src"
+   end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="led.clk" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
  <connection
@@ -1484,13 +1305,11 @@
    version="16.1"
    start="clk_0.clk"
    end="convolution_0.clock" />
- <connection kind="clock" version="16.1" start="clk_0.clk" end="addVector_0.clock" />
- <connection kind="clock" version="16.1" start="clk_0.clk" end="addVector_1.clock" />
  <connection
    kind="clock"
    version="16.1"
    start="clk_0.clk"
-   end="homography_dma_0.clock" />
+   end="bridge_stSrcMmMaster_0.clock" />
  <connection
    kind="clock"
    version="16.1"
@@ -1500,7 +1319,7 @@
    kind="clock"
    version="16.1"
    start="clk_0.clk"
-   end="bridge_stSrcMmMaster_1.clock_mem" />
+   end="nuc_one_point_0.clock_mem" />
  <connection
    kind="clock"
    version="16.1"
@@ -1541,17 +1360,12 @@
    kind="clock"
    version="16.1"
    start="pll_0.outclk0"
-   end="bridge_stSrcMmMaster_1.clock" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="pll_0.outclk0"
    end="swir_v400_0.pxl_clk" />
  <connection
    kind="clock"
    version="16.1"
    start="pll_0.outclk1"
-   end="bridge_stSrcMmMaster_0.clock" />
+   end="nuc_one_point_0.clock" />
  <connection
    kind="clock"
    version="16.1"
@@ -1584,32 +1398,17 @@
    kind="reset"
    version="16.1"
    start="clk_0.clk_reset"
-   end="addVector_0.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
    end="swir_v400_0.reset_sink" />
  <connection
    kind="reset"
    version="16.1"
    start="clk_0.clk_reset"
-   end="bridge_stSrcMmMaster_1.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
-   end="addVector_1.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
-   end="homography_dma_0.reset_sink" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="clk_0.clk_reset"
    end="bridge_stSrcMmMaster_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clk_0.clk_reset"
+   end="nuc_one_point_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />

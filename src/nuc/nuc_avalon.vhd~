@@ -1,0 +1,67 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+LIBRARY altera_mf;
+USE altera_mf.all;
+
+entity nuc_avalon is
+  
+  generic (
+    NBITS_ADDR : integer := 32;
+    NBITS_PACKETS : integer := 32;
+    FIFO_SIZE : integer := 1024;
+    FIFO_SIZE_BITS : integer := 10;
+    NBITS_DATA : integer := 32;
+    NBITS_BURST : integer := 4;
+    NBITS_BYTEEN : integer := 4;
+    BURST : integer := 8;
+    ADDR_READ1 : std_logic_vector(31 downto 0) := x"38000000";
+    ADDR_READ2 : std_logic_vector(31 downto 0) := x"38100000";
+    ADDR_WRITE : std_logic_vector(31 downto 0) := x"38200000"
+    );
+
+  port (
+    --clk and reset_n
+    clk, rst_n : in std_logic;
+  
+    -- avalon MM Master 1 - Write Add Vector Result
+    masterwr_waitrequest : in std_logic;
+    masterwr_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
+    masterwr_write       : out std_logic;
+    masterwr_writedata   : out std_logic_vector(NBITS_DATA-1 downto 0);
+    
+
+    -- avalon MM Master 2 - Get Header and Vector 1
+    masterrd1_waitrequest : in std_logic;
+    masterrd1_readdatavalid : in std_logic;
+    masterrd1_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
+    masterrd1_burstcount   : out std_logic_vector(3 downto 0);
+    masterrd1_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
+    masterrd1_read       : out std_logic;
+
+    -- avalon MM Master 2 - Get Vector 2
+    masterrd2_waitrequest : in std_logic;
+    masterrd2_readdatavalid : in std_logic;
+    masterrd2_readdata   : in std_logic_vector(NBITS_DATA-1 downto 0);
+    masterrd2_burstcount   : out std_logic_vector(3 downto 0);
+    masterrd2_address     : out std_logic_vector(NBITS_ADDR-1 downto 0);
+    masterrd2_read       : out std_logic;
+    
+    -- avalon MM Slave - Configure addVector Hardware
+    slave_chipselect    : in std_logic;
+    slave_read          : in std_logic;
+    slave_write         : in std_logic;
+    slave_address       : in std_logic_vector(2 downto 0);
+    slave_byteenable    : in std_logic_vector(NBITS_BYTEEN-1 downto 0);
+    slave_writedata     : in std_logic_vector(31 downto 0);
+    slave_waitrequest   : out std_logic;
+    slave_readdatavalid : out std_logic;
+    slave_readdata      : out std_logic_vector(31 downto 0)
+    
+    
+    );               
+
+end entity nuc_avalon;
+
+architecture bhv of nuc_avalon is

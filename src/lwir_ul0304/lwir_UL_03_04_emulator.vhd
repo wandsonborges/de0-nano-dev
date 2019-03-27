@@ -1,7 +1,7 @@
 -- Author     :   <rodrigo@thomson>
 -- Company    : 
 -- Created    : 2015-08-07
--- Last update: 2019-02-28
+-- Last update: 2019-03-26
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -91,7 +91,8 @@ proc: process (clk, rst_n) is
 begin  -- process proc
   if rst_n = '0' then                   -- asynchronous reset (active low)
     line_counter <= 0;
-    col_counter <= 0;    
+    col_counter <= 0;
+    pxl_aux <= (others => '0');
   elsif clk'event and clk = '1' then    -- rising clock edge
     if sens_syt = '1' then
       line_counter <= 0;
@@ -111,8 +112,8 @@ begin  -- process proc
     end if;
   end if;
 end process proc;
-  
+  pxl_out <= std_logic_vector(to_unsigned(col_counter, pxl_out'length));
 --pxl_out <= std_logic_vector(to_unsigned(col_counter, pxl_out'length));
-pxl_out <= std_logic_vector(frame_counter);
+--pxl_out <= std_logic_vector(frame_counter);
 
 end architecture bhv;
