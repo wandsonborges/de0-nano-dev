@@ -1,6 +1,6 @@
 <sld_project_info>
   <project>
-    <hash md5_digest_80b="dcaed587ec8807781f71"/>
+    <hash md5_digest_80b="a9de5e78a5e493c6cc61"/>
   </project>
   <file_info>
     <file device="5CSEMA4U23C6" path="cycloneV_soc.sof" usercode="0xFFFFFFFF"/>
@@ -74,7 +74,7 @@
   <sld_infos>
     <sld_info hpath="cycloneV_soc:cycloneV_soc_2" name="cycloneV_soc_2">
       <assignment_values>
-        <assignment_value text="QSYS_NAME cycloneV_soc HAS_SOPCINFO 1 GENERATION_ID 1553721034"/>
+        <assignment_value text="QSYS_NAME cycloneV_soc HAS_SOPCINFO 1 GENERATION_ID 1553795791"/>
       </assignment_values>
       <parameters/>
     </sld_info>

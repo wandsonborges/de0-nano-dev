@@ -5,7 +5,7 @@
 -- Author     :   <rodrigo.oliveira@TESLA>
 -- Company    : 
 -- Created    : 2014-12-01
--- Last update: 2016-10-03
+-- Last update: 2019-02-28
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -42,6 +42,7 @@ architecture bhv of swir_emulator is
   
 signal data : unsigned (9 downto 0) := (others => '0');
 signal linha_counter : unsigned(9 downto 0) := (others => '0');
+signal frame_counter : unsigned(9 downto 0) := (others => '0');
 signal clk_counter : unsigned(10 downto 0) := (others => '0');
 signal line_counter : unsigned(9 downto 0) := (others => '0');
 signal col_counter : unsigned(9 downto 0) := (others => '0');

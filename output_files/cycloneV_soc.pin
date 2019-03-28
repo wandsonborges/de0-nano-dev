@@ -133,7 +133,7 @@ HPS_DDR3_DQ[26]              : AA28      : bidir  : SSTL-15 Class I   :         
 GND                          : AB1       : gnd    :                   :         :           :                
 GND                          : AB2       : gnd    :                   :         :           :                
 GND                          : AB3       : gnd    :                   :         :           :                
-HPS_KEY                      : AB4       : bidir  : 3.3-V LVTTL       :         : 3A        : N              
+HPS_ENET_INT_N               : AB4       : bidir  : 3.3-V LVTTL       :         : 3A        : N              
 altera_reserved_tck          : AB5       : input  : 3.3-V LVTTL       :         : 3A        : N              
 AS_DATA3, DATA3              : AB6       :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB23      :        :                   :         : 5A        :                
@@ -363,7 +363,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : D8        :        :                   :      
 VREFB8AN0                    : D9        : power  :                   :         : 8A        :                
 GND                          : D10       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : D11       :        :                   :         : 8A        :                
-HPS_ENET_INT_N               : D12       : bidir  : 3.3-V LVTTL       :         : 8A        : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : D12       :        :                   :         : 8A        :                
 GND                          : D13       : gnd    :                   :         :           :                
 HPS_SD_CMD                   : D14       : bidir  : 3.3-V LVTTL       :         : 7C        : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : D15       :        :                   :         : 7B        :                
@@ -439,7 +439,7 @@ HPS_DDR3_DM[0]               : G28       : output : SSTL-15 Class I   :         
 DNU                          : H1        :        :                   :         :           :                
 DNU                          : H2        :        :                   :         :           :                
 GND                          : H3        : gnd    :                   :         :           :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : H4        :        :                   :         : 8A        :                
+HPS_KEY                      : H4        : bidir  : 3.3-V LVTTL       :         : 8A        : N              
 SW[3]                        : H5        : input  : 3.3-V LVTTL       :         : 8A        : Y              
 SW[2]                        : H6        : input  : 3.3-V LVTTL       :         : 8A        : Y              
 nSTATUS                      : H8        :        :                   :         : 9A        :                

@@ -321,10 +321,10 @@ s_masterwrite <= '1' when state_write = st_write else '0'; --not fifoEmpty;
 
 master_write <= s_masterwrite;
 master_address <= s_address;
---master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
-  master_writedata <= (others => '0') when buffer_write = buffer_0 else
-                      (others => '1') when buffer_write = buffer_1 else
-                      x"7F" when buffer_write = buffer_2;
+master_writedata <= fifoDataOut(NBITS_DATA-1 downto 0);
+  -- master_writedata <= (others => '0') when buffer_write = buffer_0 else
+  --                     (others => '1') when buffer_write = buffer_1 else
+  --                     x"7F" when buffer_write = buffer_2;
 
 master_burstcount <= std_logic_vector(to_unsigned(BURST, NBITS_BURST));
 

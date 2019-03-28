@@ -30,6 +30,22 @@
          type = "String";
       }
    }
+   element bridge_stSrcMmMaster_1
+   {
+      datum _sortIndex
+      {
+         value = "12";
+         type = "int";
+      }
+   }
+   element bridge_stSrcMmMaster_1.slave
+   {
+      datum baseAddress
+      {
+         value = "96";
+         type = "String";
+      }
+   }
    element clk_0
    {
       datum _sortIndex
@@ -182,14 +198,6 @@
          type = "String";
       }
    }
-   element hps_0.f2h_sdram3_data
-   {
-      datum baseAddress
-      {
-         value = "0";
-         type = "String";
-      }
-   }
    element led
    {
       datum _sortIndex
@@ -250,6 +258,22 @@
       datum baseAddress
       {
          value = "32";
+         type = "String";
+      }
+   }
+   element nuc_one_point_1
+   {
+      datum _sortIndex
+      {
+         value = "11";
+         type = "int";
+      }
+   }
+   element nuc_one_point_1.slave_1
+   {
+      datum baseAddress
+      {
+         value = "0";
          type = "String";
       }
    }
@@ -371,6 +395,18 @@
   <parameter name="NBITS_BYTEEN" value="4" />
   <parameter name="NBITS_DATA" value="8" />
  </module>
+ <module
+   name="bridge_stSrcMmMaster_1"
+   kind="bridge_stSrcMmMaster"
+   version="1.0"
+   enabled="1">
+  <parameter name="ADDR_BASE_BUF" value="941621248" />
+  <parameter name="BURST" value="1" />
+  <parameter name="NBITS_ADDR" value="32" />
+  <parameter name="NBITS_BURST" value="4" />
+  <parameter name="NBITS_BYTEEN" value="4" />
+  <parameter name="NBITS_DATA" value="8" />
+ </module>
  <module name="clk_0" kind="clock_source" version="16.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
@@ -483,7 +519,7 @@
   <parameter name="F2H_SDRAM0_CLOCK_FREQ" value="50000000" />
   <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="50000000" />
   <parameter name="F2H_SDRAM2_CLOCK_FREQ" value="50000000" />
-  <parameter name="F2H_SDRAM3_CLOCK_FREQ" value="50000000" />
+  <parameter name="F2H_SDRAM3_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM4_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM5_CLOCK_FREQ" value="100" />
   <parameter name="F2SCLK_COLDRST_Enable" value="false" />
@@ -493,8 +529,8 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Write-Only,Avalon-MM Bidirectional,Avalon-MM Write-Only</parameter>
-  <parameter name="F2SDRAM_Width" value="64,64,64,64" />
+  <parameter name="F2SDRAM_Type">Avalon-MM Read-Only,Avalon-MM Write-Only,Avalon-MM Write-Only</parameter>
+  <parameter name="F2SDRAM_Width" value="64,64,64" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="3" />
   <parameter name="FIX_READ_LATENCY" value="8" />
@@ -943,6 +979,17 @@
   <parameter name="NBITS_DATA" value="8" />
   <parameter name="NBITS_PACKETS" value="32" />
  </module>
+ <module name="nuc_one_point_1" kind="nuc_one_point" version="1.0" enabled="1">
+  <parameter name="ADDR_BASE_READ" value="940572672" />
+  <parameter name="BURST" value="8" />
+  <parameter name="FIFO_SIZE" value="1024" />
+  <parameter name="FIFO_SIZE_BITS" value="10" />
+  <parameter name="NBITS_ADDR" value="32" />
+  <parameter name="NBITS_BURST" value="4" />
+  <parameter name="NBITS_BYTEEN" value="4" />
+  <parameter name="NBITS_DATA" value="8" />
+  <parameter name="NBITS_PACKETS" value="32" />
+ </module>
  <module
    name="onchip_memory2_0"
    kind="altera_avalon_onchip_memory2"
@@ -1205,8 +1252,26 @@
  <connection
    kind="avalon"
    version="16.1"
+   start="nuc_one_point_1.avalon_master"
+   end="hps_0.f2h_sdram0_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
    start="bridge_stSrcMmMaster_0.avalon_master"
-   end="hps_0.f2h_sdram3_data">
+   end="hps_0.f2h_sdram1_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="bridge_stSrcMmMaster_1.avalon_master"
+   end="hps_0.f2h_sdram2_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -1278,9 +1343,27 @@
    kind="avalon"
    version="16.1"
    start="hps_0.h2f_lw_axi_master"
+   end="bridge_stSrcMmMaster_1.slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0060" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="hps_0.h2f_lw_axi_master"
    end="nuc_one_point_0.slave_1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0020" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="nuc_one_point_1.slave_1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1291,8 +1374,18 @@
  <connection
    kind="avalon_streaming"
    version="16.1"
+   start="swir_v400_0.st"
+   end="nuc_one_point_1.avalon_streaming_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="16.1"
    start="nuc_one_point_0.st_src"
    end="bridge_stSrcMmMaster_0.avalon_streaming_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="16.1"
+   start="nuc_one_point_1.st_src"
+   end="bridge_stSrcMmMaster_1.avalon_streaming_sink" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="led.clk" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="sw.clk" />
  <connection
@@ -1314,12 +1407,27 @@
    kind="clock"
    version="16.1"
    start="clk_0.clk"
+   end="bridge_stSrcMmMaster_1.clock" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clk_0.clk"
    end="bridge_stSrcMmMaster_0.clock_mem" />
  <connection
    kind="clock"
    version="16.1"
    start="clk_0.clk"
    end="nuc_one_point_0.clock_mem" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clk_0.clk"
+   end="bridge_stSrcMmMaster_1.clock_mem" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clk_0.clk"
+   end="nuc_one_point_1.clock_mem" />
  <connection
    kind="clock"
    version="16.1"
@@ -1344,11 +1452,6 @@
    kind="clock"
    version="16.1"
    start="clk_0.clk"
-   end="hps_0.f2h_sdram3_clock" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="clk_0.clk"
    end="hps_0.h2f_axi_clock" />
  <connection
    kind="clock"
@@ -1356,6 +1459,11 @@
    start="clk_0.clk"
    end="hps_0.h2f_lw_axi_clock" />
  <connection kind="clock" version="16.1" start="clk_0.clk" end="pll_0.refclk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="pll_0.outclk0"
+   end="nuc_one_point_1.clock" />
  <connection
    kind="clock"
    version="16.1"
@@ -1409,6 +1517,16 @@
    version="16.1"
    start="clk_0.clk_reset"
    end="nuc_one_point_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clk_0.clk_reset"
+   end="bridge_stSrcMmMaster_1.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clk_0.clk_reset"
+   end="nuc_one_point_1.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
