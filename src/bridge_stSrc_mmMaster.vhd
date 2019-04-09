@@ -13,6 +13,7 @@ entity bridge_stSrc_mmMaster is
     NBITS_BURST : integer := 4;
     NBITS_BYTEEN : integer := 4;
     BURST : integer := 8;
+    CLOCK_FREQ : integer := 50000000;
     ADDR_BASE_BUF : std_logic_vector(31 downto 0) := x"38000000"    
     );
 
@@ -24,7 +25,7 @@ entity bridge_stSrc_mmMaster is
     slave_chipselect    : in std_logic;
     slave_read          : in std_logic;
     slave_write         : in std_logic;
-    slave_address       : in std_logic_vector(1 downto 0);
+    slave_address       : in std_logic_vector(2 downto 0);
     slave_writedata     : in std_logic_vector(31 downto 0);
     slave_waitrequest   : out std_logic;
     slave_readdatavalid : out std_logic;
@@ -50,23 +51,23 @@ end entity bridge_stSrc_mmMaster;
 
 architecture bhv of bridge_stSrc_mmMaster is
   --REGS
-  --0 (32 bits), somente leitura: endereço do buffer a ser lido
-  --1 (32 bits), somente escrita: requisição de buffer (manter em 1 enquanto
-  --estiver lendo)
-  type reg_type is array (0 to 3) of std_logic_vector(31 downto 0);
+  type reg_type is array (0 to 5) of std_logic_vector(31 downto 0);
   signal registers : reg_type := (
     x"11223344", -- id
-    x"00000001", -- frame disponivel para ser lido (0, 1 ou 2)
-    x"00014000", -- frameSize
-    x"00000000" -- reading
+    x"00000001", -- frame number disponivel para ser lido (0, 1 ou 2)
+    x"0004b000", -- frameSize
+    x"00000000", -- reading
+    x"00000000",  -- has new image
+    x"00000000"   -- fps
     );
 
   constant BUFFER_TO_READ_INDEX : integer := 1;
   constant FRAME_SIZE_INDEX : integer := 2;
   constant READING_BUFFER_INDEX : integer := 3;
-  
+  constant HAS_NEW_IMG_INDEX : integer := 4;
+  constant FPS_INDEX : integer := 5;
 
-  signal FRAME_SIZE : unsigned(31 downto 0) := x"00014000";
+  signal FRAME_SIZE : unsigned(31 downto 0) := x"0004b000";
 
   signal cpuIsReading, cpuIsReading_f : std_logic := '0';
   
@@ -85,13 +86,17 @@ architecture bhv of bridge_stSrc_mmMaster is
 
   signal buffer_update : std_logic := '0';
 
+
   type BUF_TYPE is (buffer_0, buffer_1, buffer_2, none);
   signal buffer_write : BUF_TYPE := buffer_1;
   signal buffer_read, last_buffer_ready : BUF_TYPE := none;
 
-  type db_state is (st_idle, st_define, st_lockB1, st_lockB0, st_waitFreeB0, st_waitFreeB1);
-  signal state : db_state := st_idle;
   signal request_read : std_logic := '0';
+
+  --fps counter signals
+  signal clk_counter : unsigned(31 downto 0) := (others => '0');
+  signal frame_counter : unsigned(31 downto 0) := (others => '0');
+  signal fps_reg : unsigned(31 downto 0) := (others => '0');
 
 
   --write state
@@ -178,6 +183,19 @@ begin  -- architecture bhv
         else
           buffer_read <= buffer_read;
         end if;
+
+        -- has new img control
+        if cpuIsReading = '1' and cpuIsReading_f = '0' then
+          registers(HAS_NEW_IMG_INDEX)(0) <= '0';
+        elsif s_masterwrite = '1' and master_waitrequest = '0' and fifoDataOut(NBITS_DATA+1) = '1' then
+          registers(HAS_NEW_IMG_INDEX)(0) <= '1';
+        else
+          registers(HAS_NEW_IMG_INDEX) <= registers(HAS_NEW_IMG_INDEX);
+        end if;
+
+        --fps control
+        registers(FPS_INDEX) <= std_logic_vector(fps_reg);
+        
         
       end if;      
     end if;
@@ -185,7 +203,29 @@ begin  -- architecture bhv
 
 
 
-
+fps_proc: process (clk_mem, rst_n) is
+begin  -- process fps_proc
+  if rst_n = '0' then                   -- asynchronous reset (active low)
+    frame_counter <= (others => '0');
+    clk_counter <= (others => '0');
+    fps_reg <= (others => '0');
+  elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge
+    if (clk_counter = CLOCK_FREQ-1) then
+      fps_reg <= frame_counter;
+      frame_counter <= (others => '0');
+      clk_counter <= (others => '0');
+    elsif s_masterwrite = '1' and master_waitrequest = '0' and fifoDataOut(NBITS_DATA+1) = '1' then
+      clk_counter <= clk_counter + 1;
+      frame_counter <= frame_counter + 1;
+      fps_reg <= fps_reg;
+    else
+      clk_counter <= clk_counter + 1;
+      frame_counter <= frame_counter;
+      fps_reg <= fps_reg;
+    end if;
+    
+  end if;
+end process fps_proc;
 ----- ---  BUFFER PING-PONG WRITE ROUTINE ------------------
  
   	dcfifo_component : dcfifo

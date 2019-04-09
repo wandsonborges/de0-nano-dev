@@ -68,13 +68,17 @@ architecture bhv of nuc_avalon is
   type reg_type is array (0 to 4) of std_logic_vector(31 downto 0);
   constant init_registers : reg_type := (
     x"11223377", --id
-    x"00014000", --vectorSize
-    x"00000001", --start
+    x"0004b000", --vectorSize
+    x"00000001", --enable
     ADDR_BASE_READ, --addr ref frame
-    x"00000000" --busy
+    x"00000001" --enable_nuc
     );
   signal registers : reg_type := init_registers;
   constant FRAME_SIZE_REG_INDEX : integer := 1;
+  constant ENABLE_MEM_READ_REG_INDEX : integer := 2;
+  constant ADDR_BASE_REG_INDEX : integer := 3;
+  constant ENABLE_NUC_REG_INDEX : integer := 4;
+  
 
   -- Avalon mm Read signals
   signal mm_enable_read            : std_logic;
@@ -167,13 +171,37 @@ begin
       burst_en               => mm_burst_en,
       data_out               => mm_data_out);
    
-   mm_packets_to_read <= registers(1);
-   mm_enable_read <= registers(2)(0);
-   mm_address_init <= registers(3);
+   mm_packets_to_read <= registers(FRAME_SIZE_REG_INDEX);
+   mm_enable_read <= registers(ENABLE_MEM_READ_REG_INDEX)(0);
+   mm_address_init <= registers(ADDR_BASE_REG_INDEX);
    
    mm_get_read_data <= rdreq_sync;
 
 
+  rd_wr_slave_proc: process (clk_mem, rst_n) is
+  begin  -- process rd_wr_slave_proc
+    if rst_n = '0' then                 -- asynchronous reset (active low)
+      slave_readdata <= (others => '0');
+      slave_readdatavalid <= '0';      
+    elsif clk_mem'event and clk_mem = '1' then  -- rising clock edge     
+      --LEITURA DO SLAVE  ---- READ PROC
+      if slave_read = '1' then
+        slave_readdata <= registers(to_integer(unsigned(slave_address)));
+        slave_readdatavalid <= '1';
+      --ESCRITA NO SLAVE
+      elsif slave_write = '1' and slave_chipselect = '1' then
+        if unsigned(slave_address) > 1 then 
+          registers(to_integer(unsigned(slave_address))) <= slave_writedata;
+          slave_readdatavalid <= '0';
+        else
+          slave_readdatavalid <= '0';  
+        end if;        
+      else
+        slave_readdatavalid <= '0';
+      end if;      
+    end if;
+  end process rd_wr_slave_proc;
+ 
 
    -- AVALON ST WRITING IN FIFO
    
@@ -214,7 +242,8 @@ begin
    st_src_endofpacket <= st_fifo_data_out(NBITS_DATA+1);
    st_src_startofpacket <= st_fifo_data_out(NBITS_DATA);
   --st_src_data <= std_logic_vector(unsigned(st_fifo_data_out(NBITS_DATA-1 downto 0)) - unsigned(mm_data_out)) ;
-   st_src_data <= nuc_pxl;
+  st_src_data <= nuc_pxl when registers(ENABLE_NUC_REG_INDEX)(0) = '1' else
+                 st_fifo_data_out(NBITS_DATA-1 downto 0);
    --st_src_data <= st_fifo_data_out(NBITS_DATA-1 downto 0); 
    
 

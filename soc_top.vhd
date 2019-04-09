@@ -128,6 +128,12 @@ architecture bhv of soc_top is
             swir_v400_fsync                 : out   std_logic;                                        -- fsync
             swir_v400_lsync                 : out   std_logic;                                        -- lsync
             swir_v400_swir_pxl_clk_out      : out   std_logic;
+
+            swir_v400_1_sensor_clk            : out   std_logic;                                        -- sensor_clk
+            swir_v400_1_datain                : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- datain
+            swir_v400_1_fsync                 : out   std_logic;                                        -- fsync
+            swir_v400_1_lsync                 : out   std_logic;                                        -- lsync
+            swir_v400_1_swir_pxl_clk_out      : out   std_logic;
             
 			clk_clk                                  : in    std_logic                     := 'X';             -- clk
 			--hps_0_h2f_reset_reset_n                  : out   std_logic;                                        -- reset_n
@@ -196,15 +202,16 @@ architecture bhv of soc_top is
 	end component cycloneV_soc;
   signal lwir_syp, lwir_syt, lwir_syl, lwir_emu_clk : std_logic := '0';
   signal swir_fsync, swir_lsync, swir_pxl_clk, swir_sensor_clk : std_logic := '0';
-  signal s_LED, lwir_data, swir_dataIn : std_logic_vector(7 downto 0) := (others => '0');
+  signal swir_1_fsync, swir_1_lsync, swir_1_pxl_clk, swir_1_sensor_clk : std_logic := '0';
+  signal s_LED, lwir_data, swir_dataIn, swir_1_dataIn : std_logic_vector(7 downto 0) := (others => '0');
 begin  -- architecture bhv
 
   --D5M_XCLKIN <= CLOCK_50;
 
   swir_emulator_1: entity work.swir_emulator
     generic map (
-      NUMERO_COLUNAS    => 320,
-      NUMERO_LINHAS     => 256,
+      NUMERO_COLUNAS    => 640, --320,
+      NUMERO_LINHAS     => 480, --256,
       SIMULATOR_PATTERN => false)
     port map (
       pxl_clock => swir_pxl_clk,
@@ -213,6 +220,19 @@ begin  -- architecture bhv
       lsync     => swir_lsync,
       fsync     => swir_fsync,
       data_out  => swir_dataIn);
+
+  swir_emulator_2: entity work.swir_emulator
+    generic map (
+      NUMERO_COLUNAS    => 640, --320,
+      NUMERO_LINHAS     => 480, --256,
+      SIMULATOR_PATTERN => false)
+    port map (
+      pxl_clock => swir_1_pxl_clk,
+      s_clock   => swir_1_sensor_clk,
+      rst_n     => SW(1),
+      lsync     => swir_1_lsync,
+      fsync     => swir_1_fsync,
+      data_out  => swir_1_dataIn);
   
   lwir_UL_03_04_emulator_1: entity work.lwir_UL_03_04_emulator
     generic map (
@@ -253,7 +273,13 @@ begin  -- architecture bhv
             swir_v400_datain                => swir_dataIn,                --                        .datain
             swir_v400_fsync                 => swir_fsync,                 --                        .fsync
             swir_v400_lsync                 => swir_lsync,                 --                        .lsync
-            swir_v400_swir_pxl_clk_out      => swir_pxl_clk,
+      swir_v400_swir_pxl_clk_out      => swir_pxl_clk,
+
+            swir_v400_1_sensor_clk            => swir_1_sensor_clk,
+            swir_v400_1_datain                => swir_1_dataIn,                --                        .datain
+            swir_v400_1_fsync                 => swir_1_fsync,                 --                        .fsync
+            swir_v400_1_lsync                 => swir_1_lsync,                 --                        .lsync
+            swir_v400_1_swir_pxl_clk_out      => swir_1_pxl_clk,
 
       lwir_ul0304_datain              => lwir_data,              --             lwir_ul0304.datain
       lwir_ul0304_syt                 => lwir_syt,
