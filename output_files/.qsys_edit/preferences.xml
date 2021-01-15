@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferences>
  <debug showDebugMenu="0" />
- <systemtable filter="All Interfaces" showResetDomains="1" showClockDomains="0">
+ <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="111" />
+   <connections preferredWidth="47" />
    <irq preferredWidth="34" />
-   <export preferredWidth="222" />
-   <inputclock preferredWidth="194" />
+   <name preferredWidth="297" />
   </columns>
  </systemtable>
- <library expandedCategories="Library,Project" />
- <window width="1920" height="1061" x="0" y="0" />
- <hdlexample language="VHDL" />
+ <library expandedCategories="Project,Library" />
+ <window width="1057" height="1061" x="556" y="0" />
+ <generation synthesis="VHDL" block_symbol_file="0" greybox="0" />
 </preferences>
