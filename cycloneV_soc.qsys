@@ -9,6 +9,69 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
+   element avalon_bpr_0
+   {
+      datum _sortIndex
+      {
+         value = "10";
+         type = "int";
+      }
+   }
+   element avalon_bpr_0.avalon_mm_slave
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "192";
+         type = "String";
+      }
+   }
+   element avalon_norm_0
+   {
+      datum _sortIndex
+      {
+         value = "12";
+         type = "int";
+      }
+   }
+   element avalon_norm_0.avalon_mm_slave
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "176";
+         type = "String";
+      }
+   }
+   element avalon_nuc_0
+   {
+      datum _sortIndex
+      {
+         value = "11";
+         type = "int";
+      }
+   }
+   element avalon_nuc_0.avalon_mm_slave
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "96";
+         type = "String";
+      }
+   }
    element clock_50
    {
       datum _sortIndex
@@ -211,6 +274,14 @@
          type = "String";
       }
    }
+   element hps_0.f2h_sdram1_data
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
    element i2c_master_avalon_0
    {
       datum _sortIndex
@@ -221,9 +292,14 @@
    }
    element i2c_master_avalon_0.slave
    {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
       datum baseAddress
       {
-         value = "64";
+         value = "0";
          type = "String";
       }
    }
@@ -258,9 +334,14 @@
    }
    element pico640_ctrl_0.avalon_slave
    {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
       datum baseAddress
       {
-         value = "32";
+         value = "64";
          type = "String";
       }
    }
@@ -274,6 +355,11 @@
    }
    element pio_0.s1
    {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
       datum baseAddress
       {
          value = "160";
@@ -289,7 +375,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -366,6 +452,28 @@
    internal="sw.external_connection"
    type="conduit"
    dir="end" />
+ <module name="avalon_bpr_0" kind="avalon_bpr" version="1.0" enabled="1">
+  <parameter name="MAXIMUM_BPS" value="1024" />
+  <parameter name="NBITS_DATA" value="16" />
+ </module>
+ <module name="avalon_norm_0" kind="avalon_norm" version="1.1" enabled="1">
+  <parameter name="FRAME_SIZE" value="307200" />
+  <parameter name="HISTOGRAM_CAPABLE" value="true" />
+  <parameter name="HIST_ARRAY_BITS" value="6" />
+  <parameter name="NBITS_DATA_IN" value="16" />
+  <parameter name="NBITS_DATA_OUT" value="16" />
+  <parameter name="NBITS_HISTOGRAM_DEPTH" value="19" />
+  <parameter name="NORM_FSCALE_DEPTH" value="16" />
+  <parameter name="NORM_MEMORY" value="16" />
+ </module>
+ <module name="avalon_nuc_0" kind="avalon_nuc" version="1.0" enabled="1">
+  <parameter name="ADDR_BASE_READ" value="939524096" />
+  <parameter name="BURST" value="32" />
+  <parameter name="DIV_APPROXIMATION" value="true" />
+  <parameter name="FIFO_DEPTH_BITS" value="8" />
+  <parameter name="FRAME_SIZE" value="307200" />
+  <parameter name="NBITS_DATA" value="16" />
+ </module>
  <module name="clock_50" kind="clock_source" version="16.1" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="clockFrequencyKnown" value="true" />
@@ -382,7 +490,7 @@
   <parameter name="NUM_CLOCK_OUTPUTS" value="1" />
  </module>
  <module name="framewriter_0" kind="framewriter" version="1.0" enabled="1">
-  <parameter name="BURST_LENGTH_DEPTH" value="3" />
+  <parameter name="BURST_LENGTH_DEPTH" value="5" />
   <parameter name="CLOCK_FREQ" value="50000000" />
   <parameter name="FIFO_DEPTH" value="10" />
   <parameter name="NBITS_DATA" value="16" />
@@ -485,8 +593,8 @@
   <parameter name="EXTRA_SETTINGS" value="" />
   <parameter name="F2H_AXI_CLOCK_FREQ" value="50000000" />
   <parameter name="F2H_SDRAM0_CLOCK_FREQ" value="50000000" />
-  <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="100" />
-  <parameter name="F2H_SDRAM2_CLOCK_FREQ" value="100" />
+  <parameter name="F2H_SDRAM1_CLOCK_FREQ" value="50000000" />
+  <parameter name="F2H_SDRAM2_CLOCK_FREQ" value="50000000" />
   <parameter name="F2H_SDRAM3_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM4_CLOCK_FREQ" value="100" />
   <parameter name="F2H_SDRAM5_CLOCK_FREQ" value="100" />
@@ -497,8 +605,8 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type">Avalon-MM Write-Only</parameter>
-  <parameter name="F2SDRAM_Width" value="256" />
+  <parameter name="F2SDRAM_Type">Avalon-MM Write-Only,Avalon-MM Read-Only,Avalon-MM Read-Only</parameter>
+  <parameter name="F2SDRAM_Width" value="64,64,64" />
   <parameter name="F2SINTERRUPT_Enable" value="false" />
   <parameter name="F2S_Width" value="3" />
   <parameter name="FIX_READ_LATENCY" value="8" />
@@ -1186,6 +1294,51 @@
  <connection
    kind="avalon"
    version="16.1"
+   start="avalon_nuc_0.avalon_mm_gainoff"
+   end="hps_0.f2h_sdram2_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="avalon_nuc_0.avalon_mm_refimg"
+   end="hps_0.f2h_sdram1_data">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="avalon_bpr_0.avalon_mm_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00c0" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="avalon_nuc_0.avalon_mm_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0060" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
+   start="hps_0.h2f_lw_axi_master"
+   end="avalon_norm_0.avalon_mm_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00b0" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.1"
    start="hps_0.h2f_lw_axi_master"
    end="framewriter_0.avalon_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -1198,7 +1351,7 @@
    start="hps_0.h2f_lw_axi_master"
    end="pico640_ctrl_0.avalon_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0020" />
+  <parameter name="baseAddress" value="0x0040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1234,19 +1387,49 @@
    start="hps_0.h2f_lw_axi_master"
    end="i2c_master_avalon_0.slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0040" />
+  <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon_streaming"
    version="16.1"
    start="pico640_ctrl_0.avalon_st_out"
+   end="avalon_bpr_0.avalon_st_in" />
+ <connection
+   kind="avalon_streaming"
+   version="16.1"
+   start="avalon_bpr_0.avalon_st_out"
+   end="avalon_nuc_0.avalon_st_in" />
+ <connection
+   kind="avalon_streaming"
+   version="16.1"
+   start="avalon_nuc_0.avalon_st_out"
+   end="avalon_norm_0.avalon_st_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="16.1"
+   start="avalon_norm_0.avalon_st_source"
    end="framewriter_0.avalon_st_in" />
  <connection
    kind="clock"
    version="16.1"
    start="clock_50.clk"
    end="framewriter_0.avalon_mm_clk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_50.clk"
+   end="avalon_norm_0.avalon_mm_clk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_50.clk"
+   end="avalon_bpr_0.avalon_mm_clk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_50.clk"
+   end="avalon_nuc_0.avalon_mm_clk" />
  <connection
    kind="clock"
    version="16.1"
@@ -1279,6 +1462,16 @@
    kind="clock"
    version="16.1"
    start="clock_50.clk"
+   end="hps_0.f2h_sdram1_clock" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_50.clk"
+   end="hps_0.f2h_sdram2_clock" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="clock_50.clk"
    end="hps_0.h2f_axi_clock" />
  <connection
    kind="clock"
@@ -1289,8 +1482,28 @@
  <connection
    kind="clock"
    version="16.1"
+   start="clock_50.clk"
+   end="avalon_nuc_0.sys_clk" />
+ <connection
+   kind="clock"
+   version="16.1"
    start="pll_0.outclk0"
    end="framewriter_0.avalon_st_clk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="pll_0.outclk0"
+   end="avalon_norm_0.avalon_st_clk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="pll_0.outclk0"
+   end="avalon_bpr_0.avalon_st_clk" />
+ <connection
+   kind="clock"
+   version="16.1"
+   start="pll_0.outclk0"
+   end="avalon_nuc_0.avalon_st_clk" />
  <connection
    kind="clock"
    version="16.1"
@@ -1310,6 +1523,21 @@
    kind="reset"
    version="16.1"
    start="clock_50.clk_reset"
+   end="avalon_norm_0.avalon_mm_rstn" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clock_50.clk_reset"
+   end="avalon_nuc_0.avalon_mm_rstn" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clock_50.clk_reset"
+   end="avalon_bpr_0.avalon_mm_rstn" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clock_50.clk_reset"
    end="framewriter_0.avalon_ss_rstn" />
  <connection
    kind="reset"
@@ -1321,6 +1549,21 @@
    version="16.1"
    start="clock_50.clk_reset"
    end="framewriter_0.avalon_st_rstn" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clock_50.clk_reset"
+   end="avalon_norm_0.avalon_st_rstn" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clock_50.clk_reset"
+   end="avalon_nuc_0.avalon_st_rstn" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clock_50.clk_reset"
+   end="avalon_bpr_0.avalon_st_rstn" />
  <connection
    kind="reset"
    version="16.1"
@@ -1347,6 +1590,11 @@
    version="16.1"
    start="clock_50.clk_reset"
    end="i2c_master_avalon_0.reset_sink" />
+ <connection
+   kind="reset"
+   version="16.1"
+   start="clock_50.clk_reset"
+   end="avalon_nuc_0.sys_rstn" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />

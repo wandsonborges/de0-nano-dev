@@ -134,7 +134,7 @@ GND                          : AB1       : gnd    :                   :         
 GND                          : AB2       : gnd    :                   :         :           :                
 GND                          : AB3       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB4       :        :                   :         : 3A        :                
-altera_reserved_tck          : AB5       : input  : 2.5 V             :         : 3A        : N              
+TCK                          : AB5       : input  :                   :         : 3A        :                
 AS_DATA3, DATA3              : AB6       :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AB23      :        :                   :         : 5A        :                
 GND                          : AB24      : gnd    :                   :         :           :                
@@ -148,7 +148,7 @@ GND                          : AC3       : gnd    :                   :         
 RESERVED_INPUT_WITH_WEAK_PULLUP : AC4       :        :                   :         : 3A        :                
 AS_DATA2, DATA2              : AC5       :        :                   :         : 3A        :                
 AS_DATA1, DATA1              : AC6       :        :                   :         : 3A        :                
-altera_reserved_tms          : AC7       : input  : 2.5 V             :         : 3A        : N              
+TMS                          : AC7       : input  :                   :         : 3A        :                
 VCC_AUX                      : AC8       : power  :                   : 2.5V    :           :                
 VCC_AUX                      : AC21      : power  :                   : 2.5V    :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AC22      :        :                   :         : 4A        :                
@@ -235,7 +235,7 @@ ADC_DATA[9]                  : AF18      : input  : 3.3-V LVTTL       :         
 VCCIO4A                      : AF19      : power  :                   : 3.3V    : 4A        :                
 ADC_DATA[3]                  : AF20      : input  : 3.3-V LVTTL       :         : 4A        : Y              
 i2c_SCL                      : AF21      : bidir  : 3.3-V LVTTL       :         : 4A        : Y              
-HPS_ENET_INT_N               : AF22      : bidir  : 3.3-V LVTTL       :         : 4A        : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : AF22      :        :                   :         : 4A        :                
 pico640_SHUTTER              : AF23      : output : 3.3-V LVTTL       :         : 4A        : Y              
 GND                          : AF24      : gnd    :                   :         :           :                
 ADC_DATA[6]                  : AF25      : input  : 3.3-V LVTTL       :         : 4A        : Y              
@@ -290,7 +290,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : AH18      :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH19      :        :                   :         : 4A        :                
 GND                          : AH20      : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH21      :        :                   :         : 4A        :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : AH22      :        :                   :         : 4A        :                
+HPS_ENET_INT_N               : AH22      : bidir  : 3.3-V LVTTL       :         : 4A        : N              
 ADC_DATA[7]                  : AH23      : input  : 3.3-V LVTTL       :         : 4A        : Y              
 ADC_CLOCK                    : AH24      : output : 3.3-V LVTTL       :         : 4A        : Y              
 VCCIO4A                      : AH25      : power  :                   : 3.3V    : 4A        :                
@@ -639,7 +639,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : T8        :        :                   :      
 VCC                          : T9        : power  :                   : 1.1V    :           :                
 GND                          : T10       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : T11       :        :                   :         : 3B        :                
-HPS_KEY                      : T12       : bidir  : 3.3-V LVTTL       :         : 3B        : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : T12       :        :                   :         : 3B        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : T13       :        :                   :         : 3B        :                
 GND                          : T14       : gnd    :                   :         :           :                
 VCC                          : T15       : power  :                   : 1.1V    :           :                
@@ -709,7 +709,7 @@ GND                          : W4        : gnd    :                   :         
 VCCA_FPLL                    : W5        : power  :                   : 2.5V    :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W8        :        :                   :         : 3A        :                
 VCCIO3A                      : W9        : power  :                   : 2.5V    : 3A        :                
-altera_reserved_tdi          : W10       : input  : 2.5 V             :         : 3A        : N              
+TDI                          : W10       : input  :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W11       :        :                   :         : 3B        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : W12       :        :                   :         : 3B        :                
 VCCIO4A                      : W13       : power  :                   : 3.3V    : 4A        :                
@@ -732,11 +732,11 @@ GND                          : Y3        : gnd    :                   :         
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y4        :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y5        :        :                   :         : 3A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y8        :        :                   :         : 3A        :                
-altera_reserved_tdo          : Y9        : output : 2.5 V             :         : 3A        : N              
+TDO                          : Y9        : output :                   :         : 3A        :                
 VCCPGM                       : Y10       : power  :                   : 3.0V/3.3V :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : Y11       :        :                   :         : 3A        :                
 GND                          : Y12       : gnd    :                   :         :           :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : Y13       :        :                   :         : 4A        :                
+HPS_KEY                      : Y13       : bidir  : 3.3-V LVTTL       :         : 4A        : N              
 GND                          : Y14       : gnd    :                   :         :           :                
 pico640_PICO_RST_N           : Y15       : output : 3.3-V LVTTL       :         : 4A        : Y              
 LED[6]                       : Y16       : output : 3.3-V LVTTL       :         : 5A        : Y              
